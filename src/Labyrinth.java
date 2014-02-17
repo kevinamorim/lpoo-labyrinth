@@ -35,6 +35,10 @@ public class Labyrinth {
 		
 	}
 	
-	
+	public boolean isExit(int x, int y) {
+		
+		if(tiles[x][y] == 'S') return true;
+		return false;
+	}
 
 }
