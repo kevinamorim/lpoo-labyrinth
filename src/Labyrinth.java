@@ -28,6 +28,13 @@ public class Labyrinth {
 		
 	}
 	
+	public boolean isWall(int x, int y) {
+		
+		if(tiles[x][y] == 'x') return true;
+		return false;
+		
+	}
+	
 	
 
 }
