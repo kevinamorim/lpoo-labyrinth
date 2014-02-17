@@ -2,6 +2,7 @@
 public class Hero {
 	
 	private int x,y;
+	private int oldX, oldY;
 	
 	public int getX() {
 		return x;
@@ -19,33 +20,63 @@ public class Hero {
 		this.y = y;
 	}
 	
-	public Hero(int posx, int posy) {
-		this.setX(posx);
-		this.setY(posy);
+	public int getOldX() {
+		return oldX;
+	}
+
+	public void setOldX(int oldX) {
+		this.oldX = oldX;
+	}
+
+	public int getOldY() {
+		return oldY;
+	}
+
+	public void setOldY(int oldY) {
+		this.oldY = oldY;
+	}
+	
+	public Hero(int x, int y) {
+		this.x = x;
+		setOldX(x);
+		this.y = y;
+		setOldY(y);
 	}
 	
 	public void MoveDown(Labyrinth l) {
 		
-		if(l.isWall(x, y + 1))
-			y++;
+		if(!l.isWall(x + 1, y)) {
+			setOldX(x);
+			setOldY(y);
+			x++;
+		}
 	}
 
 	public void MoveUp(Labyrinth l) {
 
-		if(l.isWall(x, y - 1))
-			y--;
+		if(!l.isWall(x - 1, y)) {
+			setOldX(x);
+			setOldY(y);
+			x--;
+		}
 	}
 
 	public void MoveLeft(Labyrinth l) {
 
-		if(l.isWall(x - 1, y))
-			x--;
+		if(!l.isWall(x, y - 1)) {
+			setOldX(x);
+			setOldY(y);
+			y--;
+		}
 	}
 
 	public void MoveRight(Labyrinth l) {
 
-		if(l.isWall(x + 1, y))
-			x++;
+		if(!l.isWall(x, y + 1)) {
+			setOldX(x);
+			setOldY(y);
+			y++;
+		}
 	}
 
 }

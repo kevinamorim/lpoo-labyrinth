@@ -10,6 +10,7 @@ public class Labyrinth {
 	}
 	
 	public void setPlayer(Hero player) {
+		tiles[player.getOldX()][player.getOldY()] = ' ';
 		tiles[player.getX()][player.getY()] = 'H';
 	}
 	
