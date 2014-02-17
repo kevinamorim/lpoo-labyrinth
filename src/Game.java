@@ -18,6 +18,10 @@ public class Game {
 			
 		Labyrinth l = new Labyrinth(board);
 		
+		Hero player = new Hero(1, 1);
+		
+		l.setPlayer(player);
+		
 		l.DrawBoard();
 		
 	}

@@ -9,6 +9,10 @@ public class Labyrinth {
 		
 	}
 	
+	public void setPlayer(Hero player) {
+		tiles[player.getX()][player.getY()] = 'H';
+	}
+	
 	public void DrawBoard() {
 		
 		for(char[] line : tiles) {
