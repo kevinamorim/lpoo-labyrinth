@@ -23,5 +23,29 @@ public class Hero {
 		this.setX(posx);
 		this.setY(posy);
 	}
+	
+	public void MoveDown(Labyrinth l) {
+		
+		if(l.isWall(x, y + 1))
+			y++;
+	}
+
+	public void MoveUp(Labyrinth l) {
+
+		if(l.isWall(x, y - 1))
+			y--;
+	}
+
+	public void MoveLeft(Labyrinth l) {
+
+		if(l.isWall(x - 1, y))
+			x--;
+	}
+
+	public void MoveRight(Labyrinth l) {
+
+		if(l.isWall(x + 1, y))
+			x++;
+	}
 
 }
