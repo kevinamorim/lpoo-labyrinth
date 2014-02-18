@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -60,6 +59,8 @@ public class Game {
 			lab.DrawBoard();
 			
 		}
+		
+		scan.close();
 		
 	}
 
