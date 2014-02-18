@@ -36,9 +36,9 @@ public class Labyrinth {
 		
 	}
 	
-	public boolean isExit(int x, int y) {
+	public boolean isAtExit(Hero player) {
 		
-		if(tiles[x][y] == 'S') return true;
+		if(tiles[player.getX()][player.getY()] == 'S') return true;
 		return false;
 	}
 

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 
 public class Game {
 	
@@ -18,7 +16,7 @@ public class Game {
 	
 	public static void main(String[] args) {
 		
-		Scanner scan = new Scanner(System.in);
+		Input in = new Input();
 			
 		Labyrinth lab = new Labyrinth(board);
 		
@@ -28,9 +26,9 @@ public class Game {
 		
 		lab.DrawBoard();
 		
-		while(!lab.isExit(player.getX(), player.getY())) {
+		while(true) {
 			
-			String c = scan.nextLine();
+			String c = in.getScan();
 			
 			switch(c.charAt(0)) {
 			case 'w':
@@ -54,13 +52,16 @@ public class Game {
 				
 			}
 			
-			lab.setPlayer(player);
-			
-			lab.DrawBoard();
+			if(!lab.isAtExit(player)) {
+				
+				lab.setPlayer(player);
+				lab.DrawBoard();
+			}
+			else break;
 			
 		}
 		
-		scan.close();
+		System.out.print(" END ");
 		
 	}
 
