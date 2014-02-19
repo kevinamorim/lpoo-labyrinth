@@ -1,8 +1,11 @@
 
 public class Hero {
 	
+	private char heroChar;
+	
 	private int x,y;
 	private int oldX, oldY;
+	private boolean armed = false;
 	
 	public int getX() {
 		return x;
@@ -37,10 +40,12 @@ public class Hero {
 	}
 	
 	public Hero(int x, int y) {
+		this.setHeroChar('H');
 		this.x = x;
-		setOldX(x);
 		this.y = y;
-		setOldY(y);
+		this.setOldX(x);
+		this.setOldY(y);
+		this.setArmed(false);
 	}
 	
 	public void MoveDown(Labyrinth l) {
@@ -77,6 +82,22 @@ public class Hero {
 			setOldY(y);
 			y++;
 		}
+	}
+
+	public boolean isArmed() {
+		return armed;
+	}
+
+	public void setArmed(boolean armed) {
+		this.armed = armed;
+	}
+
+	public char getHeroChar() {
+		return heroChar;
+	}
+
+	public void setHeroChar(char heroChar) {
+		this.heroChar = heroChar;
 	}
 
 }

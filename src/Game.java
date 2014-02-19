@@ -10,7 +10,7 @@ public class Game {
 		{ 'x', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'S' },
 		{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
 		{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-		{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
+		{ 'x', 'E', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
 		{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
 	};
 	
@@ -52,12 +52,20 @@ public class Game {
 				
 			}
 			
-			if(!lab.isAtExit(player)) {
-				
-				lab.setPlayer(player);
-				lab.DrawBoard();
+			if(lab.foundSword(player)) {
+				player.setArmed(true);
+				player.setHeroChar('A');
 			}
-			else break;
+			
+			if(lab.isAtExit(player)) {
+				
+				if(player.isArmed()) break;
+				player.MoveLeft(lab);
+			}
+			
+			lab.setPlayer(player);
+			
+			lab.DrawBoard();
 			
 		}
 		

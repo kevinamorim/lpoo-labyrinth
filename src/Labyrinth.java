@@ -11,7 +11,7 @@ public class Labyrinth {
 	
 	public void setPlayer(Hero player) {
 		tiles[player.getOldX()][player.getOldY()] = ' ';
-		tiles[player.getX()][player.getY()] = 'H';
+		tiles[player.getX()][player.getY()] = player.getHeroChar();
 	}
 	
 	public void DrawBoard() {
@@ -34,6 +34,11 @@ public class Labyrinth {
 		if(tiles[x][y] == 'x') return true;
 		return false;
 		
+	}
+	
+	public boolean foundSword(Hero player) {
+		if(tiles[player.getX()][player.getY()] == 'E') return true;
+		return false;
 	}
 	
 	public boolean isAtExit(Hero player) {
