@@ -1,3 +1,4 @@
+import java.math.*;
 
 public class Labyrinth {
 	
@@ -14,6 +15,14 @@ public class Labyrinth {
 		tiles[player.getX()][player.getY()] = player.getHeroChar();
 	}
 	
+	public void setDragon(Dragon dragon) {
+		tiles[dragon.getX()][dragon.getY()] = dragon.getDragonChar();
+	}
+	
+	public void killDragon(Dragon dragon) {
+		dragon.setAlive(false);
+		tiles[dragon.getX()][dragon.getY()] = ' ';
+	}
 	public void DrawBoard() {
 		
 		for(char[] line : tiles) {
@@ -29,16 +38,30 @@ public class Labyrinth {
 		
 	}
 	
-	public boolean isWall(int x, int y) {
+	public boolean isValidMove(int x, int y, boolean armed) {
 		
-		if(tiles[x][y] == 'x') return true;
-		return false;
+		if((tiles[x][y] == 'x') || (tiles[x][y] == 'D')) return false;
+		else if (tiles[x][y] == 'S') {
+			if (armed) return true;
+			else return false;
+		}
+		return true;
 		
 	}
 	
 	public boolean foundSword(Hero player) {
+		
 		if(tiles[player.getX()][player.getY()] == 'E') return true;
 		return false;
+		
+	}
+	
+	public boolean foundDragon(Hero player, Dragon dragon) {
+		
+		if((Math.abs(player.getX() - dragon.getX()) <= 1) &&
+				(Math.abs(player.getY() - dragon.getY()) <= 1)) return true;
+		return false;
+		
 	}
 	
 	public boolean isAtExit(Hero player) {

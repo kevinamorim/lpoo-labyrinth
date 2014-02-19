@@ -22,7 +22,11 @@ public class Game {
 		
 		Hero player = new Hero(1, 1);
 		
+		Dragon dragon = new Dragon(1, 4);
+		
 		lab.setPlayer(player);
+		
+		lab.setDragon(dragon);
 		
 		lab.DrawBoard();
 		
@@ -52,6 +56,16 @@ public class Game {
 				
 			}
 			
+			if(lab.foundDragon(player, dragon) && dragon.isAlive()) {
+				if(player.isArmed()) {
+					lab.killDragon(dragon);
+				}
+				else {
+					player.setAlive(false);
+					break;
+				}
+			}
+			
 			if(lab.foundSword(player)) {
 				player.setArmed(true);
 				player.setHeroChar('A');
@@ -60,7 +74,7 @@ public class Game {
 			if(lab.isAtExit(player)) {
 				
 				if(player.isArmed()) break;
-				player.MoveLeft(lab);
+				else player.MoveLeft(lab);
 			}
 			
 			lab.setPlayer(player);
@@ -69,7 +83,12 @@ public class Game {
 			
 		}
 		
-		System.out.print(" END ");
+		lab.setPlayer(player);
+		
+		lab.DrawBoard();
+		
+		if(player.isAlive()) System.out.print(" WIN ");
+		else System.out.print(" LOSE ");
 		
 	}
 

@@ -52,7 +52,7 @@ public class Hero {
 	
 	public void MoveDown(Labyrinth l) {
 		
-		if(!l.isWall(x + 1, y)) {
+		if(l.isValidMove(x + 1, y, this.armed)) {
 			setOldX(x);
 			setOldY(y);
 			x++;
@@ -61,7 +61,7 @@ public class Hero {
 
 	public void MoveUp(Labyrinth l) {
 
-		if(!l.isWall(x - 1, y)) {
+		if(l.isValidMove(x - 1, y, this.armed)) {
 			setOldX(x);
 			setOldY(y);
 			x--;
@@ -70,7 +70,7 @@ public class Hero {
 
 	public void MoveLeft(Labyrinth l) {
 
-		if(!l.isWall(x, y - 1)) {
+		if(l.isValidMove(x, y - 1, this.armed)) {
 			setOldX(x);
 			setOldY(y);
 			y--;
@@ -79,7 +79,7 @@ public class Hero {
 
 	public void MoveRight(Labyrinth l) {
 
-		if(!l.isWall(x, y + 1)) {
+		if(l.isValidMove(x, y + 1, this.armed)) {
 			setOldX(x);
 			setOldY(y);
 			y++;
