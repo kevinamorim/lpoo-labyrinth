@@ -40,35 +40,36 @@ public class Game {
 		// Game loop
 		while(true) {
 			
-			// Receives the first line of input
-			String c = in.getScan();
-
-			if(c.length() > 0) {
-
-				// Switches the first char of the input and handles player's movement
-				switch(c.charAt(0)) {
-				case 'w':
-					player.MoveUp(lab);
-					break;
-
-				case 'd':
-					player.MoveRight(lab);
-					break;
-
-				case 's':
-					player.MoveDown(lab);
-					break;
-
-				case 'a':
-					player.MoveLeft(lab);
-					break;
-
-				default:
-					break;
-
-				}
-			}
+			// Gets user input.
+			in.getInput();
 			
+			// Handles user input.
+			for(int i = 0; i < in.getKeys().length; i++) {
+				
+				if(in.getKeys()[i]) {
+					
+					switch(i) {
+					case 0:
+						player.MoveUp(lab);
+						break;
+					case 1:
+						player.MoveRight(lab);
+						break;
+					case 2:
+						player.MoveDown(lab);
+						break;
+					case 3:
+						player.MoveLeft(lab);
+						break;
+					default:
+						break;
+					}
+					
+					break;
+				}
+				
+			}
+		
 			// Checks if the player has encountered the Dragon, that terrible beast!
 			if(lab.foundDragon(player, dragon) && (dragon.isAlive())) {
 				// If the player is armed, it slains the Dragon
