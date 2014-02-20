@@ -19,6 +19,16 @@ public class Labyrinth {
 	
 	// Sets the dragon position tile with its representing char: 'D'
 	public void setDragon(Dragon dragon) {
+		tiles[dragon.getOldX()][dragon.getOldY()] = ' ';
+		
+		// If new dragon position is the actual sword position.
+		if(tiles[dragon.getX()][dragon.getY()] == 'E') {
+			dragon.setHasSword(true);
+		}
+		else if(dragon.hasSword()) {
+			dragon.setHasSword(false);
+		}
+		
 		tiles[dragon.getX()][dragon.getY()] = dragon.getDragonChar();
 	}
 	
@@ -50,6 +60,7 @@ public class Labyrinth {
 	}
 	
 	// Checks whether the tile that the player is trying to move to is valid or not (eg: walls are not valid)
+	// TODO: We should receive an object (hero, dragon) and a direction, and then check if its a valid move.
 	public boolean isValidMove(int x, int y, boolean playerIsArmed) {
 		
 		// If the tile is a wall or a dragon the player cannot move to that location
@@ -86,6 +97,7 @@ public class Labyrinth {
 		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
 		//
 		if(Math.sqrt(Math.abs(player.getX() - dragon.getX()) + Math.abs(player.getY() - dragon.getY())) == 1) return true;
+		else if(player.getX() == dragon.getX() && player.getY() == dragon.getY()) return true;
 		return false;
 		
 	}

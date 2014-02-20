@@ -64,22 +64,25 @@ public class Input {
 		ResetKeys();
 		
 		String s = getScan();
-		
-		switch(s.charAt(0)) {
-		case 'w':
-			keys[0] = true;
-			break;
-		case 'd':
-			keys[1] = true;
-			break;
-		case 's':
-			keys[2] = true;
-			break;
-		case 'a':
-			keys[3] = true;
-			break;
-		default:
-			break;
+
+		// Checks if input is not empty.
+		if(s.length() > 0) {
+			switch(s.charAt(0)) {
+			case 'w':
+				keys[0] = true;
+				break;
+			case 'd':
+				keys[1] = true;
+				break;
+			case 's':
+				keys[2] = true;
+				break;
+			case 'a':
+				keys[3] = true;
+				break;
+			default:
+				break;
+			}
 		}
 		
 	}

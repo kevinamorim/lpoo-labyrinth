@@ -75,6 +75,15 @@ public class Game {
 				}
 				
 			}
+			
+			// Moves dragon.
+			dragon.MoveDragon(lab);
+			
+			
+			lab.setPlayer(player);
+		
+			lab.setDragon(dragon);
+			
 		
 			// Checks if the player has encountered the Dragon, that terrible beast!
 			if(lab.foundDragon(player, dragon) && (dragon.isAlive())) {
@@ -105,8 +114,10 @@ public class Game {
 				else
 					player.MoveBack(lab);
 			}
+
 			
-			lab.setPlayer(player);
+			// Only draws sword if dragon has not the sword and if it's not taken by the player.
+			if(!dragon.hasSword() && !player.isArmed()) lab.setSword(sword);
 			
 			lab.DrawBoard();
 			
