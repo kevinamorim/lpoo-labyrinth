@@ -2,6 +2,9 @@ import java.util.Scanner;
 
 public class Input {
 	
+	public static int NKEYS = 4;
+	public static enum KEY { UP, RIGHT, DOWN, LEFT }
+	
 	private Scanner scan = new Scanner(System.in);
 	
 	/**
@@ -14,7 +17,7 @@ public class Input {
 	 * 
 	 * ( Starting with Up following clockwise ). 
 	 */
-	private Boolean[] keys = new Boolean[4];
+	private Boolean[] keys = new Boolean[NKEYS];
 
 	/**
 	 * Constructor.
@@ -39,7 +42,7 @@ public class Input {
 	private void ResetKeys() {
 		
 		// Sets everything to false.
-		for(int i = 0; i < keys.length; i++) {
+		for(int i = 0; i < NKEYS; i++) {
 			keys[i] = false;
 		}
 		

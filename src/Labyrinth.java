@@ -22,6 +22,10 @@ public class Labyrinth {
 		tiles[dragon.getX()][dragon.getY()] = dragon.getDragonChar();
 	}
 	
+	public void setSword(Sword sword) {
+		tiles[sword.getX()][sword.getY()] = sword.getSwordChar();
+	}
+	
 	// "Kills" the dragon, effectively setting its 'alive' parameter to false and
 	// erasing its symbol from the labyrinth  
 	public void killDragon(Dragon dragon) {

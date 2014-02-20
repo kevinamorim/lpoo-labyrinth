@@ -1,4 +1,3 @@
-
 public class Game {
 	
 	private static char board[][] = {
@@ -10,7 +9,7 @@ public class Game {
 		{ 'x', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'S' },
 		{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
 		{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-		{ 'x', 'E', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
+		{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
 		{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
 	};
 	
@@ -25,6 +24,9 @@ public class Game {
 		// Creates our hero/player
 		Hero player = new Hero(1, 1);
 		
+		// Creates our sword
+		Sword sword = new Sword(8, 1);
+		
 		// Creates our evil Dragon!
 		Dragon dragon = new Dragon(3, 1);
 		
@@ -33,6 +35,9 @@ public class Game {
 		
 		// Sets the dragon's position on the labyrinth (effectively places it's reresenting char)
 		lab.setDragon(dragon);
+		
+		// Sets the sword's position on the labyrinth (effectively places it's reresenting char)
+		lab.setSword(sword);
 		
 		// Draws the Labyrinth matrix/board
 		lab.DrawBoard();
@@ -44,21 +49,22 @@ public class Game {
 			in.getInput();
 			
 			// Handles user input.
-			for(int i = 0; i < in.getKeys().length; i++) {
+			for(int i = 0; i < Input.NKEYS; i++) {
 				
 				if(in.getKeys()[i]) {
 					
-					switch(i) {
-					case 0:
+					Input.KEY direction = Input.KEY.values()[i];
+					switch(direction) {
+					case UP:
 						player.MoveUp(lab);
 						break;
-					case 1:
+					case RIGHT:
 						player.MoveRight(lab);
 						break;
-					case 2:
+					case DOWN:
 						player.MoveDown(lab);
 						break;
-					case 3:
+					case LEFT:
 						player.MoveLeft(lab);
 						break;
 					default:

@@ -1,5 +1,6 @@
 
 public class Dragon {
+	
 	private char dragonChar;
 	private boolean alive;
 	private int x,y;
@@ -50,6 +51,10 @@ public class Dragon {
 	// Sets the 'alive' parameter of the dragon (boolean, self-explanatory)
 	public void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+	
+	public void MoveDragon() {
+		
 	}
 
 }
