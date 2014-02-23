@@ -7,10 +7,15 @@ public class Labyrinth {
 	
 	// Char matrix representing the labyrinth 
 	private char tiles[][];
+
 	private int size;
+
 	private int exit[];
 
-	// Constructor for a Labyrinth type object
+	/**
+	 * Labyrinth constructor.
+	 * @param size Size of the generated labyrinth. The labyrinth is always square, so the final size will be (size x size).
+	 */
 	public Labyrinth(int size) {
 		
 		this.size = size;
@@ -24,6 +29,38 @@ public class Labyrinth {
 		DrawBoard();
 		
 	}
+	
+	/**
+	 * @return the size
+	 */
+	public int getSize() {
+		return size;
+	}
+
+	/**
+	 * @return the tiles
+	 */
+	public char[][] getTiles() {
+		return tiles;
+	}
+	
+	// Prints the labyrinth tiles (represented by a matrix)
+	public void DrawBoard() {
+		
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				if(i == exit[0] && j == exit[1]) {
+					System.out.print(" " + 'S' + " ");
+				} else {
+					System.out.print(" " + tiles[i][j] + " ");
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	// -- BEGIN Maze generation
 	
 	/**
 	 * Randomly generates a valid exit for the labyrinth. With the following restrictions:
@@ -97,6 +134,18 @@ public class Labyrinth {
 		
 	}
 	
+	/**
+	 * Draws a grid inside the previously generated maze chamber.
+	 * 
+	 * Example (5x5): 
+	 * 
+	 * 		x x x x x
+	 * 		x   x   x
+	 * 		x x x x x
+	 * 		x   x   x
+	 * 		x x x x x 
+	 * 
+	 */
 	public void DrawGrid() {
 		
 		// Determines whether we are drawing a wall or not.
@@ -131,6 +180,10 @@ public class Labyrinth {
 		*/
 	}
 	
+	/**
+	 * Generates the final labyrinth. Takes our pre-created grid and then randomly opens holes in walls.
+	 * Follows the backtracking algorithm.
+	 */
 	public void GenerateWalls() {
 
 		Random r = new Random();
@@ -337,11 +390,15 @@ public class Labyrinth {
 		return result;
 	}
 	
+	
+	// -- END Maze generation
+	
+	
 	// Sets the player's position tile with its representing char: 'H' or 'A' (if armed with the sword)
 	// Also erases char from the player's last position
 	public void setPlayer(Hero player) {
 		tiles[player.getOldX()][player.getOldY()] = ' ';
-		tiles[player.getX()][player.getY()] = player.getHeroChar();
+		tiles[player.getX()][player.getY()] = player.getSymbol();
 	}
 	
 	// Sets the dragon position tile with its representing char: 'D'
@@ -356,11 +413,11 @@ public class Labyrinth {
 			dragon.setHasSword(false);
 		}
 		
-		tiles[dragon.getX()][dragon.getY()] = dragon.getDragonChar();
+		tiles[dragon.getX()][dragon.getY()] = dragon.getSymbol();
 	}
 	
-	public void setSword(Sword sword) {
-		tiles[sword.getX()][sword.getY()] = sword.getSwordChar();
+	public void setSword(Tile sword) {
+		tiles[sword.getX()][sword.getY()] = sword.getSymbol();
 	}
 	
 	// "Kills" the dragon, effectively setting its 'alive' parameter to false and
@@ -370,40 +427,23 @@ public class Labyrinth {
 		tiles[dragon.getX()][dragon.getY()] = ' ';
 	}
 	
-	// Prints the labyrinth tiles (represented by a matrix)
-	public void DrawBoard() {
-		
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < size; j++) {
-				if(i == exit[0] && j == exit[1]) {
-					System.out.print(" " + 'S' + " ");
-				} else {
-					System.out.print(" " + tiles[i][j] + " ");
-				}
-			}
-			System.out.println();
-		}
-		
-	}
-	
 	// Checks whether the tile that the player is trying to move to is valid or not (eg: walls are not valid)
 	// TODO: We should receive an object (hero, dragon) and a direction, and then check if its a valid move.
 	public boolean isValidMove(int x, int y, boolean playerIsArmed) {
 		
 		// If the tile is a wall or a dragon the player cannot move to that location
-		// (the latter is for assurity issues only, it should never occur)
-		if((tiles[x][y] == 'x') || (tiles[x][y] == 'D')) {
-			return false;
+		if((tiles[x][y] == ' ') || (tiles[x][y] == 'E')) {
+			return true;
 		}
 		// If the tile is the exit, the player should be alowed to win only if armed
 		// (the "dragon is dead" premise is not computed here)
-		else if (tiles[x][y] == 'S') {
+		else if (x == exit[0] && y == exit[1]) {
 			if (playerIsArmed)
 				return true;
 			else
 				return false;
 		}
-		return true;
+		return false;
 		
 	}
 	
@@ -424,6 +464,7 @@ public class Labyrinth {
 		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
 		//
 		if(Math.sqrt(Math.abs(player.getX() - dragon.getX()) + Math.abs(player.getY() - dragon.getY())) == 1) return true;
+		// Security purposes. Shouldn't happen. 
 		else if(player.getX() == dragon.getX() && player.getY() == dragon.getY()) return true;
 		return false;
 		
@@ -431,9 +472,8 @@ public class Labyrinth {
 	
 	// Checks if the player's current tile is the exit tile
 	public boolean isAtExit(Hero player) {
-		
 		// The exit tile is identifiend with the char 'S'
-		if(tiles[player.getX()][player.getY()] == 'S') return true;
+		if(player.getX() == exit[0] && player.getY()== exit[1]) return true;
 		return false;
 	}
 

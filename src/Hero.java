@@ -1,90 +1,78 @@
 
-public class Hero {
+public class Hero extends Tile {
 	
-	private int x,y;
 	private int oldX, oldY;
-	
-	private char heroChar;
+
 	private boolean armed;
 	private boolean alive;
 	
-	// Constructor for a Hero type object
-	public Hero(int x, int y) {
-		this.setHeroChar('H');
-		this.setX(x);
-		this.setY(y);;
-		this.setOldX(x);
-		this.setOldY(y);
+	/**
+	 * @param lab Actual labyrinth
+	 */
+	public Hero(Labyrinth lab) {
+		super(lab, 'H');
+		this.setOldX(getX());
+		this.setOldY(getY());
 		this.setArmed(false);
 		this.setAlive(true);
 	}
-	
-	// Returns the hero's current X coordinate
-	public int getX() {
-		return x;
-	}
 
-	// Sets the hero's X coordinate
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	// Returns the hero's current Y coordinate
-	public int getY() {
-		return y;
-	}
-	
-	// Sets the hero's Y coordinate
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	// Returns the hero's old X coordinate
+	/**
+	 * @return The last x position.
+	 */
 	public int getOldX() {
 		return oldX;
 	}
 
-	// Sets the hero's old X coordinate
+	/**
+	 * @param oldX The last x position.
+	 */
 	public void setOldX(int oldX) {
 		this.oldX = oldX;
 	}
 
-	// Returns the hero's old Y coordinate
+	/**
+	 * @return The last y position.
+	 */
 	public int getOldY() {
 		return oldY;
 	}
 
-	// Sets the hero's old Y coordinate
+	/**
+	 * @param oldY The last y position.
+	 */
 	public void setOldY(int oldY) {
 		this.oldY = oldY;
 	}
-	
-	// Returns the hero's representing char: 'H' or 'A' (if armed with the sword)
-	public char getHeroChar() {
-		return heroChar;
-	}
 
-	// Sets the hero's representing char
-	public void setHeroChar(char heroChar) {
-		this.heroChar = heroChar;
-	}
-
-	// Checks if the hero is alive or not
+	/**
+	 * 
+	 * @return True if the hero stills alive, false otherwise.
+	 */
 	public boolean isAlive() {
 		return alive;
 	}
 
-	// Sets the hero's 'alive' parameter (boolean, self-explanatory)
+	/**
+	 * 
+	 * @param alive True if the hero stills alive, false otherwise.
+	 */
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 	
-	// Checks if the hero is armed or not
+	/**
+	 * 
+	 * @return True if the player is armed, false otherwise.
+	 */
 	public boolean isArmed() {
 		return armed;
 	}
 
-	// Sets the hero's 'armed' parameter (boolean, self-explanatory)
+	/**
+	 * 
+	 * @param armed True if the player is armed, false otherwise.
+	 */
 	public void setArmed(boolean armed) {
 		this.armed = armed;
 	}
@@ -97,10 +85,10 @@ public class Hero {
 	public void MoveDown(Labyrinth lab) {
 		
 		// Checks if the desired move is valid
-		if(lab.isValidMove(x + 1, y, this.armed)) {
-			setOldX(x);
-			setOldY(y);
-			x++;
+		if(lab.isValidMove(getX() + 1, getY(), this.armed)) {
+			setOldX(getX());
+			setOldY(getY());
+			setX(getX() + 1);
 		}
 	}
 
@@ -108,10 +96,10 @@ public class Hero {
 	public void MoveUp(Labyrinth lab) {
 
 		// Checks if the desired move is valid
-		if(lab.isValidMove(x - 1, y, this.armed)) {
-			setOldX(x);
-			setOldY(y);
-			x--;
+		if(lab.isValidMove(getX() - 1, getY(), this.armed)) {
+			setOldX(getX());
+			setOldY(getY());
+			setX(getX() - 1);
 		}
 	}
 
@@ -123,10 +111,10 @@ public class Hero {
 	public void MoveLeft(Labyrinth lab) {
 
 		// Checks if the desired move is valid
-		if(lab.isValidMove(x, y - 1, this.armed)) {
-			setOldX(x);
-			setOldY(y);
-			y--;
+		if(lab.isValidMove(getX(), getY() - 1, this.armed)) {
+			setOldX(getX());
+			setOldY(getY());
+			setY(getY() - 1);
 		}
 	}
 
@@ -134,10 +122,10 @@ public class Hero {
 	public void MoveRight(Labyrinth lab) {
 
 		// Checks if the desired move is valid
-		if(lab.isValidMove(x, y + 1, this.armed)) {
-			setOldX(x);
-			setOldY(y);
-			y++;
+		if(lab.isValidMove(getX(), getY() + 1, this.armed)) {
+			setOldX(getX());
+			setOldY(getY());
+			setY(getY() + 1);
 		}
 	}
 

@@ -1,56 +1,20 @@
 import java.util.Random;
 
 
-public class Dragon {
+public class Dragon extends Tile {
 	
-	private char dragonChar;
 	private boolean alive, hasSword;
 
-
-	private int x, y, oldX, oldY;
-
+	private int oldX, oldY;
 
 	// Constructor for a Dragon type object
-	public Dragon(int x, int y) {
+	public Dragon(Labyrinth lab) {
+		super(lab, 'D');
 		this.setAlive(true);
 		this.setHasSword(false);
-		this.setDragonChar('D');
-		this.setX(x);
-		this.setY(y);
-		this.setOldX(x);
-		this.setOldY(y);
+		this.setOldX(getX());
+		this.setOldY(getY());
 	}
-
-	// Return the dragon's representing char (should not be different from 'D')
-	public char getDragonChar() {
-		return dragonChar;
-	}
-
-	// Sets the dragon's representing char
-	public void setDragonChar(char dragonChar) {
-		this.dragonChar = dragonChar;
-	}
-	
-	// Returns the dragon's current X coordinate
-	public int getX() {
-		return x;
-	}
-
-	// Sets the dragon's X coordinate
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	// Returns the dragon's current Y coordinate
-	public int getY() {
-		return y;
-	}
-
-	// Sets the dragon's Y coordinate
-	public void setY(int y) {
-		this.y = y;
-	}
-	
 	
 	/**
 	 * @return the oldX
@@ -104,11 +68,15 @@ public class Dragon {
 	public void setHasSword(boolean hasSword) {
 		this.hasSword = hasSword;
 		
-		if(hasSword) this.dragonChar = 'F';
-		else this.dragonChar = 'D';
+		if(hasSword) setSymbol('F');
+		else setSymbol('D');
 		
 	}
 	
+	/**
+	 * Moves the dragon randomly one position.
+	 * @param lab Actual labyrinth.
+	 */
 	public void MoveDragon(Labyrinth lab) {
 		Random r = new Random();
 		
@@ -130,23 +98,23 @@ public class Dragon {
 			switch(direction) {
 			case 0: 
 				// Move Up
-				newX = x - 1;
-				newY = y;
+				newX = getX() - 1;
+				newY = getY();
 				break;
 			case 1:
 				// Move Right
-				newX = x;
-				newY = y + 1;
+				newX = getX();
+				newY = getY() + 1;
 				break;
 			case 2: 
 				// Move Down
-				newX = x + 1;
-				newY = y;
+				newX = getX() + 1;
+				newY = getY();
 				break;
 			case 3:
 				// Move Left
-				newX = x;
-				newY = y - 1;
+				newX = getX();
+				newY = getY() - 1;
 				break;
 			default:
 				break;
@@ -156,10 +124,10 @@ public class Dragon {
 			
 		} while (!valid);
 		
-		oldX = x;
-		oldY = y;
-		x = newX;
-		y = newY;
+		oldX = getX();
+		oldY = getY();
+		setX(newX);
+		setY(newY);
 		
 	}
 
