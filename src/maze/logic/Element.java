@@ -1,5 +1,6 @@
-import java.util.Random;
+package maze.logic;
 
+import java.util.Random;
 
 public class Element {
 	

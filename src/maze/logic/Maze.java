@@ -1,3 +1,5 @@
+package maze.logic;
+
 import java.util.Random;
 import java.util.Stack;
 
@@ -415,50 +417,32 @@ public class Maze {
 		tiles[elem.getX()][elem.getY()] = elem.getSymbol();
 	}
 	
-	// "Kills" the dragon, effectively setting its 'alive' parameter to false and
-	// erasing its symbol from the labyrinth  
-	public void killDragon(Dragon dragon) {
-		dragon.setAlive(false);
-		dragon.setSymbol(' ');
-		tiles[dragon.getX()][dragon.getY()] = ' ';
-	}
-	
 	// Checks whether the tile that the object is trying to move to is valid or not (eg: walls are not valid)
-	public boolean isValidMove(int x, int y, boolean isArmedPlayer) {
+	public boolean isValidMove(int x, int y) {
 		
-		// If the tile is a wall, dragon or player, it cannot move to that location
-		if(isValidMoveChar(x,y,tiles[x][y])) {
+		if((x == exit.getX()) && (y == exit.getY())) {
 			return true;
 		}
-		// If the tile is the exit, the player should be alowed to win only if armed
-		// (the "dragon is dead" premise is not computed here)
-		else if ((isArmedPlayer) && (x == exit.getX()) && (y == exit.getY()))
-			return true;
-		return false;
+		// If the tile is a wall, dragon or player, it cannot move to that location
+		if(tiles[x][y] == 'x') {
+			return false;
+		}
+		return true;
 		
 	}
 	
-	// Checks if the player's current tile has the sword in it
-	public boolean foundSword(Hero player) {
-		
-		// A sword is identified by the char 'E' in the labyrinth tile
-		if(tiles[player.getX()][player.getY()] == 'E') return true;
-		return false;
-		
+	/**
+	 * @return the exit
+	 */
+	public Element getExit() {
+		return exit;
 	}
-	
-	// Checks if any of the player's adjacent tiles has the dragon in them
-	public boolean foundDragon(Hero player, Dragon dragon) {
-		
-		// Calculating the real distance between the dragon and the player (contiguous cells will necessarily be 1 unit apart)
-		//
-		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
-		//
-		if(Math.sqrt(Math.abs(player.getX() - dragon.getX()) + Math.abs(player.getY() - dragon.getY())) <= 1) return true;
-//		// Security purposes. Shouldn't happen. 
-//		else if(player.getX() == dragon.getX() && player.getY() == dragon.getY()) return true;
-		return false;
-		
+
+	/**
+	 * @param exit the exit to set
+	 */
+	public void setExit(Element exit) {
+		this.exit = exit;
 	}
 	
 	// Checks if the player's current tile is the exit tile
@@ -468,9 +452,4 @@ public class Maze {
 		return false;
 	}
 
-	private boolean isValidMoveChar(int x, int y, char comp) {
-		if((tiles[x][y] == ' ') || (tiles[x][y] == 'A') || (tiles[x][y] == 'H') || (tiles[x][y] == 'E'))
-			return true;
-		return false;
-	}
 }

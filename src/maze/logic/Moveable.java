@@ -1,3 +1,4 @@
+package maze.logic;
 
 public class Moveable extends Element {
 	
@@ -77,4 +78,29 @@ public class Moveable extends Element {
 		setOldY(y);
 		setY(y + 1);
 	}
+	
+	/**
+	 * 
+	 */
+	public void moveBack() {
+		this.x = oldX;
+		this.y = oldY;
+	}
+	
+	/**
+	 * 
+	 */
+	public void kill() {
+		this.alive = false;
+		this.symbol = ' ';
+	}
+	
+	public boolean isAtExit(Element exit) {
+		
+		if((exit.getX() == x) && (exit.getY() == y)) {
+			return true;
+		}
+		return false;
+	}
+
 }

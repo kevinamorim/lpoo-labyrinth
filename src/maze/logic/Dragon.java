@@ -1,5 +1,6 @@
-import java.util.Random;
+package maze.logic;
 
+import java.util.Random;
 
 public class Dragon extends Moveable {
 	
@@ -11,7 +12,6 @@ public class Dragon extends Moveable {
 	public Dragon(Maze lab) {
 		
 		super(lab, 'D');
-		this.alive = true;
 		this.hasSword = false;
 	}
 	
@@ -35,9 +35,9 @@ public class Dragon extends Moveable {
 	
 	/**
 	 * Moves the dragon randomly one position.
-	 * @param lab Actual labyrinth.
+	 * @param maze Actual labyrinth.
 	 */
-	public void MoveDragon(Maze lab) {
+	public void move(Maze maze) {
 		Random r = new Random();
 		
 		boolean valid = false;
@@ -79,7 +79,7 @@ public class Dragon extends Moveable {
 				break;
 			}
 
-			if(lab.isValidMove(x, y, false)) {
+			if(maze.isValidMove(x, y)) {
 				valid = true;
 			}
 			else {
@@ -90,5 +90,5 @@ public class Dragon extends Moveable {
 		}while(!valid);
 		
 	}
-	
+
 }
