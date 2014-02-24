@@ -1,27 +1,18 @@
 import java.util.Random;
 
 
-public class Dragon extends Element {
+public class Dragon extends Moveable {
 	
-	private boolean alive, hasSword;
+	private boolean hasSword;
 
-	// Constructor for a Dragon type object
+	/**
+	 * @param lab
+	 */
 	public Dragon(Maze lab) {
+		
 		super(lab, 'D');
-		this.setAlive(true);
-		this.setHasSword(false);
-		this.setOldX(getX());
-		this.setOldY(getY());
-	}
-
-	// Checks whether the dragon is or not alive
-	public boolean isAlive() {
-		return alive;
-	}
-
-	// Sets the 'alive' parameter of the dragon (boolean, self-explanatory)
-	public void setAlive(boolean alive) {
-		this.alive = alive;
+		this.alive = true;
+		this.hasSword = false;
 	}
 	
 	/**
@@ -60,34 +51,34 @@ public class Dragon extends Element {
 		 */
 		int direction = 0; // With default values, to avoid compilation errors.
 		
-		this.setOldX(x);
-		this.setOldY(y);
-		
+		this.oldX = x;
+		this.oldY = y;
+
 		do {
-			
+
 			direction = r.nextInt(4); 
 
 			switch(direction) {
 			case 0: 
-				// Move Up
-					this.setX(x - 1);
+				// UP
+				this.x = x - 1;
 				break;
 			case 1:
-				// Move Right
-					this.setY(y + 1);
+				// RIGHT
+				this.y = y + 1;
 				break;
 			case 2: 
-				// Move Down
-					this.setX(x + 1);
+				// DOWN
+				this.x = x + 1;
 				break;
 			case 3:
-				// Move Left
-					this.setY(y - 1);
+				// LEFT
+				this.y = y - 1;
 				break;
 			default:
 				break;
 			}
-			
+
 			if(lab.isValidMove(x, y, false)) {
 				valid = true;
 			}

@@ -6,6 +6,33 @@ public class Element {
 	protected int x;
 	protected int y;
 	protected int oldX;
+	protected int oldY;
+	protected char symbol;
+	
+	/**
+	 * @param x
+	 * @param y
+	 * @param symbol
+	 */
+	public Element(int x, int y, char symbol) {
+		this.x = x;
+		this.y = y;
+		this.oldX = x;
+		this.oldY = y;
+		this.symbol = symbol;
+	}
+	
+	/**
+	 * @param lab
+	 * @param symbol
+	 */
+	public Element(Maze lab, char symbol) {
+		
+		GeneratePos(lab);
+		this.oldX = x;
+		this.oldY = y;
+		this.symbol = symbol;
+	}
 	
 	/**
 	 * @return the oldX
@@ -33,24 +60,6 @@ public class Element {
 	 */
 	public void setOldY(int oldY) {
 		this.oldY = oldY;
-	}
-
-
-	protected int oldY;
-	protected char symbol;
-	
-
-	public Element(int x, int y, char symbol) {
-		this.x = x;
-		this.y = y;
-		this.symbol = symbol;
-	}
-	
-	public Element(Maze lab, char symbol) {
-		
-		GeneratePos(lab);
-		this.symbol = symbol;
-		
 	}
 
 	/**

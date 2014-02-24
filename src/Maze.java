@@ -17,11 +17,14 @@ public class Maze {
 	public Maze(int size) {
 		
 		this.size = size;
-		exit = new Element(0, 0, 'S');
+		
 		tiles = new char[size][size];
 		
 		SetChamber();
 		DrawGrid();
+		
+		exit = new Element(this, 'S');
+		
 		GenerateExit();
 		GenerateWalls();
 		
