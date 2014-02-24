@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Stack;
 
@@ -10,7 +9,7 @@ public class Labyrinth {
 
 	private int size;
 
-	private int exit[];
+	private Tile exit;
 
 	/**
 	 * Labyrinth constructor.
@@ -19,7 +18,7 @@ public class Labyrinth {
 	public Labyrinth(int size) {
 		
 		this.size = size;
-		exit = new int[2];
+		exit = new Tile(0, 0, 'S');
 		tiles = new char[size][size];
 		
 		SetChamber();
@@ -48,7 +47,7 @@ public class Labyrinth {
 		
 		for(int i = 0; i < size; i++) {
 			for(int j = 0; j < size; j++) {
-				if(i == exit[0] && j == exit[1]) {
+				if(i == exit.getX() && j == exit.getY()) {
 					System.out.print(" " + 'S' + " ");
 				} else {
 					System.out.print(" " + tiles[i][j] + " ");
@@ -86,25 +85,25 @@ public class Labyrinth {
 			
 			switch(side) {
 			case 0: 
-				exit[0] = 0;
+				exit.setX(0);
 				// Can't be at (0, 0) nor (0, N).
-				exit[1] = r.nextInt(size - 2) + 1;
-				if(tiles[exit[0] + 1][exit[1]] != 'x') done = true;
+				exit.setY(r.nextInt(size - 2) + 1);
+				if(tiles[exit.getX() + 1][exit.getY()] != 'x') done = true;
 				break;
 			case 1:
-				exit[0] = r.nextInt(size - 2) + 1;
-				exit[1] = size - 1;
-				if(tiles[exit[0]][exit[1] - 1] != 'x') done = true;
+				exit.setX(r.nextInt(size - 2) + 1);
+				exit.setY(size - 1);
+				if(tiles[exit.getX()][exit.getY() - 1] != 'x') done = true;
 				break;
 			case 2: 
-				exit[0] = size - 1;
-				exit[1] = r.nextInt(size - 2) + 1;
-				if(tiles[exit[0] - 1][exit[1]] != 'x') done = true;
+				exit.setX(size - 1);
+				exit.setY(r.nextInt(size - 2) + 1);
+				if(tiles[exit.getX() - 1][exit.getY()] != 'x') done = true;
 				break;
 			case 3:
-				exit[0] = r.nextInt(size - 2) + 1;
-				exit[1] = 0;
-				if(tiles[exit[0]][exit[1] + 1] != 'x') done = true;
+				exit.setX(r.nextInt(size - 2) + 1);
+				exit.setY(0);
+				if(tiles[exit.getX()][exit.getY() + 1] != 'x') done = true;
 				break;
 			}
 			
@@ -223,7 +222,7 @@ public class Labyrinth {
 		int current[] = new int[2];
 
 		// -- BEGIN Make the initial cell the adjacent to the exit. 
-		current[0] = exit[0]; current[1] = exit[1];
+		current[0] = exit.getX(); current[1] = exit.getY();
 		if(current[0] == 0) current[0]++;
 		else if(current[0] == (size - 1)) current[0]--;
 		else if(current[1] == 0) current[1]++;
@@ -436,7 +435,7 @@ public class Labyrinth {
 		}
 		// If the tile is the exit, the player should be alowed to win only if armed
 		// (the "dragon is dead" premise is not computed here)
-		else if ((isArmedPlayer) && (x == exit[0]) && (y == exit[1]))
+		else if ((isArmedPlayer) && (x == exit.getX()) && (y == exit.getY()))
 			return true;
 		return false;
 		
@@ -468,7 +467,7 @@ public class Labyrinth {
 	// Checks if the player's current tile is the exit tile
 	public boolean isAtExit(Hero player) {
 		// The exit tile is identifiend with the char 'S'
-		if(player.getX() == exit[0] && player.getY()== exit[1]) return true;
+		if(player.getX() == exit.getX() && player.getY()== exit.getY()) return true;
 		return false;
 	}
 
