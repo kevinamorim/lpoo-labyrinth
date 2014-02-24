@@ -444,12 +444,5 @@ public class Maze {
 	public void setExit(Element exit) {
 		this.exit = exit;
 	}
-	
-	// Checks if the player's current tile is the exit tile
-	public boolean isAtExit(Hero player) {
-		// The exit tile is identifiend with the char 'S'
-		if(player.getX() == exit.getX() && player.getY()== exit.getY()) return true;
-		return false;
-	}
 
 }
