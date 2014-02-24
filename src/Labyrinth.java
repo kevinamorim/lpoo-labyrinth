@@ -423,11 +423,11 @@ public class Labyrinth {
 	// erasing its symbol from the labyrinth  
 	public void killDragon(Dragon dragon) {
 		dragon.setAlive(false);
+		dragon.setSymbol(' ');
 		tiles[dragon.getX()][dragon.getY()] = ' ';
 	}
 	
 	// Checks whether the tile that the object is trying to move to is valid or not (eg: walls are not valid)
-	// TODO: We should receive an object (hero, dragon) and a direction, and then check if its a valid move.
 	public boolean isValidMove(int x, int y, boolean isArmedPlayer) {
 		
 		// If the tile is a wall, dragon or player, it cannot move to that location

@@ -50,12 +50,7 @@ public class Game {
 			// Checks if the player is at the Labyrinth exit
 			if(lab.isAtExit(player)) {
 				// If the dragon is slained our hero may sucessfully exit the Labyrinth 
-				if(!dragon.isAlive()) {
-					System.out.println("Done");
-					break;
-				}
-				else
-					player.moveBack(lab);
+				if(!dragon.isAlive()) break;
 			}
 
 			// Checks if the player has found the sword
