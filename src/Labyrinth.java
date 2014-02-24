@@ -26,7 +26,6 @@ public class Labyrinth {
 		DrawGrid();
 		GenerateExit();
 		GenerateWalls();
-		DrawBoard();
 		
 	}
 	
@@ -427,22 +426,18 @@ public class Labyrinth {
 		tiles[dragon.getX()][dragon.getY()] = ' ';
 	}
 	
-	// Checks whether the tile that the player is trying to move to is valid or not (eg: walls are not valid)
+	// Checks whether the tile that the object is trying to move to is valid or not (eg: walls are not valid)
 	// TODO: We should receive an object (hero, dragon) and a direction, and then check if its a valid move.
-	public boolean isValidMove(int x, int y, boolean playerIsArmed) {
+	public boolean isValidMove(int x, int y, boolean isArmedPlayer) {
 		
-		// If the tile is a wall or a dragon the player cannot move to that location
-		if((tiles[x][y] == ' ') || (tiles[x][y] == 'E')) {
+		// If the tile is a wall, dragon or player, it cannot move to that location
+		if(isValidMoveChar(x,y,tiles[x][y])) {
 			return true;
 		}
 		// If the tile is the exit, the player should be alowed to win only if armed
 		// (the "dragon is dead" premise is not computed here)
-		else if (x == exit[0] && y == exit[1]) {
-			if (playerIsArmed)
-				return true;
-			else
-				return false;
-		}
+		else if ((isArmedPlayer) && (x == exit[0]) && (y == exit[1]))
+			return true;
 		return false;
 		
 	}
@@ -463,9 +458,9 @@ public class Labyrinth {
 		//
 		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
 		//
-		if(Math.sqrt(Math.abs(player.getX() - dragon.getX()) + Math.abs(player.getY() - dragon.getY())) == 1) return true;
-		// Security purposes. Shouldn't happen. 
-		else if(player.getX() == dragon.getX() && player.getY() == dragon.getY()) return true;
+		if(Math.sqrt(Math.abs(player.getX() - dragon.getX()) + Math.abs(player.getY() - dragon.getY())) <= 1) return true;
+//		// Security purposes. Shouldn't happen. 
+//		else if(player.getX() == dragon.getX() && player.getY() == dragon.getY()) return true;
 		return false;
 		
 	}
@@ -477,4 +472,9 @@ public class Labyrinth {
 		return false;
 	}
 
+	private boolean isValidMoveChar(int x, int y, char comp) {
+		if((tiles[x][y] == ' ') || (tiles[x][y] == 'A') || (tiles[x][y] == 'H') || (tiles[x][y] == 'E'))
+			return true;
+		return false;
+	}
 }

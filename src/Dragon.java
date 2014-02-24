@@ -80,8 +80,6 @@ public class Dragon extends Tile {
 	public void MoveDragon(Labyrinth lab) {
 		Random r = new Random();
 		
-		boolean valid = false;
-		
 		/*
 		 * Direction:
 		 * 		0 - Up
@@ -89,47 +87,41 @@ public class Dragon extends Tile {
 		 * 		2 - Down
 		 * 		3 - Left
 		 */
-		int direction = 0, newX = 0, newY = 0; // With default values, to avoid compilation errors.
-		
-		do {
-			
-			direction = r.nextInt(4); 
+		int direction = 0; // With default values, to avoid compilation errors.
 
-			switch(direction) {
-			case 0: 
-				// Move Up
-				newX = getX() - 1;
-				newY = getY();
-				break;
-			case 1:
-				// Move Right
-				newX = getX();
-				newY = getY() + 1;
-				break;
-			case 2: 
-				// Move Down
-				newX = getX() + 1;
-				newY = getY();
-				break;
-			case 3:
-				// Move Left
-				newX = getX();
-				newY = getY() - 1;
-				break;
-			default:
-				break;
-			}
-			
-			if(lab.isValidMove(newX, newY, false)) valid = true;
-			
-		} while (!valid);
+		direction = r.nextInt(4); 
 		
-		oldX = getX();
-		oldY = getY();
-		setX(newX);
-		setY(newY);
+		this.setOldX(x);
+		this.setOldY(y);
+
+		switch(direction) {
+		case 0: 
+			// Move Up
+			if(lab.isValidMove(x - 1, y, false)) {
+				this.setX(x - 1);
+			}
+			break;
+		case 1:
+			// Move Right
+			if(lab.isValidMove(x, y + 1, false)) {
+				this.setY(y + 1);
+			}
+			break;
+		case 2: 
+			// Move Down
+			if(lab.isValidMove(x + 1, y, false)) {
+				this.setX(x + 1);
+			}
+			break;
+		case 3:
+			// Move Left
+			if(lab.isValidMove(x, y - 1, false)) {
+				this.setY(y - 1);
+			}
+			break;
+		default:
+			break;
+		}
 		
 	}
-
-
 }

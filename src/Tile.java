@@ -3,9 +3,9 @@ import java.util.Random;
 
 public class Tile {
 	
-	private int x;
-	private int y;
-	private char symbol;
+	protected int x;
+	protected int y;
+	protected char symbol;
 	
 
 	public Tile(int x, int y, char symbol) {

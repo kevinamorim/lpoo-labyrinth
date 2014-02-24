@@ -77,12 +77,36 @@ public class Hero extends Tile {
 		this.armed = armed;
 	}
 	
+	/**
+	 * 
+	 * @param direction
+	 * @param lab
+	 */
+	public void move(Input.KEY direction, Labyrinth lab) {
+		switch(direction) {
+		case UP:
+			moveUp(lab);
+			break;
+		case RIGHT:
+			moveRight(lab);
+			break;
+		case DOWN:
+			moveDown(lab);
+			break;
+		case LEFT:
+			moveLeft(lab);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	// Increments the hero's X coordinate (if such move is valid)
 	//
 	// Note: X coordinates represent the line number in the labyrinth matrix 
 	// 		 (instead of the column, as it would be in a cartesian axis - vice-versa for Y coordinates)
 	//
-	public void MoveDown(Labyrinth lab) {
+	public void moveDown(Labyrinth lab) {
 		
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX() + 1, getY(), this.armed)) {
@@ -93,7 +117,7 @@ public class Hero extends Tile {
 	}
 
 	// Decrements the hero's X coordinate (if such move is valid)
-	public void MoveUp(Labyrinth lab) {
+	public void moveUp(Labyrinth lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX() - 1, getY(), this.armed)) {
@@ -108,7 +132,7 @@ public class Hero extends Tile {
 	// Note: Y coordinates represent the column number in the labyrinth matrix 
 	// 		 (instead of the line, as it would be in a cartesian axis - vice-versa for X coordinates)
 	//
-	public void MoveLeft(Labyrinth lab) {
+	public void moveLeft(Labyrinth lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX(), getY() - 1, this.armed)) {
@@ -119,7 +143,7 @@ public class Hero extends Tile {
 	}
 
 	// Increments the hero's Y coordinate (if such move is valid)
-	public void MoveRight(Labyrinth lab) {
+	public void moveRight(Labyrinth lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX(), getY() + 1, this.armed)) {
@@ -130,7 +154,7 @@ public class Hero extends Tile {
 	}
 
 	// Returns the player to it's former position before any move
-	public void MoveBack(Labyrinth lab) {
+	public void moveBack(Labyrinth lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(oldX, oldY, this.armed)) {
