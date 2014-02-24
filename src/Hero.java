@@ -1,7 +1,5 @@
 
-public class Hero extends Tile {
-	
-	private int oldX, oldY;
+public class Hero extends Element {
 
 	private boolean armed;
 	private boolean alive;
@@ -9,40 +7,12 @@ public class Hero extends Tile {
 	/**
 	 * @param lab Actual labyrinth
 	 */
-	public Hero(Labyrinth lab) {
+	public Hero(Maze lab) {
 		super(lab, 'H');
 		this.setOldX(getX());
 		this.setOldY(getY());
 		this.setArmed(false);
 		this.setAlive(true);
-	}
-
-	/**
-	 * @return The last x position.
-	 */
-	public int getOldX() {
-		return oldX;
-	}
-
-	/**
-	 * @param oldX The last x position.
-	 */
-	public void setOldX(int oldX) {
-		this.oldX = oldX;
-	}
-
-	/**
-	 * @return The last y position.
-	 */
-	public int getOldY() {
-		return oldY;
-	}
-
-	/**
-	 * @param oldY The last y position.
-	 */
-	public void setOldY(int oldY) {
-		this.oldY = oldY;
 	}
 
 	/**
@@ -82,7 +52,7 @@ public class Hero extends Tile {
 	 * @param direction
 	 * @param lab
 	 */
-	public void move(Input.KEY direction, Labyrinth lab) {
+	public void move(Input.KEY direction, Maze lab) {
 		switch(direction) {
 		case UP:
 			moveUp(lab);
@@ -106,7 +76,7 @@ public class Hero extends Tile {
 	// Note: X coordinates represent the line number in the labyrinth matrix 
 	// 		 (instead of the column, as it would be in a cartesian axis - vice-versa for Y coordinates)
 	//
-	public void moveDown(Labyrinth lab) {
+	public void moveDown(Maze lab) {
 		
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX() + 1, getY(), this.armed)) {
@@ -117,7 +87,7 @@ public class Hero extends Tile {
 	}
 
 	// Decrements the hero's X coordinate (if such move is valid)
-	public void moveUp(Labyrinth lab) {
+	public void moveUp(Maze lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX() - 1, getY(), this.armed)) {
@@ -132,7 +102,7 @@ public class Hero extends Tile {
 	// Note: Y coordinates represent the column number in the labyrinth matrix 
 	// 		 (instead of the line, as it would be in a cartesian axis - vice-versa for X coordinates)
 	//
-	public void moveLeft(Labyrinth lab) {
+	public void moveLeft(Maze lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX(), getY() - 1, this.armed)) {
@@ -143,7 +113,7 @@ public class Hero extends Tile {
 	}
 
 	// Increments the hero's Y coordinate (if such move is valid)
-	public void moveRight(Labyrinth lab) {
+	public void moveRight(Maze lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(getX(), getY() + 1, this.armed)) {
@@ -154,7 +124,7 @@ public class Hero extends Tile {
 	}
 
 	// Returns the player to it's former position before any move
-	public void moveBack(Labyrinth lab) {
+	public void moveBack(Maze lab) {
 
 		// Checks if the desired move is valid
 		if(lab.isValidMove(oldX, oldY, this.armed)) {

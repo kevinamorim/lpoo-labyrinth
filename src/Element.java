@@ -1,20 +1,52 @@
 import java.util.Random;
 
 
-public class Tile {
+public class Element {
 	
 	protected int x;
 	protected int y;
+	protected int oldX;
+	
+	/**
+	 * @return the oldX
+	 */
+	public int getOldX() {
+		return oldX;
+	}
+
+	/**
+	 * @param oldX the oldX to set
+	 */
+	public void setOldX(int oldX) {
+		this.oldX = oldX;
+	}
+
+	/**
+	 * @return the oldY
+	 */
+	public int getOldY() {
+		return oldY;
+	}
+
+	/**
+	 * @param oldY the oldY to set
+	 */
+	public void setOldY(int oldY) {
+		this.oldY = oldY;
+	}
+
+
+	protected int oldY;
 	protected char symbol;
 	
 
-	public Tile(int x, int y, char symbol) {
+	public Element(int x, int y, char symbol) {
 		this.x = x;
 		this.y = y;
 		this.symbol = symbol;
 	}
 	
-	public Tile(Labyrinth lab, char symbol) {
+	public Element(Maze lab, char symbol) {
 		
 		GeneratePos(lab);
 		this.symbol = symbol;
@@ -69,7 +101,7 @@ public class Tile {
 	 * Generates a random valid position for the tile. 
 	 * @param lab Labyrinth object 
 	 */
-	public void GeneratePos(Labyrinth lab) {
+	public void GeneratePos(Maze lab) {
 		Random r = new Random();
 		
 		int MAX = lab.getSize();

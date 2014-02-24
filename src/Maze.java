@@ -1,24 +1,23 @@
 import java.util.Random;
 import java.util.Stack;
 
-
-public class Labyrinth {
+public class Maze {
 	
 	// Char matrix representing the labyrinth 
 	private char tiles[][];
 
 	private int size;
 
-	private Tile exit;
+	private Element exit;
 
 	/**
 	 * Labyrinth constructor.
 	 * @param size Size of the generated labyrinth. The labyrinth is always square, so the final size will be (size x size).
 	 */
-	public Labyrinth(int size) {
+	public Maze(int size) {
 		
 		this.size = size;
-		exit = new Tile(0, 0, 'S');
+		exit = new Element(0, 0, 'S');
 		tiles = new char[size][size];
 		
 		SetChamber();
@@ -391,31 +390,12 @@ public class Labyrinth {
 	
 	// -- END Maze generation
 	
-	
-	// Sets the player's position tile with its representing char: 'H' or 'A' (if armed with the sword)
-	// Also erases char from the player's last position
-	public void setPlayer(Hero player) {
-		tiles[player.getOldX()][player.getOldY()] = ' ';
-		tiles[player.getX()][player.getY()] = player.getSymbol();
-	}
-	
-	// Sets the dragon position tile with its representing char: 'D'
-	public void setDragon(Dragon dragon) {
-		tiles[dragon.getOldX()][dragon.getOldY()] = ' ';
-		
-		// If new dragon position is the actual sword position.
-		if(tiles[dragon.getX()][dragon.getY()] == 'E') {
-			dragon.setHasSword(true);
-		}
-		else if(dragon.hasSword()) {
-			dragon.setHasSword(false);
-		}
-		
-		tiles[dragon.getX()][dragon.getY()] = dragon.getSymbol();
-	}
-	
-	public void setSword(Tile sword) {
-		tiles[sword.getX()][sword.getY()] = sword.getSymbol();
+	/**
+	 * @param elem
+	 */
+	public void setPosition(Element elem) {
+		tiles[elem.getOldX()][elem.getOldY()] = ' ';
+		tiles[elem.getX()][elem.getY()] = elem.getSymbol();
 	}
 	
 	// "Kills" the dragon, effectively setting its 'alive' parameter to false and

@@ -1,48 +1,17 @@
 import java.util.Random;
 
 
-public class Dragon extends Tile {
+public class Dragon extends Element {
 	
 	private boolean alive, hasSword;
 
-	private int oldX, oldY;
-
 	// Constructor for a Dragon type object
-	public Dragon(Labyrinth lab) {
+	public Dragon(Maze lab) {
 		super(lab, 'D');
 		this.setAlive(true);
 		this.setHasSword(false);
 		this.setOldX(getX());
 		this.setOldY(getY());
-	}
-	
-	/**
-	 * @return the oldX
-	 */
-	public int getOldX() {
-		return oldX;
-	}
-
-	/**
-	 * @param oldX the oldX to set
-	 */
-	public void setOldX(int oldX) {
-		this.oldX = oldX;
-	}
-	
-
-	/**
-	 * @return the oldY
-	 */
-	public int getOldY() {
-		return oldY;
-	}
-
-	/**
-	 * @param oldY the oldY to set
-	 */
-	public void setOldY(int oldY) {
-		this.oldY = oldY;
 	}
 
 	// Checks whether the dragon is or not alive
@@ -77,7 +46,7 @@ public class Dragon extends Tile {
 	 * Moves the dragon randomly one position.
 	 * @param lab Actual labyrinth.
 	 */
-	public void MoveDragon(Labyrinth lab) {
+	public void MoveDragon(Maze lab) {
 		Random r = new Random();
 		
 		boolean valid = false;
