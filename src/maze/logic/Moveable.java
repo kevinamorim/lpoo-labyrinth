@@ -95,6 +95,10 @@ public class Moveable extends Element {
 		this.symbol = ' ';
 	}
 	
+	/**
+	 * @param exit
+	 * @return
+	 */
 	public boolean isAtExit(Element exit) {
 		
 		if((exit.getX() == x) && (exit.getY() == y)) {
@@ -103,4 +107,15 @@ public class Moveable extends Element {
 		return false;
 	}
 
+	/**
+	 * @param sword
+	 * @return
+	 */
+	public boolean foundSword(Element sword) {
+		if((x == sword.getX()) && (y == sword.getY())) {
+			return true;
+		}
+		return false;
+	}
+	
 }

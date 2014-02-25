@@ -68,17 +68,6 @@ public class Hero extends Moveable {
 	}
 	
 	/**
-	 * @param player
-	 * @return
-	 */
-	public boolean foundSword(Element sword) {
-		if((x == sword.getX()) && (y == sword.getY())) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * 
 	 */
 	public void arm() {

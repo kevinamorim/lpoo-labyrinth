@@ -67,11 +67,19 @@ public class GameLogic {
 			if(dragon.isAlive()) {
 				
 				dragon.move(maze);
-				maze.setPosition(dragon);
+				
+				if(dragon.foundSword(sword)) {
+					dragon.setHasSword(true);
+				}
+				else {
+					dragon.setHasSword(false);
+				}
 				
 				if(dragon.isAtExit(maze.getExit())) {
 					dragon.moveBack();
 				}
+				
+				maze.setPosition(dragon);
 			}
 
 			if(hero.foundDragon(dragon) && dragon.isAlive()) {
