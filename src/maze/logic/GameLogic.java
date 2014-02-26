@@ -5,14 +5,21 @@ import maze.cli.*;
 
 public class GameLogic {
 	
-	private static Maze maze;
-	private static Hero hero;
-	private static Dragon dragon;
-	private static Element sword; 
+	private Maze maze;
+	private Hero hero;
+	private Dragon dragon;
+	private Element sword;
 	
-	public static enum KEY {NONE,UP,RIGHT,DOWN,LEFT};
+	private Task[] tasks;
+	private int TASKNUM = 3;
+
+	private Input in;
+	private Output out;
 	
-	public static void init() {
+	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT};
+	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
+	
+	public void init() {
 		
 		// Creates the Labyrinth
 		maze = new Maze(9);
@@ -34,17 +41,53 @@ public class GameLogic {
 
 		// Sets the dragon's position on the labyrinth (effectively places it's reresenting char)
 		maze.setPosition(dragon);
-
-		// Draws the Labyrinth matrix/board
-		maze.DrawBoard();
+		
+		// Creates our Input
+		in = new Input();
+		
+		// Creates our Output
+		out = new Output();
+		
+		tasks = new Task[TASKNUM];
+		
+		createTasks();
+		
 	}
 
-	public static void loop() {
+	private void createTasks() {
+		
+		tasks[0] = new Task("Get a weapon.");
+		tasks[1] = new Task("Kill all dragons.");
+		tasks[2] = new Task("Find the exit.");
+	}
+	
 
-		while(true) {
+	private void checkTasks() {
+		if(hero.isArmed()) {
+			tasks[0].setDone(true);
+		}
+		
+		if(!dragon.isAlive()) {
+			tasks[1].setDone(true);
+		}
+		
+//		if(hero.isAtExit(maze.getExit()) && !dragon.isAlive()) {
+//			tasks[2].setDone(true);
+//		}
+	}
+
+	public void loop() {
+	
+		out.drawGoal(tasks);
+		out.drawBoard(maze);
+		out.drawCommands();
+
+		while(hero.isAlive()) {
+			
+			out.drawMsg(MSG.GET_KEY.ordinal());
 			
 			// Receives input
-			KEY command = KEY.values()[Input.get()];
+			KEY command = KEY.values()[in.get()];
 
 			hero.move(command, maze);
 
@@ -58,9 +101,9 @@ public class GameLogic {
 				}
 			}
 
-			if(hero.foundSword(sword)) {
+			if(!hero.isArmed() && hero.foundSword(sword)) {
 				
-				System.out.println("Found sword!");
+				out.drawMsg(MSG.FOUND_SWORD.ordinal());
 				hero.arm();
 			}
 			
@@ -78,21 +121,18 @@ public class GameLogic {
 				if(dragon.isAtExit(maze.getExit())) {
 					dragon.moveBack();
 				}
-				
-				maze.setPosition(dragon);
 			}
 
 			if(hero.foundDragon(dragon) && dragon.isAlive()) {
 				
 				if(hero.isArmed()) {
 					
-					System.out.println("You killed that f***ing dragon!");
+					out.drawMsg(MSG.KILLED_DRAGON.ordinal());
 					dragon.kill();
 				}
 				// If the player is unarmed, it gets killed
 				else {
 					hero.kill();
-					break;
 				}
 			}
 
@@ -102,28 +142,34 @@ public class GameLogic {
 				maze.setPosition(sword);
 			}
 
+			maze.setPosition(dragon);
 			maze.setPosition(hero);
 
-			maze.DrawBoard();
+			if(!hero.isAlive()) {
+				maze.setPosition(dragon);
+			}
+			
+			checkTasks();
 
+			out.drawGoal(tasks);
+			out.drawBoard(maze);
+			out.drawCommands();
+			
 		}
 		
-		printGameOver();
-		
-	}
-	
-	public static void printGameOver() {
-		if(hero.isAlive()) {
-			System.out.println(" WIN ");
+		boolean won = hero.isAlive();
+		if(won) {
 			maze.setPosition(dragon);
 			maze.setPosition(hero);
 		}
 		else {
-			System.out.println(" LOSE ");
 			maze.setPosition(hero);
 			maze.setPosition(dragon);
 		}
 		
-		maze.DrawBoard();
+		out.drawBoard(maze);
+		out.drawGameOver(won);
+		
 	}
+	
 }

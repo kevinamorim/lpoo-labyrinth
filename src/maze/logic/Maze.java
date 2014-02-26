@@ -59,23 +59,7 @@ public class Maze {
 	public char[][] getTiles() {
 		return tiles;
 	}
-	
-	// Prints the labyrinth tiles (represented by a matrix)
-	public void DrawBoard() {
-		
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < size; j++) {
-				if(i == exit.getX() && j == exit.getY()) {
-					System.out.print(" " + 'S' + " ");
-				} else {
-					System.out.print(" " + tiles[i][j] + " ");
-				}
-			}
-			System.out.println();
-		}
-		
-	}
-	
+
 	// -- BEGIN Maze generation
 	
 	/**

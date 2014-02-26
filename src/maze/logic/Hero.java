@@ -74,5 +74,17 @@ public class Hero extends Moveable {
 		this.armed = true;
 		this.symbol = 'A';
 	}
+
+	/* (non-Javadoc)
+	 * @see maze.logic.Moveable#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s += "\n    armed: " + this.armed;
+		return s;
+	}
+	
+	
 	
 }

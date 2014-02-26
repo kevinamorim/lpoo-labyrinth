@@ -130,4 +130,18 @@ public class Element {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String s;
+		s = "[" + this.symbol + "]";
+		s += " (" + this.x;
+		s += ", " + this.y + ")";
+		return s;
+	}
+	
+	
+
 }

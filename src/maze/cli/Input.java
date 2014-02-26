@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 public class Input {
 
-	private static Scanner scan = new Scanner(System.in);
+	private Scanner scan = new Scanner(System.in);
 
 	/**
 	 * Gets user input and sets map accordingly.
 	 */
-	public static int get() {
+	public int get() {
 		
 		String s = scan.nextLine();
 		
@@ -19,7 +19,7 @@ public class Input {
 	/**
 	 * @return the keyPressed
 	 */
-	public static int getKeyPressed(String s) {
+	public int getKeyPressed(String s) {
 		
 		if(s.length() > 0) {
 			

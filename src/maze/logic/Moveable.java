@@ -117,5 +117,17 @@ public class Moveable extends Element {
 		}
 		return false;
 	}
+
+	/* (non-Javadoc)
+	 * @see maze.logic.Element#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s += "\n    alive: " + this.alive;
+		return s;
+	}
+	
+	
 	
 }
