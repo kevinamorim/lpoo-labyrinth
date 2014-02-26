@@ -24,12 +24,12 @@ public class Element {
 	}
 	
 	/**
-	 * @param lab
+	 * @param maze
 	 * @param symbol
 	 */
-	public Element(Maze lab, char symbol) {
+	public Element(Maze maze, char symbol) {
 		
-		GeneratePos(lab);
+		GeneratePos(maze);
 		this.oldX = x;
 		this.oldY = y;
 		this.symbol = symbol;
@@ -105,7 +105,6 @@ public class Element {
 		this.symbol = symbol;
 	}
 
-	
 	/**
 	 * 
 	 * Generates a random valid position for the tile. 

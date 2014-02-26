@@ -11,11 +11,11 @@ public class Dragon extends Moveable {
 	private int maxRounds = 2;
 
 	/**
-	 * @param lab
+	 * @param maze
 	 */
-	public Dragon(Maze lab) {
+	public Dragon(Maze maze) {
 		
-		super(lab, 'D');
+		super(maze, 'D');
 		this.hasSword = false;
 		this.awake = true;
 		this.setRoundsToWake(0);
@@ -46,8 +46,6 @@ public class Dragon extends Moveable {
 	public void move(Maze maze) {
 		Random r = new Random();
 		
-		boolean valid = false;
-		
 		/*
 		 * Direction:
 		 * 		0 - Up
@@ -60,41 +58,34 @@ public class Dragon extends Moveable {
 		this.oldX = x;
 		this.oldY = y;
 
-		do {
+		direction = r.nextInt(4); 
 
-			direction = r.nextInt(4); 
+		switch(direction) {
+		case 0: 
+			// UP
+			this.x = x - 1;
+			break;
+		case 1:
+			// RIGHT
+			this.y = y + 1;
+			break;
+		case 2: 
+			// DOWN
+			this.x = x + 1;
+			break;
+		case 3:
+			// LEFT
+			this.y = y - 1;
+			break;
+		default:
+			break;
+		}
 
-			switch(direction) {
-			case 0: 
-				// UP
-				this.x = x - 1;
-				break;
-			case 1:
-				// RIGHT
-				this.y = y + 1;
-				break;
-			case 2: 
-				// DOWN
-				this.x = x + 1;
-				break;
-			case 3:
-				// LEFT
-				this.y = y - 1;
-				break;
-			default:
-				break;
-			}
+		if(!isValidMove(x, y, maze)) {
+			this.setX(oldX);
+			this.setY(oldY);
+		}
 
-			if(isValidMove(x, y, maze)) {
-				valid = true;
-			}
-			else {
-				this.setX(oldX);
-				this.setY(oldY);
-			}
-		
-		}while(!valid);
-		
 	}
 
 	/**

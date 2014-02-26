@@ -49,10 +49,14 @@ public class Output {
 	
 	public void drawGameOver(boolean won) {
 		if(won) {
-			System.out.println(" WIN ");		
+			System.out.println("+-------------------------+");
+			System.out.println("+---------- WIN ----------+");	
+			System.out.println("+-------------------------+");	
 		}
 		else {
-			System.out.println(" LOSE ");
+			System.out.println("+-------------------------+");
+			System.out.println("+--------- LOSE ----------+");	
+			System.out.println("+-------------------------+");	
 		}
 	}
 	
@@ -63,7 +67,7 @@ public class Output {
 			break;
 			
 		case 1:
-			System.out.println("You just killed a fucking dragon!! Go tell your father...");
+			System.out.println("You just slained a fucking dragon!! Go tell your father...");
 			break;
 			
 		case 2:
@@ -73,6 +77,10 @@ public class Output {
 		default:
 			break;
 		}
+	}
+	
+	public void debugPrint(String msg) {
+		System.out.println(msg);
 	}
 	
 }

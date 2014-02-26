@@ -90,7 +90,7 @@ public class Moveable extends Element {
 	/**
 	 * 
 	 */
-	public void kill() {
+	public void die() {
 		this.alive = false;
 		this.symbol = ' ';
 	}

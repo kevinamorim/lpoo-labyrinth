@@ -389,17 +389,32 @@ public class Maze {
 		
 		return result;
 	}
-	
+
 	// -- END Maze generation
+
+	/**
+	 * @param elem
+	 */
+	public void drawElement(Element[] element) {
+		
+		for(Element elem: element) {
+			
+			tiles[elem.getOldX()][elem.getOldY()] = ' ';
+			
+			tiles[elem.getX()][elem.getY()] = elem.getSymbol();
+		}
+	}
 	
 	/**
 	 * @param elem
 	 */
-	public void setPosition(Element elem) {
+	public void drawElement(Element elem) {
+		
 		tiles[elem.getOldX()][elem.getOldY()] = ' ';
+			
 		tiles[elem.getX()][elem.getY()] = elem.getSymbol();
 	}
-	
+
 	/**
 	 * @return the exit
 	 */
