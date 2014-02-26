@@ -147,5 +147,11 @@ public class Element {
 			return true;
 		return false;
 	}
+	
+	public boolean isAt(int x, int y) {
+		if(this.getX() == x && this.getY() == y)
+			return true;
+		return false;
+	}
 
 }

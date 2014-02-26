@@ -22,7 +22,7 @@ public class GameLogic {
 	public void init() {
 		
 		// Creates the Labyrinth
-		maze = new Maze(13);
+		maze = new Maze(9);
 
 		// Creates our hero/player
 		hero = new Hero(maze);
@@ -82,18 +82,20 @@ public class GameLogic {
 		out.drawCommands();
 
 		while(hero.isAlive()) {
-			
+
 			out.drawMsg(MSG.GET_KEY.ordinal());
-			
+
 			// Receives input
 			KEY command = KEY.values()[in.get()];
-			
-			dragon.setDragonState();
+
+			if(dragon.isAlive()) {
+				dragon.setDragonState();
+			}
 
 			hero.move(command, maze);
 
 			if(hero.isAt(maze.getExit())) {
-				
+
 				if(!dragon.isAlive()) {
 					break;
 				}

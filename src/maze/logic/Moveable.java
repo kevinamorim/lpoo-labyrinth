@@ -118,11 +118,13 @@ public class Moveable extends Element {
 	
 	public boolean isValidMove(int x, int y, Maze maze) {
 		
-		if(this.isAt(maze.getExit()))
+		if(maze.getExit().isAt(x,y))
 			return true;
 		
 		switch(maze.getTiles()[x][y]) {
 		case ' ':
+			return true;
+		case 'E':
 			return true;
 		case 'D':
 			return false;
@@ -132,10 +134,6 @@ public class Moveable extends Element {
 			return false;
 		case 'f':
 			return false;
-		case 'E':
-			return true;
-		case 'S':
-			return true;
 		default:
 			return false;
 		}
