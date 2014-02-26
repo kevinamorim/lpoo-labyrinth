@@ -22,7 +22,7 @@ public class GameLogic {
 	public void init() {
 		
 		// Creates the Labyrinth
-		maze = new Maze(17);
+		maze = new Maze(13);
 
 		// Creates our hero/player
 		hero = new Hero(maze);
@@ -61,7 +61,6 @@ public class GameLogic {
 		tasks[2] = new Task("Find the exit.");
 	}
 	
-
 	private void checkTasks() {
 		if(hero.isArmed()) {
 			tasks[0].setDone(true);
@@ -75,7 +74,7 @@ public class GameLogic {
 //			tasks[2].setDone(true);
 //		}
 	}
-
+		
 	public void loop() {
 	
 		out.drawGoal(tasks);
@@ -88,10 +87,12 @@ public class GameLogic {
 			
 			// Receives input
 			KEY command = KEY.values()[in.get()];
+			
+			dragon.setDragonState();
 
 			hero.move(command, maze);
 
-			if(hero.isAtExit(maze.getExit())) {
+			if(hero.isAt(maze.getExit())) {
 				
 				if(!dragon.isAlive()) {
 					break;
@@ -107,7 +108,7 @@ public class GameLogic {
 				hero.arm();
 			}
 			
-			if(dragon.isAlive()) {
+			if(dragon.isAwake() && dragon.isAlive()) {
 				
 				dragon.move(maze);
 				
@@ -118,7 +119,7 @@ public class GameLogic {
 					dragon.setHasSword(false);
 				}
 				
-				if(dragon.isAtExit(maze.getExit())) {
+				if(dragon.isAt(maze.getExit())) {
 					dragon.moveBack();
 				}
 			}
@@ -130,8 +131,7 @@ public class GameLogic {
 					out.drawMsg(MSG.KILLED_DRAGON.ordinal());
 					dragon.kill();
 				}
-				// If the player is unarmed, it gets killed
-				else {
+				else if(dragon.isAwake()){
 					hero.kill();
 				}
 			}

@@ -142,6 +142,10 @@ public class Element {
 		return s;
 	}
 	
-	
+	public boolean isAt(Element b) {
+		if(this.getX() == b.getX() && this.getY() == b.getY())
+			return true;
+		return false;
+	}
 
 }

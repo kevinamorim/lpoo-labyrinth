@@ -5,6 +5,10 @@ import java.util.Random;
 public class Dragon extends Moveable {
 	
 	private boolean hasSword;
+	private boolean awake;
+	private int roundsToWake;
+	
+	private int maxRounds = 2;
 
 	/**
 	 * @param lab
@@ -13,6 +17,8 @@ public class Dragon extends Moveable {
 		
 		super(lab, 'D');
 		this.hasSword = false;
+		this.awake = true;
+		this.setRoundsToWake(0);
 	}
 	
 	/**
@@ -79,7 +85,7 @@ public class Dragon extends Moveable {
 				break;
 			}
 
-			if(maze.isValidMove(x, y)) {
+			if(isValidMove(x, y, maze)) {
 				valid = true;
 			}
 			else {
@@ -89,6 +95,67 @@ public class Dragon extends Moveable {
 		
 		}while(!valid);
 		
+	}
+
+	/**
+	 * @return the awake
+	 */
+	public boolean isAwake() {
+		return awake;
+	}
+
+	/**
+	 * @param awake the awake to set
+	 */
+	public void setAwake(boolean awake) {
+		this.awake = awake;
+	}
+
+	/**
+	 * @return the roundsToWake
+	 */
+	public int getRoundsToWake() {
+		return roundsToWake;
+	}
+
+	/**
+	 * @param roundsToWake the roundsToWake to set
+	 */
+	public void setRoundsToWake(int roundsToWake) {
+		this.roundsToWake = roundsToWake;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setDragonState() {
+		Random r = new Random();
+		
+		if(this.isAwake()) {
+			boolean awake = (r.nextInt(6) > 0);
+			if(!awake) {
+				this.setAwake(awake);
+				if(this.hasSword) {
+					this.setSymbol('f');
+				}
+				else {
+					this.setSymbol('d');
+				}
+				this.setRoundsToWake(r.nextInt(maxRounds) + 4);
+			}
+		}
+		else {
+			this.roundsToWake--;
+			if(roundsToWake <= 0) {
+				this.setAwake(true);
+				if(this.hasSword) {
+					this.setSymbol('F');
+				}
+				else {
+					this.setSymbol('D');
+				}
+			}
+		}
 	}
 
 }

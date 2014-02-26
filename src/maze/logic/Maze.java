@@ -390,7 +390,6 @@ public class Maze {
 		return result;
 	}
 	
-	
 	// -- END Maze generation
 	
 	/**
@@ -399,20 +398,6 @@ public class Maze {
 	public void setPosition(Element elem) {
 		tiles[elem.getOldX()][elem.getOldY()] = ' ';
 		tiles[elem.getX()][elem.getY()] = elem.getSymbol();
-	}
-	
-	// Checks whether the tile that the object is trying to move to is valid or not (eg: walls are not valid)
-	public boolean isValidMove(int x, int y) {
-		
-		if((x == exit.getX()) && (y == exit.getY())) {
-			return true;
-		}
-		// If the tile is a wall, dragon or player, it cannot move to that location
-		if(tiles[x][y] == 'x') {
-			return false;
-		}
-		return true;
-		
 	}
 	
 	/**

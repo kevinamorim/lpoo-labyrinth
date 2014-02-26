@@ -94,25 +94,13 @@ public class Moveable extends Element {
 		this.alive = false;
 		this.symbol = ' ';
 	}
-	
-	/**
-	 * @param exit
-	 * @return
-	 */
-	public boolean isAtExit(Element exit) {
-		
-		if((exit.getX() == x) && (exit.getY() == y)) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * @param sword
 	 * @return
 	 */
 	public boolean foundSword(Element sword) {
-		if((x == sword.getX()) && (y == sword.getY())) {
+		if(this.isAt(sword)) {
 			return true;
 		}
 		return false;
@@ -128,6 +116,29 @@ public class Moveable extends Element {
 		return s;
 	}
 	
-	
+	public boolean isValidMove(int x, int y, Maze maze) {
+		
+		if(this.isAt(maze.getExit()))
+			return true;
+		
+		switch(maze.getTiles()[x][y]) {
+		case ' ':
+			return true;
+		case 'D':
+			return false;
+		case 'd':
+			return false;
+		case 'F':
+			return false;
+		case 'f':
+			return false;
+		case 'E':
+			return true;
+		case 'S':
+			return true;
+		default:
+			return false;
+		}
+	}
 	
 }
