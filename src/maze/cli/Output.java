@@ -25,14 +25,15 @@ public class Output {
 	}
 	
 	public void drawCommands() {
+		System.out.println("+-------------------------+");
 		System.out.println("Move............ [w,a,s,d]");
 		System.out.println("Get game state.. [e]");
 		System.out.println("Confirm......... [enter]");
-		System.out.println();
+		System.out.println("+-------------------------+");
 	}
 	
 	public void drawGoal(Task[] tasks) {
-		System.out.println("+-------- Goal --------+");
+		System.out.println("+--------- Goals ---------+");
 		for(int i = 0; i < tasks.length; i++) {
 			System.out.print((i + 1) + ". ");
 			if(tasks[i].isDone()) {
@@ -43,6 +44,7 @@ public class Output {
 			}
 			System.out.println(tasks[i].getDescription());
 		}
+		System.out.println("+-------------------------+");
 	}
 	
 	public void drawGameOver(boolean won) {

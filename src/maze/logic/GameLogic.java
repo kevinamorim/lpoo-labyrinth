@@ -22,7 +22,7 @@ public class GameLogic {
 	public void init() {
 		
 		// Creates the Labyrinth
-		maze = new Maze(9);
+		maze = new Maze(17);
 
 		// Creates our hero/player
 		hero = new Hero(maze);
