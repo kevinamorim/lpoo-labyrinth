@@ -9,7 +9,7 @@ public class Element {
 	protected int oldX;
 	protected int oldY;
 	protected char symbol;
-	
+
 	/**
 	 * @param x
 	 * @param y
@@ -33,6 +33,7 @@ public class Element {
 		this.oldX = x;
 		this.oldY = y;
 		this.symbol = symbol;
+		
 	}
 	
 	/**
@@ -104,16 +105,16 @@ public class Element {
 	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
-
+	
 	/**
 	 * 
 	 * Generates a random valid position for the tile. 
-	 * @param lab Labyrinth object 
+	 * @param maze Labyrinth object 
 	 */
-	public void GeneratePos(Maze lab) {
+	public void GeneratePos(Maze maze) {
 		Random r = new Random();
 		
-		int MAX = lab.getSize();
+		int MAX = maze.getSize();
 		int posX = 0, posY = 0;
 		
 		boolean done = false;
@@ -121,7 +122,7 @@ public class Element {
 			posX = r.nextInt(MAX); posY = r.nextInt(MAX);
 			
 			// Checks if it's a valid position.
-			if(lab.getTiles()[posX][posY] == ' ') done = true;
+			if(maze.getTiles()[posX][posY] == ' ') done = true;
 		}
 		
 		this.x = posX;

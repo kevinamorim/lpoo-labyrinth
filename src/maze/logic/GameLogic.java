@@ -7,13 +7,14 @@ public class GameLogic {
 	
 	private Maze maze;
 	private Hero hero;
+	private Eagle eagle;
 	private Dragon[] dragons;
 	private Element sword;
 	
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 9;
+	private int mazeSize = 7;
 	private int mazeDragons = 3;
 
 	private Input in;
@@ -32,16 +33,13 @@ public class GameLogic {
 
 		// Creates our hero/player
 		hero = new Hero(maze);
-
-		// Sets the player's position on the labyrinth (effectively places it's reresenting char)
-		maze.drawElement(hero);
+		
+		// Creates our eagle
+		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
 
 		// Creates our sword
 		sword = new Element(maze, 'E');
-
-		// Sets the sword's position on the labyrinth (effectively places it's reresenting char)
-		maze.drawElement(sword);
-
+		
 		// Creates our evil Dragon!
 		dragons = new Dragon[mazeDragons];
 
@@ -49,9 +47,6 @@ public class GameLogic {
 
 			dragons[i] = new Dragon(maze);
 		}
-
-		// Sets the dragon's position on the labyrinth (effectively places it's reresenting char)
-		maze.drawElement(dragons);
 		
 		// Creates our Input
 		in = new Input();
@@ -221,8 +216,8 @@ public class GameLogic {
 	public void loop() {
 
 		out.drawCommands();
-		out.drawBoard(maze);
 		out.drawGoal(tasks);
+		draw();
 
 		while(hero.isAlive()) {
 
@@ -241,14 +236,13 @@ public class GameLogic {
 			moveAllDragons();
 			
 			checkForDragonEncounters();
-
-			drawAllElements();
 			
 			checkTasks();
 
 			out.drawCommands();
-			out.drawBoard(maze);
 			out.drawGoal(tasks);
+			draw();
+			
 		}
 		
 		// END OF LOOP
@@ -256,12 +250,12 @@ public class GameLogic {
 		boolean won = hero.isAlive();
 		
 		if(won) {
-			maze.drawElement(dragons);
-			maze.drawElement(hero);
+			//maze.drawElement(dragons);
+			//maze.drawElement(hero);
 		}
 		else {
-			maze.drawElement(hero);
-			maze.drawElement(dragons);
+			//maze.drawElement(hero);
+			//maze.drawElement(dragons);
 		}
 		
 		out.drawBoard(maze);
@@ -269,23 +263,33 @@ public class GameLogic {
 		
 	}
 
-	private void drawAllElements() {
+	/**
+	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
+	 */
+	public void draw() {
 		
-		// Dragons
-		maze.drawElement(dragons);
+		char board[][] = new char[maze.getSize()][maze.getSize()];
 		
-		// Sword - only draws if it is not currently guarded
-		for(Dragon dragon: dragons) {
-
-			if(!dragon.hasSword() && !hero.isArmed()) {
-
-				maze.drawElement(sword);
+		// Get board without elements.
+		for(int i = 0; i < maze.getSize(); i++) {
+			for(int j = 0; j < maze.getSize(); j++) {
+				board[i][j] = maze.getTiles()[i][j];
 			}
 		}
 		
-		// Hero
-		maze.drawElement(hero);
+		// Includes exit.
+		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
+		// Includes hero.
+		board[hero.getX()][hero.getY()] = hero.getSymbol();
+		// Includes all dragons.
+		for(int i = 0; i < dragons.length; i++) {
+			board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
+		}
+		// Includes sword.
+		if(!hero.isArmed()) board[sword.getX()][sword.getY()] = sword.getSymbol();
 		
-	}
+		out.drawBoard(board);
+		
 
+	}
 }

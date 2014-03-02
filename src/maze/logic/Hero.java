@@ -36,16 +36,16 @@ public class Hero extends Moveable {
 	public void move(GameLogic.KEY direction, Maze maze) {
 		switch(direction) {
 		case UP:
-			if(isValidMove(getX() - 1, getY(), maze)) moveUp(maze);
+			if(isValidMove(getX() - 1, getY(), maze)) moveUp();
 			break;
 		case RIGHT:
-			if(isValidMove(getX(), getY() + 1, maze)) moveRight(maze);
+			if(isValidMove(getX(), getY() + 1, maze)) moveRight();
 			break;
 		case DOWN:
-			if(isValidMove(getX() + 1, getY(), maze)) moveDown(maze);
+			if(isValidMove(getX() + 1, getY(), maze)) moveDown();
 			break;
 		case LEFT:
-			if(isValidMove(getX(), getY() - 1, maze)) moveLeft(maze);
+			if(isValidMove(getX(), getY() - 1, maze)) moveLeft();
 			break;
 		default:
 			break;
@@ -84,7 +84,5 @@ public class Hero extends Moveable {
 		s += "\n    armed: " + this.armed;
 		return s;
 	}
-	
-	
-	
+
 }

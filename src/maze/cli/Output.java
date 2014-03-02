@@ -17,11 +17,13 @@ public class Output {
 		}
 	}
 	
-	public void drawElements(Element[] elem) {
-		for(int i = 0; i < elem.length; i++) {
-			System.out.println(elem[i]);
+	public void drawBoard(char[][] board) {
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board.length; j++) {
+					System.out.print(" " + board[i][j] + " ");
+				}
+			System.out.println();
 		}
-		System.out.println();
 	}
 	
 	public void drawCommands() {

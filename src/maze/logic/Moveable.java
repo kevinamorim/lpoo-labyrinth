@@ -42,7 +42,7 @@ public class Moveable extends Element {
 	/**
 	 * @param lab
 	 */
-	public void moveDown(Maze lab) {
+	public void moveDown() {
 		
 		setOldX(x);
 		setOldY(y);
@@ -52,7 +52,7 @@ public class Moveable extends Element {
 	/**
 	 * @param lab
 	 */
-	public void moveUp(Maze lab) {
+	public void moveUp() {
 
 		setOldX(x);
 		setOldY(y);
@@ -62,7 +62,7 @@ public class Moveable extends Element {
 	/**
 	 * @param lab
 	 */
-	public void moveLeft(Maze lab) {
+	public void moveLeft() {
 
 		setOldX(x);
 		setOldY(y);
@@ -72,7 +72,7 @@ public class Moveable extends Element {
 	/**
 	 * @param lab
 	 */
-	public void moveRight(Maze lab) {
+	public void moveRight() {
 
 		setOldX(x);
 		setOldY(y);
