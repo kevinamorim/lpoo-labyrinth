@@ -5,6 +5,8 @@ public class Eagle extends Moveable {
 	private boolean hasSword;
 	private boolean movingHorizontally;
 	private boolean moving;
+	private boolean flying;
+
 
 	public Eagle(int x, int y, char symbol) {
 		super(x, y, symbol);
@@ -12,6 +14,7 @@ public class Eagle extends Moveable {
 		setHasSword(false);
 		setMovingHorizontally(true);
 		setMoving(false);
+		flying = false;
 			
 	}
 
@@ -57,10 +60,27 @@ public class Eagle extends Moveable {
 		this.moving = moving;
 	}
 	
+
+	/**
+	 * @return the flying
+	 */
+	public boolean isFlying() {
+		return flying;
+	}
+
+	/**
+	 * @param flying the flying to set
+	 */
+	public void setFlying(boolean flying) {
+		this.flying = flying;
+	}
+	
 	/**
 	 * @param sword
 	 */
 	public void moveToSword(Maze maze, Element sword) {
+		
+		flying = true;
 		
 		boolean done = false;
 		while(!done) {
@@ -91,6 +111,7 @@ public class Eagle extends Moveable {
 			
 			if(x == sword.getX() && y == sword.getY()) {
 				hasSword = true;
+				flying = false;
 				break;
 			}
 		
@@ -103,6 +124,8 @@ public class Eagle extends Moveable {
 	 */
 	public void moveBack() {
 		
+		flying = true;
+		
 		// Moves in x. 
 		if(x != oldX) {
 			if(x < oldX) x++;
@@ -112,6 +135,9 @@ public class Eagle extends Moveable {
 		else if(y != oldY) {
 			if(y < oldY) y++;
 			else y--;
+		}
+		else {
+			flying = false;
 		}
 		
 	}

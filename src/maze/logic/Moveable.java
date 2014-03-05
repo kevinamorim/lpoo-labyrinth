@@ -147,4 +147,19 @@ public class Moveable extends Element {
 		return false;
 	}
 	
+	/**
+	 * @param dragon
+	 * @return
+	 */
+	public boolean foundDragon(Dragon dragon) {
+		
+		// Calculating the real distance between the dragon and the player (contiguous cells will necessarily be 1 unit apart)
+		//
+		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
+		//
+		if(Math.sqrt(Math.abs(x - dragon.getX()) + Math.abs(y - dragon.getY())) <= 1) return true;
+		return false;
+		
+	}
+	
 }

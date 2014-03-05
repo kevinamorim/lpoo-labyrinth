@@ -14,8 +14,8 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 23;
-	private int mazeDragons = 3;
+	private int mazeSize = 11;
+	private int mazeDragons = 5;
 
 	private Input in;
 	private Output out;
@@ -328,6 +328,22 @@ public class GameLogic {
 		}
 	}
 	
+	private void checkKillEagle() {
+		
+		
+		for(Dragon dragon : dragons) {
+			if(eagle.foundDragon(dragon)) {
+				if(!eagle.isFlying()) {
+					eagle.setAlive(false);
+					eagle.setHasSword(false);
+					sword.setX(eagle.getX());
+					sword.setY(eagle.getY());
+				}
+			}
+		}
+		
+	}
+	
 	/**
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
@@ -346,7 +362,7 @@ public class GameLogic {
 		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
 		// Includes hero.
 		board[hero.getX()][hero.getY()] = hero.getSymbol();
-		if(!hero.hasEagle()) board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
+		if(!hero.hasEagle() && eagle.isAlive()) board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
 		// Includes all dragons.
 		for(int i = 0; i < dragons.length; i++) {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
@@ -390,10 +406,16 @@ public class GameLogic {
 			}
 			// --
 			
-			if(eagle.isMoving()) {
+			if(eagle.isMoving() && eagle.isAlive()) {
 				if(!eagle.hasSword()) eagle.moveToSword(maze, sword);
-				else eagle.moveBack();
+				else {
+					eagle.moveBack();
+					sword.setX(eagle.getX());
+					sword.setY(eagle.getY());
+				}
 			}
+			
+			checkKillEagle();
 			
 			if(checkIfHeroWon() == true) {
 				break;
