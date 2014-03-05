@@ -27,9 +27,9 @@ public class Element {
 	 * @param maze
 	 * @param symbol
 	 */
-	public Element(Maze maze, char symbol) {
+	public Element(GameLogic game, char symbol) {
 		
-		GeneratePos(maze);
+		GeneratePos(game);
 		this.oldX = x;
 		this.oldY = y;
 		this.symbol = symbol;
@@ -111,10 +111,10 @@ public class Element {
 	 * Generates a random valid position for the tile. 
 	 * @param maze Labyrinth object 
 	 */
-	public void GeneratePos(Maze maze) {
+	public void GeneratePos(GameLogic game) {
 		Random r = new Random();
 		
-		int MAX = maze.getSize();
+		int MAX = game.getMaze().getSize();
 		int posX = 0, posY = 0;
 		
 		boolean done = false;
@@ -122,7 +122,7 @@ public class Element {
 			posX = r.nextInt(MAX); posY = r.nextInt(MAX);
 			
 			// Checks if it's a valid position.
-			if(maze.getTiles()[posX][posY] == ' ') done = true;
+			if(game.getMaze().getTiles()[posX][posY] == ' ') done = true;
 		}
 		
 		this.x = posX;

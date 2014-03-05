@@ -7,8 +7,8 @@ public class Hero extends Moveable {
 	/**
 	 * @param lab Actual labyrinth
 	 */
-	public Hero(Maze lab) {
-		super(lab, 'H');
+	public Hero(GameLogic game) {
+		super(game, 'H');
 		this.armed = false;
 	}
 	

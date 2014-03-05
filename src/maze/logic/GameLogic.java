@@ -29,23 +29,23 @@ public class GameLogic {
 	public void init() {
 		
 		// Creates the Labyrinth
-		maze = new Maze(mazeSize);
+		maze = new Maze(this, mazeSize);
 
 		// Creates our hero/player
-		hero = new Hero(maze);
+		hero = new Hero(this);
 		
 		// Creates our eagle
 		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
 
 		// Creates our sword
-		sword = new Element(maze, 'E');
+		sword = new Element(this, 'E');
 		
 		// Creates our evil Dragon!
 		dragons = new Dragon[mazeDragons];
 
 		for(int i = 0; i < dragons.length; i++) {
 
-			dragons[i] = new Dragon(maze);
+			dragons[i] = new Dragon(this);
 		}
 		
 		// Creates our Input

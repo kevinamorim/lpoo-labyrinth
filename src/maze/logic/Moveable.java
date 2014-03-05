@@ -19,9 +19,9 @@ public class Moveable extends Element {
 	 * @param lab
 	 * @param symbol
 	 */
-	public Moveable(Maze lab, char symbol) {
+	public Moveable(GameLogic game, char symbol) {
 		
-		super(lab, symbol);
+		super(game, symbol);
 		this.alive = true;
 	}
 

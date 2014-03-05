@@ -13,9 +13,9 @@ public class Dragon extends Moveable {
 	/**
 	 * @param maze
 	 */
-	public Dragon(Maze maze) {
+	public Dragon(GameLogic game) {
 		
-		super(maze, 'D');
+		super(game, 'D');
 		this.hasSword = false;
 		this.awake = true;
 		this.setRoundsToWake(0);
