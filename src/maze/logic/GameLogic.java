@@ -283,7 +283,7 @@ public class GameLogic {
 		board[hero.getX()][hero.getY()] = hero.getSymbol();
 		// Includes all dragons.
 		for(int i = 0; i < dragons.length; i++) {
-			board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
+			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
 		}
 		// Includes sword.
 		if(!hero.isArmed()) board[sword.getX()][sword.getY()] = sword.getSymbol();
