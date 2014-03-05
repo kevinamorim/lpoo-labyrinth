@@ -84,8 +84,7 @@ public class Eagle extends Moveable {
 			
 			if(movingHorizontally) {
 				if(x != sword.getX()) {
-					
-					oldX = x;
+				
 					if(x < sword.getX()) x++;
 					else x--;
 					
@@ -95,8 +94,7 @@ public class Eagle extends Moveable {
 				} 
 			} else {
 				if(y != sword.getY()) {
-					
-					oldY = y;
+				
 					if(y < sword.getY()) y++;
 					else y--;
 					
@@ -108,7 +106,10 @@ public class Eagle extends Moveable {
 			
 			if(!done) movingHorizontally = !movingHorizontally;
 			
-			if(x == sword.getX() && y == sword.getY()) break;
+			if(x == sword.getX() && y == sword.getY()) {
+				hasSword = true;
+				break;
+			}
 		
 		}
 		
@@ -130,6 +131,12 @@ public class Eagle extends Moveable {
 			else y--;
 		}
 		
+	}
+	
+	public void sendEagle() {
+		oldX = x; 
+		oldY = y;
+		moving = true;
 	}
 	
 	

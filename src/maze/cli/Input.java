@@ -32,6 +32,8 @@ public class Input {
 				return 3;
 			case 'a':
 				return 4;
+			case ' ':
+				return 5;
 			default:
 				break;
 			}

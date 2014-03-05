@@ -14,13 +14,13 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 9;
+	private int mazeSize = 21;
 	private int mazeDragons = 3;
 
 	private Input in;
 	private Output out;
 	
-	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT};
+	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT, SPACE};
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
 	/**
@@ -178,9 +178,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void moveHero() {
-		
-		KEY command = KEY.values()[in.get()];
+	private void moveHero(GameLogic.KEY command) {
 		
 		hero.move(command, this);
 	}
@@ -305,6 +303,11 @@ public class GameLogic {
 		return true;
 	}
 
+	
+	private void sendEagle() {
+		if(!eagle.isMoving()) eagle.sendEagle();
+	}
+	
 	/**
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
@@ -323,12 +326,13 @@ public class GameLogic {
 		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
 		// Includes hero.
 		board[hero.getX()][hero.getY()] = hero.getSymbol();
+		board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
 		// Includes all dragons.
 		for(int i = 0; i < dragons.length; i++) {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
 		}
 		// Includes sword.
-		if(!hero.isArmed() && noDragonIsUponSword()) board[sword.getX()][sword.getY()] = sword.getSymbol();
+		if(!hero.isArmed() && noDragonIsUponSword() && !eagle.hasSword()) board[sword.getX()][sword.getY()] = sword.getSymbol();
 		
 		out.drawBoard(board);
 		
@@ -353,7 +357,22 @@ public class GameLogic {
 
 			setAllDragonStates();
 			
-			moveHero();
+			// Handles input.
+			KEY command = KEY.values()[in.get()];
+			switch(command) {
+			case SPACE:
+				sendEagle();
+				break;
+			default:
+				moveHero(command);
+				break;
+			}
+			// --
+			
+			if(eagle.isMoving()) {
+				if(!eagle.hasSword()) eagle.moveToSword(maze, sword);
+				else eagle.moveBack();
+			}
 			
 			if(checkIfHeroWon() == true) {
 				break;
