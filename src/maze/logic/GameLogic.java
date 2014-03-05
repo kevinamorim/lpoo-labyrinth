@@ -4,7 +4,7 @@ package maze.logic;
 import maze.cli.*;
 
 public class GameLogic {
-	
+
 	private Maze maze;
 	private Hero hero;
 	private Eagle eagle;
@@ -14,7 +14,7 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 11;
+	private int mazeSize;
 	private int mazeDragons = 5;
 
 	private Input in;
@@ -23,6 +23,10 @@ public class GameLogic {
 	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT, SPACE};
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
+	public GameLogic(GameConfig config) {
+		this.mazeSize = config.getMazeSize();
+	}
+
 	/**
 	 * 
 	 */
@@ -59,6 +63,7 @@ public class GameLogic {
 		createTasks();
 		
 	}
+	
 	
 	
 	/**

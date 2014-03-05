@@ -78,6 +78,15 @@ public class Output {
 		case 3:
 			System.out.println("An eagle! yey");
 			break;
+		case 4:
+			System.out.println("Insert a maze size (the bigger the hardest (not always)) [5 - 21] <- odd number");
+			break;
+		case 5:
+			System.out.println("I told'ya man!!!");
+			break;
+		case 69:
+			System.out.println("8======D~~~~");
+			break;
 		default:
 			break;
 		}
@@ -86,5 +95,5 @@ public class Output {
 	public void debugPrint(String msg) {
 		System.out.println(msg);
 	}
-	
+
 }

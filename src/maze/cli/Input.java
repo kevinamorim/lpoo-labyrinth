@@ -42,4 +42,12 @@ public class Input {
 		return 0;
 	}
 	
+	/**
+	 * @return
+	 */
+	public String getString() {
+		String s = scan.nextLine();
+		
+		return s;
+	}
 }

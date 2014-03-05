@@ -4,7 +4,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		
-		GameLogic game = new GameLogic();
+		GameConfig config = new GameConfig();
+		
+		GameLogic game = new GameLogic(config);
 
 		game.init();
 	
