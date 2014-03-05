@@ -5,15 +5,16 @@ public class Eagle extends Moveable {
 	private boolean withHero;
 	private boolean hasSword;
 	private boolean movingHorizontally;
-	private boolean aboveWall;
-	
+	private boolean moving;
+
 	public Eagle(int x, int y, char symbol) {
 		super(x, y, symbol);
 		
 		setWithHero(true);
 		setHasSword(false);
 		setMovingHorizontally(true);
-		aboveWall = false;
+		setMoving(false);
+		
 		
 	}
 
@@ -59,19 +60,18 @@ public class Eagle extends Moveable {
 		this.movingHorizontally = movingHorizontally;
 	}
 
-	
 	/**
-	 * @return the aboveWall
+	 * @return the moving
 	 */
-	public boolean isAboveWall() {
-		return aboveWall;
+	public boolean isMoving() {
+		return moving;
 	}
 
 	/**
-	 * @param aboveWall the aboveWall to set
+	 * @param moving the moving to set
 	 */
-	public void setAboveWall(boolean aboveWall) {
-		this.aboveWall = aboveWall;
+	public void setMoving(boolean moving) {
+		this.moving = moving;
 	}
 	
 	/**
@@ -112,11 +112,6 @@ public class Eagle extends Moveable {
 		
 		}
 		
-		
-		// Sets the maze actual symbol.
-		if(maze.getTiles()[x][y] == 'x') aboveWall = true;
-		else aboveWall = false;
-		
 	}
 
 	/**
@@ -136,5 +131,6 @@ public class Eagle extends Moveable {
 		}
 		
 	}
+	
 	
 }
