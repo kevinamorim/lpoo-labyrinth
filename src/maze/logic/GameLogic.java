@@ -14,7 +14,7 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 21;
+	private int mazeSize = 7;
 	private int mazeDragons = 3;
 
 	private Input in;

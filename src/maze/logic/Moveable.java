@@ -130,9 +130,11 @@ public class Moveable extends Element {
 			return true;
 		}
 		
-		for(int i = 0; i < game.getDragons().length; i++) {
+		for(Dragon dragon: game.getDragons()) {
 			
-			if(game.getDragons()[i].isAt(x, y)) {
+			
+			
+			if(dragon.isAt(x, y)) {
 				return false;
 			}
 		}
