@@ -16,11 +16,24 @@ public class Element {
 	 * @param symbol
 	 */
 	public Element(int x, int y, char symbol) {
+		
 		this.x = x;
 		this.y = y;
 		this.oldX = x;
 		this.oldY = y;
 		this.symbol = symbol;
+	}
+	
+	/**
+	 * @param maze
+	 * @param symbol
+	 */
+	public Element(char symbol) {
+		
+		this.oldX = x;
+		this.oldY = y;
+		this.symbol = symbol;
+		
 	}
 	
 	/**
@@ -119,15 +132,56 @@ public class Element {
 		
 		boolean done = false;
 		while(!done) {
-			posX = r.nextInt(MAX); posY = r.nextInt(MAX);
+			posX = r.nextInt(MAX);
+			posY = r.nextInt(MAX);
 			
 			// Checks if it's a valid position.
-			if(game.getMaze().getTiles()[posX][posY] == ' ') done = true;
+			
+			done = isValidInitialPosition(game, posX, posY);
 		}
 		
 		this.x = posX;
 		this.y = posY;
 		
+	}
+
+	protected boolean isValidInitialPosition(GameLogic game, int x, int y) {
+
+		if(!(game.getMaze() == null)) {
+			
+			if(game.getMaze().getTiles()[x][y] == 'x') {
+				return false;
+			}
+		}
+
+		if(!(game.getHero() == null)) {
+			
+			if(game.getHero().isAt(x, y)) {
+				return false;
+			}
+		}
+
+		if(!(game.getSword() == null)) {
+			
+			if(game.getSword().isAt(x, y)) {
+				return false;
+			}
+		}
+		
+		if(!(game.getDragons() == null)) {
+
+			for(Dragon dragon: game.getDragons()) {
+
+				if(!(dragon == null)) {
+
+					if(dragon.isAt(x, y)) {
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/* (non-Javadoc)

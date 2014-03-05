@@ -38,7 +38,7 @@ public class Maze {
 		SetChamber();
 		DrawGrid();
 		
-		exit = new Element(game, 'S');
+		exit = new Element('S');
 		
 		GenerateExit();
 		GenerateWalls();

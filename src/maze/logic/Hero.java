@@ -1,5 +1,11 @@
 package maze.logic;
 
+import java.util.Random;
+
+/**
+ * @author Luís
+ *
+ */
 public class Hero extends Moveable {
 
 	private boolean armed;
@@ -85,4 +91,40 @@ public class Hero extends Moveable {
 		return s;
 	}
 
+	/* (non-Javadoc)
+	 * @see maze.logic.Element#GeneratePos(maze.logic.GameLogic)
+	 */
+	public void GeneratePos(GameLogic game) {
+		Random r = new Random();
+		
+		int MAX = game.getMaze().getSize();
+		int posX = 0, posY = 0;
+		
+		boolean done = false;
+		while(!done) {
+			posX = r.nextInt(MAX);
+			posY = r.nextInt(MAX);
+			
+			// Checks if it's a valid position.
+			
+			done = isValidInitialPosition(game, posX, posY);
+		}
+		
+		this.x = posX;
+		this.y = posY;
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see maze.logic.Element#isValidInitialPosition(maze.logic.GameLogic, int, int)
+	 */
+	protected boolean isValidInitialPosition(GameLogic game, int x, int y) {
+		
+		if(game.getMaze().getTiles()[x][y] == 'x') {
+			return false;
+		}
+		
+		return true;
+	}
+	
 }

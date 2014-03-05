@@ -148,5 +148,4 @@ public class Dragon extends Moveable {
 			}
 		}
 	}
-
 }
