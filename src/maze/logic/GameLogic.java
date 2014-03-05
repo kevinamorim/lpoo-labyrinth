@@ -186,6 +186,7 @@ public class GameLogic {
 	}
 	
 	/**
+	 * 
 	 * @return
 	 */
 	private boolean checkIfHeroWon() {
@@ -288,6 +289,21 @@ public class GameLogic {
 		//out.debugPrint("> checkForDragonEncounters() [X]");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	private boolean noDragonIsUponSword() {
+		
+		for(Dragon dragon: dragons) {
+
+			if(dragon.hasSword()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 	/**
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
@@ -312,13 +328,14 @@ public class GameLogic {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
 		}
 		// Includes sword.
-		if(!hero.isArmed()) board[sword.getX()][sword.getY()] = sword.getSymbol();
+		if(!hero.isArmed() && noDragonIsUponSword()) board[sword.getX()][sword.getY()] = sword.getSymbol();
 		
 		out.drawBoard(board);
 		
 
 	}
-	
+
+
 	/** 
 	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 *    MAIN GAME LOOP
@@ -352,6 +369,7 @@ public class GameLogic {
 
 			out.drawCommands();
 			out.drawGoal(tasks);
+			
 			draw();
 			
 		}
