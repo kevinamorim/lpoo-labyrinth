@@ -2,7 +2,6 @@ package maze.logic;
 
 public class Eagle extends Moveable {
 	
-	private boolean withHero;
 	private boolean hasSword;
 	private boolean movingHorizontally;
 	private boolean moving;
@@ -10,26 +9,10 @@ public class Eagle extends Moveable {
 	public Eagle(int x, int y, char symbol) {
 		super(x, y, symbol);
 		
-		setWithHero(true);
 		setHasSword(false);
 		setMovingHorizontally(true);
 		setMoving(false);
-		
-		
-	}
-
-	/**
-	 * @return the withHero
-	 */
-	public boolean isWithHero() {
-		return withHero;
-	}
-
-	/**
-	 * @param withHero the withHero to set
-	 */
-	public void setWithHero(boolean withHero) {
-		this.withHero = withHero;
+			
 	}
 
 	/**
@@ -131,6 +114,11 @@ public class Eagle extends Moveable {
 			else y--;
 		}
 		
+	}
+	
+	public void updatePosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void sendEagle() {

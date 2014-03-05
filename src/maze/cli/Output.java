@@ -75,7 +75,9 @@ public class Output {
 		case 2:
 			System.out.println("Key? ");
 			break;
-			
+		case 3:
+			System.out.println("An eagle! yey");
+			break;
 		default:
 			break;
 		}

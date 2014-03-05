@@ -9,13 +9,16 @@ import java.util.Random;
 public class Hero extends Moveable {
 
 	private boolean armed;
-	
+	private boolean hasEagle;
+
+
 	/**
 	 * @param lab Actual labyrinth
 	 */
 	public Hero(GameLogic game) {
-		super(game, 'H');
+		super(game, 'Y');
 		this.armed = false;
+		this.hasEagle = true;
 	}
 	
 	/**
@@ -32,6 +35,21 @@ public class Hero extends Moveable {
 	 */
 	public void setArmed(boolean armed) {
 		this.armed = armed;
+	}
+
+	
+	/**
+	 * @return the hasEagle
+	 */
+	public boolean hasEagle() {
+		return hasEagle;
+	}
+
+	/**
+	 * @param hasEagle the hasEagle to set
+	 */
+	public void setHasEagle(boolean hasEagle) {
+		this.hasEagle = hasEagle;
 	}
 	
 	/**
@@ -71,6 +89,13 @@ public class Hero extends Moveable {
 		if(Math.sqrt(Math.abs(x - dragon.getX()) + Math.abs(y - dragon.getY())) <= 1) return true;
 		return false;
 		
+	}
+	
+	public boolean foundEagle(Eagle eagle) {
+		if(this.isAt(eagle)) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
