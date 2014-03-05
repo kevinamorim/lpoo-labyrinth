@@ -43,7 +43,7 @@ public class Dragon extends Moveable {
 	 * Moves the dragon randomly one position.
 	 * @param maze Actual labyrinth.
 	 */
-	public void move(Maze maze) {
+	public void move(GameLogic game) {
 		Random r = new Random();
 		
 		/*
@@ -81,7 +81,7 @@ public class Dragon extends Moveable {
 			break;
 		}
 
-		if(!isValidMove(x, y, maze)) {
+		if(!isValidMove(x, y, game)) {
 			this.setX(oldX);
 			this.setY(oldY);
 		}

@@ -116,27 +116,32 @@ public class Moveable extends Element {
 		return s;
 	}
 	
-	public boolean isValidMove(int x, int y, Maze maze) {
+	public boolean isValidMove(int x, int y, GameLogic game) {
 		
-		if(maze.getExit().isAt(x,y))
+		if(game.getMaze().getExit().isAt(x,y)) {
 			return true;
+		}
 		
-		switch(maze.getTiles()[x][y]) {
-		case ' ':
+		if(game.getMaze().getTiles()[x][y] == ' ') {
 			return true;
-		case 'E':
+		}
+		
+		if(game.getSword().isAt(x, y)) {
 			return true;
-		case 'D':
-			return false;
-		case 'd':
-			return false;
-		case 'F':
-			return false;
-		case 'f':
-			return false;
-		default:
+		}
+		
+		for(int i = 0; i < game.getDragons().length; i++) {
+			
+			if(game.getDragons()[i].isAt(x, y)) {
+				return false;
+			}
+		}
+		
+		if(game.getHero().isAt(x, y)) {
 			return false;
 		}
+		
+		return false;
 	}
 	
 }

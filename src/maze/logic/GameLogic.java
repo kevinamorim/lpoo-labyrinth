@@ -14,7 +14,7 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize = 7;
+	private int mazeSize = 9;
 	private int mazeDragons = 3;
 
 	private Input in;
@@ -59,6 +59,77 @@ public class GameLogic {
 		createTasks();
 		
 	}
+	
+	
+	/**
+	 * @return the maze
+	 */
+	public Maze getMaze() {
+		return maze;
+	}
+
+	/**
+	 * @param maze the maze to set
+	 */
+	public void setMaze(Maze maze) {
+		this.maze = maze;
+	}
+
+	/**
+	 * @return the hero
+	 */
+	public Hero getHero() {
+		return hero;
+	}
+
+	/**
+	 * @param hero the hero to set
+	 */
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
+
+	/**
+	 * @return the eagle
+	 */
+	public Eagle getEagle() {
+		return eagle;
+	}
+
+	/**
+	 * @param eagle the eagle to set
+	 */
+	public void setEagle(Eagle eagle) {
+		this.eagle = eagle;
+	}
+
+	/**
+	 * @return the dragons
+	 */
+	public Dragon[] getDragons() {
+		return dragons;
+	}
+
+	/**
+	 * @param dragons the dragons to set
+	 */
+	public void setDragons(Dragon[] dragons) {
+		this.dragons = dragons;
+	}
+
+	/**
+	 * @return the sword
+	 */
+	public Element getSword() {
+		return sword;
+	}
+
+	/**
+	 * @param sword the sword to set
+	 */
+	public void setSword(Element sword) {
+		this.sword = sword;
+	}
 
 	/**
 	 * 
@@ -81,6 +152,10 @@ public class GameLogic {
 		
 		if(allDragonsAreDead()) {
 			tasks[1].setDone(true);
+		}
+		
+		if(checkIfHeroWon()) {
+			tasks[2].setDone(true);
 		}
 	}
 		
@@ -107,7 +182,7 @@ public class GameLogic {
 		
 		KEY command = KEY.values()[in.get()];
 		
-		hero.move(command, maze);
+		hero.move(command, this);
 	}
 	
 	/**
@@ -169,7 +244,7 @@ public class GameLogic {
 
 			if(dragon.isAwake() && dragon.isAlive()) {
 
-				dragon.move(maze);
+				dragon.move(this);
 
 				if(dragon.foundSword(sword)) {
 					dragon.setHasSword(true);
@@ -213,6 +288,42 @@ public class GameLogic {
 		//out.debugPrint("> checkForDragonEncounters() [X]");
 	}
 
+
+	/**
+	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
+	 */
+	public void draw() {
+		
+		char board[][] = new char[maze.getSize()][maze.getSize()];
+		
+		// Get board without elements.
+		for(int i = 0; i < maze.getSize(); i++) {
+			for(int j = 0; j < maze.getSize(); j++) {
+				board[i][j] = maze.getTiles()[i][j];
+			}
+		}
+		
+		// Includes exit.
+		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
+		// Includes hero.
+		board[hero.getX()][hero.getY()] = hero.getSymbol();
+		// Includes all dragons.
+		for(int i = 0; i < dragons.length; i++) {
+			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
+		}
+		// Includes sword.
+		if(!hero.isArmed()) board[sword.getX()][sword.getY()] = sword.getSymbol();
+		
+		out.drawBoard(board);
+		
+
+	}
+	
+	/** 
+	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 *    MAIN GAME LOOP
+	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 */
 	public void loop() {
 
 		out.drawCommands();
@@ -258,38 +369,11 @@ public class GameLogic {
 			//maze.drawElement(dragons);
 		}
 		
+		checkTasks();
+		
 		out.drawBoard(maze);
+		out.drawGoal(tasks);
 		out.drawGameOver(won);
 		
-	}
-
-	/**
-	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
-	 */
-	public void draw() {
-		
-		char board[][] = new char[maze.getSize()][maze.getSize()];
-		
-		// Get board without elements.
-		for(int i = 0; i < maze.getSize(); i++) {
-			for(int j = 0; j < maze.getSize(); j++) {
-				board[i][j] = maze.getTiles()[i][j];
-			}
-		}
-		
-		// Includes exit.
-		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
-		// Includes hero.
-		board[hero.getX()][hero.getY()] = hero.getSymbol();
-		// Includes all dragons.
-		for(int i = 0; i < dragons.length; i++) {
-			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
-		}
-		// Includes sword.
-		if(!hero.isArmed()) board[sword.getX()][sword.getY()] = sword.getSymbol();
-		
-		out.drawBoard(board);
-		
-
 	}
 }

@@ -33,19 +33,19 @@ public class Hero extends Moveable {
 	 * @param direction
 	 * @param lab
 	 */
-	public void move(GameLogic.KEY direction, Maze maze) {
+	public void move(GameLogic.KEY direction, GameLogic game) {
 		switch(direction) {
 		case UP:
-			if(isValidMove(getX() - 1, getY(), maze)) moveUp();
+			if(isValidMove(getX() - 1, getY(), game)) moveUp();
 			break;
 		case RIGHT:
-			if(isValidMove(getX(), getY() + 1, maze)) moveRight();
+			if(isValidMove(getX(), getY() + 1, game)) moveRight();
 			break;
 		case DOWN:
-			if(isValidMove(getX() + 1, getY(), maze)) moveDown();
+			if(isValidMove(getX() + 1, getY(), game)) moveDown();
 			break;
 		case LEFT:
-			if(isValidMove(getX(), getY() - 1, maze)) moveLeft();
+			if(isValidMove(getX(), getY() - 1, game)) moveLeft();
 			break;
 		default:
 			break;
