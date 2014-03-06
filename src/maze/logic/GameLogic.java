@@ -15,7 +15,9 @@ public class GameLogic {
 	private int TASKNUM = 3;
 	
 	private int mazeSize;
-	private int mazeDragons = 5;
+	private int difficulty;
+	private int mazeDragons;
+	private double dragonPerc = 0.05;
 
 	private Input in;
 	private Output out;
@@ -25,6 +27,9 @@ public class GameLogic {
 	
 	public GameLogic(GameConfig config) {
 		this.mazeSize = config.getMazeSize();
+		this.difficulty = config.getDifficulty();
+		
+		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
 	}
 
 	/**
@@ -396,7 +401,7 @@ public class GameLogic {
 
 			out.drawMsg(MSG.GET_KEY.ordinal());
 
-			setAllDragonStates();
+			if(difficulty == 2) setAllDragonStates();
 			
 			// Handles input.
 			KEY command = KEY.values()[in.get()];
@@ -429,7 +434,7 @@ public class GameLogic {
 			checkForFoundSword();
 			checkForFoundEagle();
 			
-			moveAllDragons();
+			if(difficulty > 1) moveAllDragons();
 			
 			checkForDragonEncounters();
 			

@@ -84,6 +84,9 @@ public class Output {
 		case 5:
 			System.out.println("I told'ya man!!!");
 			break;
+		case 6:
+			System.out.println("Choose a dificulty: \n[1] Dumb dragons \n[2] Smart dragons (they sleep) \n[3] Dragons high on caffeine");
+			break;
 		case 69:
 			System.out.println("8======D~~~~");
 			break;

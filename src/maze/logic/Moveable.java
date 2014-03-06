@@ -127,13 +127,22 @@ public class Moveable extends Element {
 				}
 			}
 		}
+		
+		if(this == game.getHero()) {
+			
+			if(game.getMaze().getExit().isAt(x,y)) {
+				return true;
+			}
+			
+		}
+		
+		
+		if(game.getMaze().getTiles()[x][y] == 'x') {
+			return false;
+		}
 
 		if(game.getHero().isAt(x, y)) {
 			return false;
-		}
-		
-		if(game.getMaze().getExit().isAt(x,y)) {
-			return true;
 		}
 		
 		if(game.getMaze().getTiles()[x][y] == ' ') {
