@@ -228,6 +228,13 @@ public class GameLogic {
 			hero.arm();
 		}
 	}
+	
+	public void checkForEagleFoundSword() {
+		if(!eagle.hasSword() && eagle.foundSword(sword)) {
+			eagle.setHasSword(true);
+			eagle.setFlying(false);
+		}
+	}
 
 	
 	public void checkForFoundEagle() {
@@ -350,8 +357,12 @@ public class GameLogic {
 				if(!eagle.isFlying()) {
 					eagle.setAlive(false);
 					eagle.setHasSword(false);
-					sword.setX(eagle.getX());
-					sword.setY(eagle.getY());
+					
+					if(sword != null) {
+						sword.setX(eagle.getX());
+						sword.setY(eagle.getY());
+					}
+
 				}
 			}
 		}
@@ -430,6 +441,8 @@ public class GameLogic {
 					sword.setX(eagle.getX());
 					sword.setY(eagle.getY());
 				}
+				
+				checkForEagleFoundSword();
 			}
 			
 			checkKillEagle();
