@@ -80,45 +80,6 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
-	 */
-	public boolean init(boolean useAuto) {
-
-		if(useAuto) {
-			// Creates the Deafult Labyrinth
-			maze = new Maze();
-
-			// Creates our hero/player
-			hero = new Hero(1,1,'H');
-
-			// Creates our sword
-			sword = new Element(8,1,'E');
-
-			// Creates our evil Dragons!
-			dragons = new Dragon[1]; // mazeDragons is 1
-			
-			dragons[0] = new Dragon(3,1,'D');
-
-//			// Creates our Input
-//			in = new Input();
-//
-//			// Creates our Output
-//			out = new Output();
-//
-//			tasks = new Task[TASKNUM];
-//
-//			createTasks();
-			
-			return true;
-		}
-		
-		return false;
-
-	}
-
-
-
-	/**
 	 * @return the maze
 	 */
 	public Maze getMaze() {
