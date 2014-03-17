@@ -17,7 +17,7 @@ public class GameLogic {
 	private int mazeSize;
 	private int difficulty;
 	private int mazeDragons;
-	private double dragonPerc = 0.05;
+	//private double dragonPerc = 0.05;
 
 	private Input in;
 	private Output out;
@@ -25,11 +25,21 @@ public class GameLogic {
 	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT, SPACE};
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
-	public GameLogic(GameConfig config) {
+	public GameLogic(GameConfig config, double dragonPerc) {
 		this.mazeSize = config.getMazeSize();
 		this.difficulty = config.getDifficulty();
 		
 		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
+	}
+	
+	public GameLogic(boolean useAuto) { // TEST
+		
+		if(useAuto) {
+			this.mazeSize = 10;
+			this.difficulty = 1;
+			this.mazeDragons = 1;
+		}
+
 	}
 
 	/**
@@ -38,7 +48,7 @@ public class GameLogic {
 	public void init() {
 		
 		// Creates the Labyrinth
-		maze = new Maze(this, mazeSize);
+		maze = new Maze(mazeSize);
 
 		// Creates our hero/player
 		hero = new Hero(this);
@@ -49,7 +59,7 @@ public class GameLogic {
 		// Creates our sword
 		sword = new Element(this, 'E');
 		
-		// Creates our evil Dragon!
+		// Creates our evil Dragons!
 		dragons = new Dragon[mazeDragons];
 
 		for(int i = 0; i < dragons.length; i++) {
@@ -64,13 +74,50 @@ public class GameLogic {
 		out = new Output();
 		
 		tasks = new Task[TASKNUM];
-		
+
 		createTasks();
-		
+
 	}
-	
-	
-	
+
+	/**
+	 * 
+	 */
+	public boolean init(boolean useAuto) {
+
+		if(useAuto) {
+			// Creates the Deafult Labyrinth
+			maze = new Maze();
+
+			// Creates our hero/player
+			hero = new Hero(1,1,'H');
+
+			// Creates our sword
+			sword = new Element(8,1,'E');
+
+			// Creates our evil Dragons!
+			dragons = new Dragon[1]; // mazeDragons is 1
+			
+			dragons[0] = new Dragon(3,1,'D');
+
+//			// Creates our Input
+//			in = new Input();
+//
+//			// Creates our Output
+//			out = new Output();
+//
+//			tasks = new Task[TASKNUM];
+//
+//			createTasks();
+			
+			return true;
+		}
+		
+		return false;
+
+	}
+
+
+
 	/**
 	 * @return the maze
 	 */
@@ -245,8 +292,6 @@ public class GameLogic {
 	 * 
 	 */
 	private void setAllDragonStates() {
-		
-		//out.debugPrint("> setAllDragonStates() [ ]");
 
 		for(Dragon dragon: dragons) {
 
@@ -254,16 +299,12 @@ public class GameLogic {
 				dragon.setDragonState();
 			}	
 		}
-		
-		//out.debugPrint("> setAllDragonStates() [X]");
 	}
 
 	/**
 	 * 
 	 */
 	private void moveAllDragons() {
-		
-		//out.debugPrint("> moveAllDragons() [ ]");
 		
 		for(Dragon dragon: dragons) {
 
@@ -284,15 +325,12 @@ public class GameLogic {
 			}
 		}
 		
-		//out.debugPrint("> moveAllDragons() [X]");
 	}
 	
 	/**
 	 * 
 	 */
 	private void checkForDragonEncounters() {
-		
-		//out.debugPrint("> checkForDragonEncounters() [ ]");
 
 		for(Dragon dragon: dragons) {
 
@@ -310,7 +348,6 @@ public class GameLogic {
 			}
 		}
 		
-		//out.debugPrint("> checkForDragonEncounters() [X]");
 	}
 
 	/**
@@ -370,9 +407,12 @@ public class GameLogic {
 		
 		// Includes exit.
 		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
+		
 		// Includes hero.
 		board[hero.getX()][hero.getY()] = hero.getSymbol();
-		if(!hero.hasEagle() && eagle.isAlive()) board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
+		
+		if((eagle != null) && !hero.hasEagle() && eagle.isAlive()) board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
+		
 		// Includes all dragons.
 		for(int i = 0; i < dragons.length; i++) {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();

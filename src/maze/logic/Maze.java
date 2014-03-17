@@ -22,14 +22,12 @@ public class Maze {
 	private int size;
 
 	private Element exit;
-	
-	public Maze() { }
 
 	/**
 	 * Labyrinth constructor.
 	 * @param size Size of the generated labyrinth. The labyrinth is always square, so the final size will be (size x size).
 	 */
-	public Maze(GameLogic game, int size) {
+	public Maze(int size) {
 		
 		this.size = size;
 		
@@ -42,7 +40,15 @@ public class Maze {
 		
 		GenerateExit();
 		GenerateWalls();
-		
+
+	}
+
+	public Maze() {
+
+		this.size = 10;
+
+		exit = new Element(5,9,'S');
+
 	}
 	
 	/**

@@ -11,14 +11,16 @@ public class Hero extends Moveable {
 	private boolean armed;
 	private boolean hasEagle;
 
-
-	/**
-	 * @param lab Actual labyrinth
-	 */
 	public Hero(GameLogic game) {
 		super(game, 'Y');
 		this.armed = false;
 		this.hasEagle = true;
+	}
+	
+	public Hero(int x, int y, char symbol) { // TEST
+		super(x,y, symbol);
+		this.armed = false;
+		this.hasEagle = false;
 	}
 	
 	/**

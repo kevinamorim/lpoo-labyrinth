@@ -6,7 +6,7 @@ public class Game {
 		
 		GameConfig config = new GameConfig();
 		
-		GameLogic game = new GameLogic(config);
+		GameLogic game = new GameLogic(config, 0.05);
 
 		game.init();
 	

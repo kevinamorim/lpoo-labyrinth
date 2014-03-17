@@ -20,7 +20,16 @@ public class Dragon extends Moveable {
 		this.awake = true;
 		this.setRoundsToWake(0);
 	}
-	
+
+	public Dragon(int x, int y, char symbol) { // TEST
+
+		super(x,y,symbol);
+		
+		this.hasSword = false;
+		this.awake = true;
+		this.setRoundsToWake(0);
+	}
+
 	/**
 	 * @return the hasSword
 	 */

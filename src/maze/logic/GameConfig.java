@@ -20,6 +20,12 @@ public class GameConfig {
 
 	}
 	
+	public GameConfig(int mazeSize, int difficulty) {
+		
+		this.mazeSize = mazeSize;
+		this.difficulty = difficulty;
+	}
+
 	/**
 	 * @param in
 	 * @param out
