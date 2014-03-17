@@ -8,6 +8,18 @@ import java.util.Random;
  */
 public class Hero extends Moveable {
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if((this.x == ((Hero) obj).getX()) && (this.y == ((Hero) obj).getY()))
+			return true;
+		
+		return false;
+	}
+
 	private boolean armed;
 	private boolean hasEagle;
 

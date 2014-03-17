@@ -6,18 +6,7 @@ import java.util.Stack;
 public class Maze {
 	
 	// Char matrix representing the labyrinth 
-	private char tiles[][] = {
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			{ 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
-			{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
-			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-		};
+	private char tiles[][];
 	  		
 	private int size;
 
@@ -43,12 +32,10 @@ public class Maze {
 
 	}
 
-	public Maze() {
+	public Maze(char tiles[][]) {
 
-		this.size = 10;
-
-		exit = new Element(5,9,'S');
-
+		this.tiles = tiles;
+		this.size = tiles[0].length;
 	}
 	
 	/**

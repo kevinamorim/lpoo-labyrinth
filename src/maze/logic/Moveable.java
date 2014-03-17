@@ -117,23 +117,31 @@ public class Moveable extends Element {
 	}
 	
 	public boolean isValidMove(int x, int y, GameLogic game) {
-		
-		for(Dragon dragon: game.getDragons()) {
 
-			if(!(this == dragon)) {
-				
-				if(dragon.isAlive() && dragon.isAt(x, y)) {
-					return false;
+		if(game.getDragons() != null) {
+
+			for(Dragon dragon: game.getDragons()) {
+
+				if(!(this == dragon)) {
+
+					if(dragon.isAlive() && dragon.isAt(x, y)) {
+						return false;
+					}
 				}
 			}
+
 		}
-		
+
 		if(this == game.getHero()) {
 			
-			if(game.getMaze().getExit().isAt(x,y)) {
-				return true;
+			if(game.getMaze().getExit() != null) {
+
+				if(game.getMaze().getExit().isAt(x,y)) {
+					return true;
+				}
+
 			}
-			
+
 		}
 		
 		
