@@ -4,6 +4,7 @@ package maze.logic;
 import java.util.Random;
 
 import maze.cli.*;
+import maze.gui.GameWindow;
 
 public class GameLogic {
 
@@ -23,11 +24,13 @@ public class GameLogic {
 
 	private Input in;
 	private Output out;
+	private GameWindow gameWindow;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
 	public GameLogic() { 
 		out = new Output();
+		gameWindow = new GameWindow(this);
 	}
 
 	public GameLogic(GameConfig config, double dragonPerc) {
@@ -72,6 +75,8 @@ public class GameLogic {
 		tasks = new Task[TASKNUM];
 
 		createTasks();
+		
+		gameWindow = new GameWindow(this);
 
 	}
 

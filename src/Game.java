@@ -1,4 +1,6 @@
-import maze.logic.*;
+import maze.gui.GameWindow;
+import maze.logic.GameConfig;
+import maze.logic.GameLogic;
 
 public class Game {
 
@@ -11,7 +13,7 @@ public class Game {
 		game.init();
 	
 		game.loop();
-
+		
 	}
 
 }

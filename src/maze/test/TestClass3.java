@@ -1,15 +1,15 @@
 package maze.test;
 
-import static org.junit.Assert.*;
-import maze.logic.GameLogic;
-
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import maze.logic.Dragon;
 import maze.logic.Eagle;
 import maze.logic.Element;
 import maze.logic.GameLogic;
 import maze.logic.Maze;
+
+import org.junit.Test;
 
 public class TestClass3 {
 	
