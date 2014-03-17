@@ -194,7 +194,7 @@ public class GameLogic {
 	 */
 	public void moveHero(int command) {
 		
-		hero.move(command, this);
+		hero.move(this, command);
 	}
 	
 	/**
@@ -272,19 +272,26 @@ public class GameLogic {
 
 				dragon.move(this, r.nextInt(4));
 
-				if(dragon.foundSword(sword)) {
-					dragon.setHasSword(true);
-				}
-				else {
-					dragon.setHasSword(false);
-				}
-
 				if(dragon.isAt(maze.getExit())) {
 					dragon.moveBack();
 				}
 			}
 		}
 		
+	}
+	
+	public void checkIfDragonsFoundSword() {
+		
+		for(Dragon dragon: dragons) {
+			
+			if(dragon.foundSword(sword)) {
+				dragon.setHasSword(true);
+			}
+			else {
+				dragon.setHasSword(false);
+			}
+		}
+
 	}
 	
 	/**
@@ -406,7 +413,7 @@ public class GameLogic {
 			// Handles input.
 			int command = in.get();
 			switch(command) {
-			case 5: // SPACE
+			case 4: // SPACE
 				sendEagle();
 				break;
 			default:
@@ -434,7 +441,10 @@ public class GameLogic {
 			checkForFoundSword();
 			checkForFoundEagle();
 			
-			if(difficulty > 1) moveAllDragons();
+			if(difficulty > 1) {
+				moveAllDragons();
+				checkIfDragonsFoundSword();
+			}
 			
 			checkForDragonEncounters();
 			

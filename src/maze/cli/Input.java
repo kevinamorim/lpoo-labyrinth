@@ -25,15 +25,15 @@ public class Input {
 			
 			switch(s.charAt(0)) {
 			case 'w':
-				return 1;
+				return 0;
 			case 'd':
-				return 2;
+				return 1;
 			case 's':
-				return 3;
+				return 2;
 			case 'a':
-				return 4;
+				return 3;
 			case ' ':
-				return 5;
+				return 4;
 			default:
 				break;
 			}

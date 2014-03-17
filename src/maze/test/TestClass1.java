@@ -24,6 +24,7 @@ public class TestClass1 {
 			{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
 			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
 	};
+	
 	private GameLogic gameTest;
 	private String commands;
 
@@ -189,16 +190,16 @@ public class TestClass1 {
 		for(int i = 0; i < commands.length(); i++) {
 			switch(commands.charAt(i)) {
 			case 'w':
-				gameTest.getHero().move(1, gameTest);
+				gameTest.getHero().move(gameTest, 0);
 				break;
 			case 'd':
-				gameTest.getHero().move(2, gameTest);
+				gameTest.getHero().move(gameTest, 1);
 				break;
 			case 's':
-				gameTest.getHero().move(3, gameTest);
+				gameTest.getHero().move(gameTest, 2);
 				break;
 			case 'a':
-				gameTest.getHero().move(4, gameTest);
+				gameTest.getHero().move(gameTest, 3);
 				break;
 			default:
 				break;

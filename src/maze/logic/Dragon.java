@@ -47,39 +47,6 @@ public class Dragon extends Moveable {
 		else setSymbol('D');
 		
 	}
-	
-	/**
-	 * Moves the dragon randomly one position.
-	 * @param maze Actual labyrinth.
-	 */
-	public void move(GameLogic game, int direction) {
-		
-		this.oldX = x;
-		this.oldY = y;
-
-		switch(direction) {
-		case 0: // UP
-			this.x = x - 1;
-			break;
-		case 1: // RIGHT
-			this.y = y + 1;
-			break;
-		case 2: // DOWN
-			this.x = x + 1;
-			break;
-		case 3: // LEFT
-			this.y = y - 1;
-			break;
-		default:
-			break;
-		}
-
-		if(!isValidMove(x, y, game)) {
-			this.setX(oldX);
-			this.setY(oldY);
-		}
-
-	}
 
 	/**
 	 * @return the awake

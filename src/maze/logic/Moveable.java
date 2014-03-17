@@ -40,6 +40,30 @@ public class Moveable extends Element {
 	}
 
 	/**
+	 * 
+	 * @param direction
+	 * @param lab
+	 */
+	public void move(GameLogic game, int direction) {
+		switch(direction) {
+		case 0: //UP
+			if(isValidMove(getX() - 1, getY(), game)) moveUp();
+			break;
+		case 1: //RIGHT
+			if(isValidMove(getX(), getY() + 1, game)) moveRight();
+			break;
+		case 2: //DOWN
+			if(isValidMove(getX() + 1, getY(), game)) moveDown();
+			break;
+		case 3: //LEFT
+			if(isValidMove(getX(), getY() - 1, game)) moveLeft();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/**
 	 * @param lab
 	 */
 	public void moveDown() {
@@ -149,18 +173,22 @@ public class Moveable extends Element {
 			return false;
 		}
 
-		if(game.getHero().isAt(x, y)) {
-			return false;
+		if(game.getHero() != null) {
+			if(game.getHero().isAt(x, y)) {
+				return false;
+			}
 		}
 		
 		if(game.getMaze().getTiles()[x][y] == ' ') {
 			return true;
 		}
 		
-		if(game.getSword().isAt(x, y)) {
-			return true;
+		if(game.getHero() != null) {
+			if(game.getSword().isAt(x, y)) {
+				return true;
+			}
 		}
-		
+
 		return false;
 	}
 	

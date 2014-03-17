@@ -9,6 +9,18 @@ public class Element {
 	protected int oldX;
 	protected int oldY;
 	protected char symbol;
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if((this.x == ((Element) obj).getX()) && (this.y == ((Element) obj).getY()))
+			return true;
+		
+		return false;
+	}
 
 	/**
 	 * @param x
