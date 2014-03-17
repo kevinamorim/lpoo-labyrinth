@@ -17,28 +17,21 @@ public class GameLogic {
 	private int mazeSize;
 	private int difficulty;
 	private int mazeDragons;
-	//private double dragonPerc = 0.05;
+	// private double dragonPerc = 0.05;
 
 	private Input in;
 	private Output out;
-	
+
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
-	
+
+	public GameLogic() { }
+
 	public GameLogic(GameConfig config, double dragonPerc) {
+		
 		this.mazeSize = config.getMazeSize();
 		this.difficulty = config.getDifficulty();
 		
 		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
-	}
-	
-	public GameLogic(boolean useAuto) { // TEST
-		
-		if(useAuto) {
-			this.mazeSize = 10;
-			this.difficulty = 1;
-			this.mazeDragons = 1;
-		}
-
 	}
 
 	/**
@@ -450,15 +443,6 @@ public class GameLogic {
 		// END OF LOOP
 		
 		boolean won = hero.isAlive();
-		
-		if(won) {
-			//maze.drawElement(dragons);
-			//maze.drawElement(hero);
-		}
-		else {
-			//maze.drawElement(hero);
-			//maze.drawElement(dragons);
-		}
 		
 		checkTasks();
 		
