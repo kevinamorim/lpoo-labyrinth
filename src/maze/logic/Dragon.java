@@ -52,38 +52,22 @@ public class Dragon extends Moveable {
 	 * Moves the dragon randomly one position.
 	 * @param maze Actual labyrinth.
 	 */
-	public void move(GameLogic game) {
-		Random r = new Random();
-		
-		/*
-		 * Direction:
-		 * 		0 - Up
-		 * 		1 - Right
-		 * 		2 - Down
-		 * 		3 - Left
-		 */
-		int direction = 0; // With default values, to avoid compilation errors.
+	public void move(GameLogic game, int direction) {
 		
 		this.oldX = x;
 		this.oldY = y;
 
-		direction = r.nextInt(4); 
-
 		switch(direction) {
-		case 0: 
-			// UP
+		case 0: // UP
 			this.x = x - 1;
 			break;
-		case 1:
-			// RIGHT
+		case 1: // RIGHT
 			this.y = y + 1;
 			break;
-		case 2: 
-			// DOWN
+		case 2: // DOWN
 			this.x = x + 1;
 			break;
-		case 3:
-			// LEFT
+		case 3: // LEFT
 			this.y = y - 1;
 			break;
 		default:

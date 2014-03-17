@@ -1,6 +1,8 @@
 
 package maze.logic;
 
+import java.util.Random;
+
 import maze.cli.*;
 
 public class GameLogic {
@@ -24,7 +26,9 @@ public class GameLogic {
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
-	public GameLogic() { }
+	public GameLogic() { 
+		out = new Output();
+	}
 
 	public GameLogic(GameConfig config, double dragonPerc) {
 		
@@ -144,7 +148,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void createTasks() {
+	public void createTasks() {
 		
 		tasks[0] = new Task("Get a weapon.");
 		tasks[1] = new Task("Kill all dragons.");
@@ -154,7 +158,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void checkTasks() {
+	public void checkTasks() {
 		
 		if(hero.isArmed()) {
 			tasks[0].setDone(true);
@@ -172,7 +176,7 @@ public class GameLogic {
 	/**
 	 * @return
 	 */
-	private boolean allDragonsAreDead() {
+	public boolean allDragonsAreDead() {
 		
 		for(Dragon dragon: dragons) {
 			
@@ -188,7 +192,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void moveHero(int command) {
+	public void moveHero(int command) {
 		
 		hero.move(command, this);
 	}
@@ -197,7 +201,7 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	private boolean checkIfHeroWon() {
+	public boolean checkIfHeroWon() {
 
 		if(hero.isAt(maze.getExit())) {
 
@@ -215,7 +219,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void checkForFoundSword() {
+	public void checkForFoundSword() {
 
 		if(!hero.isArmed() && hero.foundSword(sword)) {
 
@@ -225,7 +229,8 @@ public class GameLogic {
 		}
 	}
 
-	private void checkForFoundEagle() {
+	
+	public void checkForFoundEagle() {
 		
 		if(!hero.hasEagle() && hero.foundEagle(eagle)) {
 			
@@ -244,7 +249,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void setAllDragonStates() {
+	public void setAllDragonStates() {
 
 		for(Dragon dragon: dragons) {
 
@@ -257,13 +262,15 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void moveAllDragons() {
+	public void moveAllDragons() {
 		
 		for(Dragon dragon: dragons) {
 
 			if(dragon.isAwake() && dragon.isAlive()) {
+				
+				Random r = new Random();
 
-				dragon.move(this);
+				dragon.move(this, r.nextInt(4));
 
 				if(dragon.foundSword(sword)) {
 					dragon.setHasSword(true);
@@ -283,7 +290,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void checkForDragonEncounters() {
+	public void checkForDragonEncounters() {
 
 		for(Dragon dragon: dragons) {
 
@@ -307,7 +314,7 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	private boolean noDragonIsUponSword() {
+	public boolean noDragonIsUponSword() {
 		
 		for(Dragon dragon: dragons) {
 
@@ -320,7 +327,7 @@ public class GameLogic {
 	}
 
 	
-	private void sendEagle() {
+	public void sendEagle() {
 		if(!eagle.isMoving()) {
 			hero.setHasEagle(false);
 			hero.setSymbol('H');
@@ -328,7 +335,7 @@ public class GameLogic {
 		}
 	}
 	
-	private void checkKillEagle() {
+	public void checkKillEagle() {
 		
 		
 		for(Dragon dragon : dragons) {
