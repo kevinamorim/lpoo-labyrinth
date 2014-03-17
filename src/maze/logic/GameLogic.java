@@ -22,7 +22,6 @@ public class GameLogic {
 	private Input in;
 	private Output out;
 	
-	public enum KEY {NONE, UP, RIGHT, DOWN, LEFT, SPACE};
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
 	public GameLogic(GameConfig config, double dragonPerc) {
@@ -196,7 +195,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	private void moveHero(GameLogic.KEY command) {
+	private void moveHero(int command) {
 		
 		hero.move(command, this);
 	}
@@ -405,9 +404,9 @@ public class GameLogic {
 			if(difficulty == 2) setAllDragonStates();
 			
 			// Handles input.
-			KEY command = KEY.values()[in.get()];
+			int command = in.get();
 			switch(command) {
-			case SPACE:
+			case 5: // SPACE
 				sendEagle();
 				break;
 			default:

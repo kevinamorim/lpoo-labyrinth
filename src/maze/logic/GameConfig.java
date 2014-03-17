@@ -126,9 +126,8 @@ public class GameConfig {
 	 * Helpers
 	 */
 	public boolean isValid(String s) {
-		int i;
 	    try { 
-	        i = Integer.parseInt(s); 
+	        Integer.parseInt(s); 
 	    } catch(NumberFormatException e) { 
 	        return false; 
 	    }
