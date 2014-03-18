@@ -440,6 +440,10 @@ public class GameLogic {
 		int keyCode;
 		
 		// TEMP
+		//
+		// ------------------------------------------------
+		//   Game currently using W,A,S,D for movement ;)
+		// ------------------------------------------------
 		inputMethodKeyboard = true;
 		
 		out.drawCommands();
@@ -455,7 +459,6 @@ public class GameLogic {
 			}
 
 			// ------------------------------------------------------------------
-			// Handles input.
 			if(inputMethodKeyboard) { // Get key strokes
 				
 				do{
