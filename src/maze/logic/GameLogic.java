@@ -20,7 +20,12 @@ public class GameLogic {
 	private int mazeSize;
 	private int difficulty;
 	private int mazeDragons;
-	// private double dragonPerc = 0.05;
+	
+	// KeyCodes
+	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
+	private int gameKeyCodes[] = {87, 68, 83, 65};
+	
+	private boolean inputMethodKeyboard = true;
 
 	private Input in;
 	private Output out;
@@ -415,7 +420,9 @@ public class GameLogic {
 	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 */
 	public void loop() {
-
+		
+		int command;
+		
 		out.drawCommands();
 		out.drawGoal(tasks);
 		draw();
@@ -427,12 +434,16 @@ public class GameLogic {
 			if(difficulty == 2) setAllDragonStates();
 			
 			// Handles input.
-			int command = in.get();
+//			if(inputMethodKeyboard)
+//				command = waitForKey();
+//			else
+				command = in.get();
 			switch(command) {
 			case 4: // SPACE
 				sendEagle();
 				break;
 			default:
+				System.out.println("Command: " + command);
 				moveHero(command);
 				if(hero.hasEagle()) eagle.updatePosition(hero.getX(), hero.getY());
 				break;
@@ -485,5 +496,22 @@ public class GameLogic {
 		out.drawGoal(tasks);
 		out.drawGameOver(won);
 		
+	}
+
+	private int waitForKey() {
+		while(validKeyCode(this.gameWindow.getKeyCode()) == -1) {
+			
+		}
+		return 0;
+	}
+
+	private int validKeyCode(int keyCode) {
+		for(int i = 0; i < gameKeyCodes.length; i++) {
+			if(gameKeyCodes[i] == keyCode) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 }
