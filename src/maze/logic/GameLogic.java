@@ -421,7 +421,8 @@ public class GameLogic {
 	 */
 	public void loop() {
 		
-		int command;
+		int command = -1;
+		int keyCode;
 		
 		out.drawCommands();
 		out.drawGoal(tasks);
@@ -432,23 +433,37 @@ public class GameLogic {
 			out.drawMsg(MSG.GET_KEY.ordinal());
 
 			if(difficulty == 2) setAllDragonStates();
-			
+
+			// ------------------------------------------------------------------
 			// Handles input.
-//			if(inputMethodKeyboard)
-//				command = waitForKey();
-//			else
+			if(inputMethodKeyboard) {
+				
+				do{
+					keyCode = gameWindow.getKeyCode();
+					
+					if(keyCode != 0) {
+						command = getCurrentCommand(keyCode);
+					}
+					
+				}while(command == -1);
+				
+				gameWindow.resetKeyCode();
+				
+			}
+			else {
 				command = in.get();
+			}
+			
 			switch(command) {
 			case 4: // SPACE
 				sendEagle();
 				break;
 			default:
-				System.out.println("Command: " + command);
 				moveHero(command);
 				if(hero.hasEagle()) eagle.updatePosition(hero.getX(), hero.getY());
 				break;
 			}
-			// --
+			// ------------------------------------------------------------------
 			
 			if(eagle.isMoving() && eagle.isAlive()) {
 				if(!eagle.hasSword()) eagle.moveToSword(maze, sword);
@@ -484,6 +499,8 @@ public class GameLogic {
 			
 			draw();
 			
+			command = -1;
+			
 		}
 		
 		// END OF LOOP
@@ -498,16 +515,13 @@ public class GameLogic {
 		
 	}
 
-	private int waitForKey() {
-		while(validKeyCode(this.gameWindow.getKeyCode()) == -1) {
-			
-		}
-		return 0;
-	}
-
-	private int validKeyCode(int keyCode) {
+	private int getCurrentCommand(int keyCode) {
+		
 		for(int i = 0; i < gameKeyCodes.length; i++) {
+			
 			if(gameKeyCodes[i] == keyCode) {
+				
+				out.debugPrint("i > " + i);
 				return i;
 			}
 		}

@@ -47,6 +47,7 @@ public class GameWindow implements KeyListener {
 	 * @param e
 	 */
 	public void keyPressed(KeyEvent e) {
+		saveKeyCode(e);
 	}
 
 	/**
@@ -54,9 +55,7 @@ public class GameWindow implements KeyListener {
 	 * 
 	 * @param e
 	 */
-	public void keyReleased(KeyEvent e) {
-		// Saves the released keycode to the local variable
-		saveKeyCode(e);
+	public void keyReleased(KeyEvent e) {	
 	}
 
 	/**
@@ -82,12 +81,18 @@ public class GameWindow implements KeyListener {
 	}
 	
 	/**
+	 * @param keyCode the keyCode to set
+	 */
+	public void resetKeyCode() {
+		this.keyCode = 0;
+	}
+	
+	/**
 	 * Saves to the variable 'keyCode' the value received by an keyboard event
 	 * 
 	 * @param e
 	 */
 	private void saveKeyCode(KeyEvent e) {
-		System.out.println("code > " + e.getKeyCode());
 		this.keyCode = e.getKeyCode();
 	}
 
