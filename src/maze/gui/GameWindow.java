@@ -14,7 +14,7 @@ public class GameWindow implements KeyListener {
 	private JLabel label;
 	
 	private int keyCode;
-	
+
 	public GameWindow(GameLogic gameLogic) {
 		frame = new JFrame("Game Status");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

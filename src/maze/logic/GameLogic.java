@@ -447,6 +447,13 @@ public class GameLogic {
 					
 				}while(command == -1);
 				
+				// GAME ONLY WORKS WITH DELAY...
+				try {
+				    Thread.sleep(200);
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
+				
 				gameWindow.resetKeyCode();
 				
 			}
@@ -521,7 +528,6 @@ public class GameLogic {
 			
 			if(gameKeyCodes[i] == keyCode) {
 				
-				out.debugPrint("i > " + i);
 				return i;
 			}
 		}
