@@ -127,6 +127,7 @@ public class Moveable extends Element {
 		if(this.isAt(sword)) {
 			return true;
 		}
+		
 		return false;
 	}
 
@@ -202,7 +203,10 @@ public class Moveable extends Element {
 		//
 		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
 		//
-		if(Math.sqrt(Math.abs(x - dragon.getX()) + Math.abs(y - dragon.getY())) <= 1) return true;
+		if(Math.sqrt(Math.abs(this.x - dragon.getX()) + Math.abs(this.y - dragon.getY())) <= 1) {
+			return true;
+		}
+		
 		return false;
 		
 	}

@@ -14,7 +14,7 @@ public class Eagle extends Moveable {
 		setHasSword(false);
 		setMovingHorizontally(true);
 		setMoving(false);
-		flying = false;
+		setFlying(false);
 			
 	}
 

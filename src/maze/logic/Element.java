@@ -209,8 +209,9 @@ public class Element {
 	}
 	
 	public boolean isAt(Element b) {
-		if(this.getX() == b.getX() && this.getY() == b.getY())
+		if((this.getX() == b.getX()) && (this.getY() == b.getY())) {
 			return true;
+		}
 		return false;
 	}
 	
