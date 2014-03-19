@@ -68,7 +68,7 @@ public class TestClass3 {
 		
 		// Limit to 100 movements.
 		for(int i = 0; i < 100; i++) {
-			gameTest.getEagle().moveToSword(gameTest.getMaze(), gameTest.getSword());
+			gameTest.getEagle().moveToSword(gameTest.getSword());
 			gameTest.checkIfEagleFoundSword();
 			if(gameTest.getEagle().hasSword()) break;
 		}

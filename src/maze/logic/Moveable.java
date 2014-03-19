@@ -45,6 +45,9 @@ public class Moveable extends Element {
 	 * @param lab
 	 */
 	public void move(GameLogic game, int direction) {
+		
+		updateOldCoord();
+		
 		switch(direction) {
 		case 0: //UP
 			if(isValidMove(getX() - 1, getY(), game)) moveUp();
@@ -63,13 +66,18 @@ public class Moveable extends Element {
 		}
 	}
 	
+	private void updateOldCoord() {
+		setOldX(x);
+		setOldY(y);
+	}
+
 	/**
 	 * @param lab
 	 */
 	public void moveDown() {
 		
-		setOldX(x);
-		setOldY(y);
+//		setOldX(x);
+//		setOldY(y);
 		setX(x + 1);
 	}
 
@@ -78,8 +86,8 @@ public class Moveable extends Element {
 	 */
 	public void moveUp() {
 
-		setOldX(x);
-		setOldY(y);
+//		setOldX(x);
+//		setOldY(y);
 		setX(x - 1);
 	}
 
@@ -88,8 +96,8 @@ public class Moveable extends Element {
 	 */
 	public void moveLeft() {
 
-		setOldX(x);
-		setOldY(y);
+//		setOldX(x);
+//		setOldY(y);
 		setY(y - 1);
 	}
 
@@ -98,8 +106,8 @@ public class Moveable extends Element {
 	 */
 	public void moveRight() {
 
-		setOldX(x);
-		setOldY(y);
+//		setOldX(x);
+//		setOldY(y);
 		setY(y + 1);
 	}
 	

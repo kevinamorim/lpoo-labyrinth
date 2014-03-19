@@ -6,6 +6,7 @@ public class Eagle extends Moveable {
 	private boolean movingHorizontally;
 	private boolean moving;
 	private boolean flying;
+	private boolean useful;
 
 
 	public Eagle(int x, int y, char symbol) {
@@ -15,6 +16,7 @@ public class Eagle extends Moveable {
 		setMovingHorizontally(true);
 		setMoving(false);
 		setFlying(false);
+		setUseful(true);
 			
 	}
 
@@ -76,9 +78,23 @@ public class Eagle extends Moveable {
 	}
 	
 	/**
+	 * @return the useful
+	 */
+	public boolean isUseful() {
+		return useful;
+	}
+
+	/**
+	 * @param useful the useful to set
+	 */
+	public void setUseful(boolean useful) {
+		this.useful = useful;
+	}
+
+	/**
 	 * @param sword
 	 */
-	public void moveToSword(Maze maze, Element sword) {
+	public void moveToSword(Element sword) {
 		
 		flying = true;
 		
@@ -130,7 +146,7 @@ public class Eagle extends Moveable {
 			if(y < oldY) y++;
 			else y--;
 		}
-		else {
+		else if(this.isAt(oldX, oldY)){
 			flying = false;
 		}
 		

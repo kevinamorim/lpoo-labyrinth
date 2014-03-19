@@ -157,40 +157,95 @@ public class GameLogic {
 		this.sword = sword;
 	}
 
-	/**
-	 * 
-	 */
-	public void createTasks() {
-		
-		tasks[0] = new Task("Get a weapon.");
-		tasks[1] = new Task("Kill all dragons.");
-		tasks[2] = new Task("Find the exit.");
-	}
-	
-	/**
-	 * 
-	 */
-	public void checkTasks() {
-		
-		if(hero.isArmed()) {
-			tasks[0].setDone(true);
-		}
-		
-		if(allDragonsAreDead()) {
-			tasks[1].setDone(true);
-		}
-		
-		if(heroWon()) {
-			tasks[2].setDone(true);
-		}
-	}
-	
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//					HERO					//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 	/**
 	 * 
 	 */
 	public void moveHero(int command) {
 		
 		hero.move(this, command);
+	}
+
+	/**
+	 * 
+	 */
+	public boolean checkIfHeroFoundSword() {
+
+		if(!hero.isArmed() && hero.foundSword(sword)) {
+
+			out.drawMsg(MSG.FOUND_SWORD.ordinal());
+
+			hero.arm();
+			
+			if(eagle.hasSword()) {
+				eagle.setHasSword(false);
+			}
+			
+			sword.setX(0);
+			sword.setY(0);
+			
+			return true;
+		}
+	
+		return false;
+	}
+	
+	public boolean checkIfHeroFoundEagle() {
+
+		if((!hero.hasEagle()) && (hero.foundEagle(eagle))) {
+
+			hero.setHasEagle(true);
+			out.drawMsg(3);
+
+			if(eagle.hasSword()) {
+
+				hero.arm();
+
+				eagle.setHasSword(false);
+				eagle.setUseful(false);
+			}
+			else {
+				hero.setSymbol('Y');
+			}
+
+			eagle.setMoving(false);
+			eagle.setFlying(false);
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public boolean checkIfHeroFoundDragon() {
+
+		for(Dragon dragon: dragons) {
+
+			if(dragon.isAlive() && hero.foundDragon(dragon)) {
+
+				if(hero.isArmed()) {
+
+					out.drawMsg(MSG.KILLED_DRAGON.ordinal());
+					dragon.die();
+				}
+				else {
+					if(dragon.isAwake()) {
+						hero.die();
+					}
+				}
+				
+				return true;
+			}
+		}	
+		
+		return false;
 	}
 	
 	/**
@@ -211,50 +266,12 @@ public class GameLogic {
 		
 		return false;
 	}
-
-	/**
-	 * 
-	 */
-	public void checkIfHeroFoundSword() {
-
-		if(!hero.isArmed() && hero.foundSword(sword)) {
-
-			out.drawMsg(MSG.FOUND_SWORD.ordinal());
-
-			hero.arm();
-			
-			if(eagle.hasSword()) {
-				eagle.setHasSword(false);
-			}
-			
-			sword.setX(0);
-			sword.setY(0);
-		}
 	
-	}
-	
-	public void checkIfEagleFoundSword() {
-		if(!eagle.hasSword() && eagle.foundSword(sword)) {
-			eagle.setHasSword(true);
-			eagle.setFlying(false);
-		}
-	}
-
-	public void checkIfHeroFoundEagle() {
-		
-		if(!hero.hasEagle() && hero.foundEagle(eagle)) {
-			
-			hero.setHasEagle(true);
-			hero.setSymbol('Y');
-			out.drawMsg(3);
-			
-			if(eagle.hasSword()) {
-				hero.arm();
-				eagle.setHasSword(false);
-			}
-		}
-		
-	}
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//					DRAGONS					//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 	
 	/**
 	 * 
@@ -276,11 +293,11 @@ public class GameLogic {
 	 * 
 	 */
 	public void moveAllDragons() {
-		
+
 		for(Dragon dragon: dragons) {
 
 			if(dragon.isAwake() && dragon.isAlive()) {
-				
+
 				Random r = new Random();
 
 				dragon.move(this, r.nextInt(4));
@@ -290,23 +307,35 @@ public class GameLogic {
 				}
 			}
 		}
-		
+
 	}
-	
-	public void checkIfDragonFoundSword() {
-		
+
+	public boolean checkIfDragonFoundSword() {
+
+		for(Dragon dragon: dragons) {
+				dragon.setHasSword(false);
+		}
+
 		for(Dragon dragon: dragons) {
 			
 			if(dragon.foundSword(sword)) {
 				dragon.setHasSword(true);
-			}
-			else {
-				dragon.setHasSword(false);
-			}
+				return true;
+			}		
 		}
 
+		return false;
 	}
 
+	public void checkDragons() {
+
+		if(difficulty > 1) {
+
+			moveAllDragons();
+			checkIfDragonFoundSword();
+		}
+	}
+	
 	/**
 	 * @return
 	 */
@@ -324,43 +353,25 @@ public class GameLogic {
 
 	/**
 	 * 
-	 */
-	public void checkIfHeroFoundDragon() {
-
-		for(Dragon dragon: dragons) {
-
-			if(hero.foundDragon(dragon) && (dragon.isAlive())) {
-
-				if(hero.isArmed()) {
-
-					out.drawMsg(MSG.KILLED_DRAGON.ordinal());
-					dragon.die();
-				}
-				else {
-					if(dragon.isAwake()) {
-						hero.die();
-					}
-				}
-			}
-		}
-		
-	}
-
-	/**
-	 * 
 	 * @return
 	 */
 	public boolean noDragonIsUponSword() {
-		
+
 		for(Dragon dragon: dragons) {
 
 			if(dragon.hasSword()) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
+
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//					EAGLE					//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 
 	public void sendEagle() {
 		if(hero.hasEagle()) {
@@ -370,49 +381,68 @@ public class GameLogic {
 		}
 	}
 	
-	public void checkIfEagleFoundDragon() {
-			
-		for(Dragon dragon : dragons) {
+	public boolean checkIfEagleFoundDragon() {
 
-			if(!eagle.isFlying() && !hero.hasEagle()) {
+		if(!eagle.isFlying() && !hero.hasEagle()) {
+
+			for(Dragon dragon : dragons) {
 				
 				if(eagle.foundDragon(dragon)) {
 
 					eagle.die();
-					
+
 					if((sword != null) && eagle.hasSword()) {
-						
+
 						eagle.setHasSword(false);
+						eagle.setMoving(false);
+						eagle.setFlying(false);
+
 						sword.setX(eagle.getX());
 						sword.setY(eagle.getY());
 					}
 
+					return true;
 				}
 			}
 		}
 
+		return false;
+	}
+	
+	public boolean checkIfEagleFoundSword() {
+		
+		if(!eagle.hasSword() && eagle.foundSword(sword)) {
+			eagle.setHasSword(true);
+			eagle.setFlying(false);
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void checkEagle() {
 
-		if(eagle != null) {
+		if(eagle != null && eagle.isUseful()) {
 			
 			// If the hero has the eagle, he carries her
 			if(hero.hasEagle()) {
 				eagle.updatePosition(hero.getX(), hero.getY());
 			}
 
-			// If the hero is on the move
+			// If the eagle is on the move
 			if(eagle.isAlive() && eagle.isMoving()) {
 				
 				if(!eagle.hasSword()) {
-					eagle.moveToSword(maze, sword);
+					eagle.moveToSword(sword);
 					
 					checkIfEagleFoundSword();
+					
 				}
 				else {
 					
 					eagle.moveBack();
+					
 					sword.setX(eagle.getX());
 					sword.setY(eagle.getY());
 				}
@@ -420,19 +450,17 @@ public class GameLogic {
 			}
 			
 			// If the eagle finds a dragon, it dies.
-			checkIfEagleFoundDragon();
+			if(checkIfEagleFoundDragon()) {
+				out.debugPrint("> Eagle found dragon");
+			}
 		}
 	}
 
-	public void checkDragons() {
-		
-		if(difficulty > 1) {
-
-			moveAllDragons();
-			checkIfDragonFoundSword();
-		}
-	}
-	
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//					MISC					//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 	public int getInput() {
 		
 		int command = -1;
@@ -472,6 +500,35 @@ public class GameLogic {
 	}
 	
 	/**
+	 * 
+	 */
+	public void createTasks() {
+		
+		tasks[0] = new Task("Get a weapon.");
+		tasks[1] = new Task("Kill all dragons.");
+		tasks[2] = new Task("Find the exit.");
+	}
+	
+	/**
+	 * 
+	 */
+	public void checkTasks() {
+		
+		if(hero.isArmed()) {
+			tasks[0].setDone(true);
+		}
+		
+		if(allDragonsAreDead()) {
+			tasks[1].setDone(true);
+		}
+		
+		if(heroWon()) {
+			tasks[2].setDone(true);
+		}
+	}
+	
+	/**
+	 * Draws the game board
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
 	public void drawGameBoard() {
@@ -540,11 +597,11 @@ public class GameLogic {
 		return -1;
 	}
 
-	/** 
-	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 *    MAIN GAME LOOP
-	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 */
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//			   MAIN GAME LOOP				//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 	public void loop() {
 
 		int command;
@@ -566,9 +623,9 @@ public class GameLogic {
 			
 			checkEagle();
 
-			checkIfHeroFoundSword();
-
 			checkIfHeroFoundEagle();
+			
+			checkIfHeroFoundSword();
 
 			checkDragons();
 
