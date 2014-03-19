@@ -79,7 +79,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkForFoundSword();
+		gameTest.checkIfHeroFoundSword();
 		
 		assertTrue(gameTest.getHero().isArmed());
 	}
@@ -103,7 +103,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkForDragonEncounters();
+		gameTest.checkIfHeroFoundDragon();
 		
 		assertFalse(gameTest.getDragons()[0].isAlive());
 	}
@@ -125,7 +125,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkForDragonEncounters();
+		gameTest.checkIfHeroFoundDragon();
 		
 		assertFalse(gameTest.getHero().isAlive());
 	}

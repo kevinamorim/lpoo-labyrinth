@@ -47,7 +47,7 @@ public class TestClass3 {
 		
 		execCommands();
 		
-		gameTest.checkForEagleFoundSword();
+		gameTest.checkIfEagleFoundSword();
 		
 		assertTrue(gameTest.getEagle().hasSword());
 		
@@ -69,7 +69,7 @@ public class TestClass3 {
 		// Limit to 100 movements.
 		for(int i = 0; i < 100; i++) {
 			gameTest.getEagle().moveToSword(gameTest.getMaze(), gameTest.getSword());
-			gameTest.checkForEagleFoundSword();
+			gameTest.checkIfEagleFoundSword();
 			if(gameTest.getEagle().hasSword()) break;
 		}
 		
@@ -118,7 +118,7 @@ public class TestClass3 {
 		
 		gameTest.getDragons()[0] = new Dragon(4, 4, 'D');
 		
-		gameTest.checkKillEagle();
+		gameTest.checkIfEagleFoundDragon();
 		
 		assertFalse(gameTest.getEagle().isAlive());
 		

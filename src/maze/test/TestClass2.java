@@ -89,7 +89,7 @@ public class TestClass2 {
 		
 		execCommands();
 		
-		gameTest.checkIfDragonsFoundSword();
+		gameTest.checkIfDragonFoundSword();
 		
 		assertTrue(gameTest.getDragons()[0].hasSword());
 	}
@@ -145,7 +145,7 @@ public class TestClass2 {
 		
 		execCommands();
 		
-		gameTest.checkIfDragonsFoundSword();
+		gameTest.checkIfDragonFoundSword();
 		
 		assertTrue(gameTest.getDragons()[0].hasSword());
 		

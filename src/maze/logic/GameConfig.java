@@ -27,6 +27,18 @@ public class GameConfig {
 
 	}
 	
+	public GameConfig(boolean isConsole) {
+
+		in = new Input();
+		out = new Output();
+		
+		mazeSize = inputMazeSize(in, out);
+		difficulty = inputGameDifficulty(in, out);
+		
+		this.isConsole = isConsole;
+
+	}
+	
 	public GameConfig(int mazeSize, int difficulty, boolean isConsole) {
 		
 		this.mazeSize = mazeSize;

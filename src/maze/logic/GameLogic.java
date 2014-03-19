@@ -43,7 +43,7 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
+	 * Initializes all game variables
 	 */
 	public void init() {
 		
@@ -82,6 +82,7 @@ public class GameLogic {
 	}
 
 	/**
+	 * Returns the game maze
 	 * @return the maze
 	 */
 	public Maze getMaze() {
@@ -89,6 +90,7 @@ public class GameLogic {
 	}
 
 	/**
+	 * Sets the variable maze with the passed value
 	 * @param maze the maze to set
 	 */
 	public void setMaze(Maze maze) {
@@ -96,6 +98,7 @@ public class GameLogic {
 	}
 
 	/**
+	 * Returns the hero
 	 * @return the hero
 	 */
 	public Hero getHero() {
@@ -103,13 +106,15 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param hero the hero to set
+	 * Sets the hero with the passed value
+	 * @param hero
 	 */
 	public void setHero(Hero hero) {
 		this.hero = hero;
 	}
 
 	/**
+	 * Returns the eagle
 	 * @return the eagle
 	 */
 	public Eagle getEagle() {
@@ -117,6 +122,7 @@ public class GameLogic {
 	}
 
 	/**
+	 * Sets the eagle with the passed value
 	 * @param eagle the eagle to set
 	 */
 	public void setEagle(Eagle eagle) {
@@ -178,23 +184,7 @@ public class GameLogic {
 			tasks[2].setDone(true);
 		}
 	}
-		
-	/**
-	 * @return
-	 */
-	public boolean allDragonsAreDead() {
-		
-		for(Dragon dragon: dragons) {
-			
-			if(dragon.isAlive()) {
-				return false;
-			}	
-		}
-		
-		return true;
-	}
 	
-
 	/**
 	 * 
 	 */
@@ -225,7 +215,7 @@ public class GameLogic {
 	/**
 	 * 
 	 */
-	public void checkForFoundSword() {
+	public void checkIfHeroFoundSword() {
 
 		if(!hero.isArmed() && hero.foundSword(sword)) {
 
@@ -243,15 +233,14 @@ public class GameLogic {
 	
 	}
 	
-	public void checkForEagleFoundSword() {
+	public void checkIfEagleFoundSword() {
 		if(!eagle.hasSword() && eagle.foundSword(sword)) {
 			eagle.setHasSword(true);
 			eagle.setFlying(false);
 		}
 	}
 
-	
-	public void checkForFoundEagle() {
+	public void checkIfHeroFoundEagle() {
 		
 		if(!hero.hasEagle() && hero.foundEagle(eagle)) {
 			
@@ -272,11 +261,14 @@ public class GameLogic {
 	 */
 	public void setAllDragonStates() {
 
-		for(Dragon dragon: dragons) {
+		if(difficulty == 2) {
+			
+			for(Dragon dragon: dragons) {
 
-			if(dragon.isAlive()) {
-				dragon.setDragonState();
-			}	
+				if(dragon.isAlive()) {
+					dragon.setDragonState();
+				}	
+			}
 		}
 	}
 
@@ -301,7 +293,7 @@ public class GameLogic {
 		
 	}
 	
-	public void checkIfDragonsFoundSword() {
+	public void checkIfDragonFoundSword() {
 		
 		for(Dragon dragon: dragons) {
 			
@@ -314,11 +306,26 @@ public class GameLogic {
 		}
 
 	}
-	
+
+	/**
+	 * @return
+	 */
+	public boolean allDragonsAreDead() {
+
+		for(Dragon dragon: dragons) {
+
+			if(dragon.isAlive()) {
+				return false;
+			}	
+		}
+
+		return true;
+	}
+
 	/**
 	 * 
 	 */
-	public void checkForDragonEncounters() {
+	public void checkIfHeroFoundDragon() {
 
 		for(Dragon dragon: dragons) {
 
@@ -355,16 +362,15 @@ public class GameLogic {
 		return true;
 	}
 
-	
 	public void sendEagle() {
-		if(!eagle.isMoving()) {
+		if(hero.hasEagle()) {
 			hero.setHasEagle(false);
 			hero.setSymbol('H');
 			eagle.sendEagle();
 		}
 	}
 	
-	public void checkKillEagle() {
+	public void checkIfEagleFoundDragon() {
 			
 		for(Dragon dragon : dragons) {
 
@@ -373,9 +379,10 @@ public class GameLogic {
 				if(eagle.foundDragon(dragon)) {
 
 					eagle.setAlive(false);
-					eagle.setHasSword(false);
-
-					if(sword != null) {
+					
+					if((sword != null) && eagle.hasSword()) {
+						
+						eagle.setHasSword(false);
 						sword.setX(eagle.getX());
 						sword.setY(eagle.getY());
 					}
@@ -384,6 +391,72 @@ public class GameLogic {
 			}
 		}
 
+	}
+	
+	public void checkEagle() {
+
+		if(eagle != null) {
+			
+			// If the hero has the eagle, he carries her
+			if(hero.hasEagle()) {
+				eagle.updatePosition(hero.getX(), hero.getY());
+			}
+
+			// If the hero is on the move
+			if(eagle.isAlive() && eagle.isMoving()) {
+				
+				if(!eagle.hasSword()) {
+					eagle.moveToSword(maze, sword);
+					
+					checkIfEagleFoundSword();
+				}
+				else {
+					
+					eagle.moveBack();
+					sword.setX(eagle.getX());
+					sword.setY(eagle.getY());
+				}
+				
+			}
+			
+			// If the eagle finds a dragon, it dies.
+			checkIfEagleFoundDragon();
+		}
+	}
+
+	public void checkDragons() {
+		
+		if(difficulty > 1) {
+
+			moveAllDragons();
+			checkIfDragonFoundSword();
+		}
+	}
+	
+	public int getInput() {
+		
+		int command = -1;
+		
+		if(config.isGraphical()) { // Get key strokes
+
+			do{
+
+				if(gameWindow.getKeyCode() != 0) {
+					command = getCurrentCommand(gameWindow.getKeyCode());
+				}
+
+			}while(command == -1);
+
+			gameWindow.resetKeyCode();
+
+		}
+		else { // Get command line keys
+
+			out.drawMsg(MSG.GET_KEY.ordinal());
+			command = in.get();
+		}
+		
+		return command;
 	}
 	
 	/**
@@ -423,7 +496,7 @@ public class GameLogic {
 		out.drawBoard(board);
 	}
 	
-	private int getCurrentCommand(int keyCode) {
+	public int getCurrentCommand(int keyCode) {
 		
 		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
 			
@@ -436,59 +509,35 @@ public class GameLogic {
 		return -1;
 	}
 
-
 	/** 
 	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 *    MAIN GAME LOOP
 	 *  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 */
 	public void loop() {
-		
-		int command = -1;
-		
+
+		int command;
+
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive()) {
-			
+
 			if(config.isConsole()) {
 				out.drawCommands();
 				out.drawGoal(tasks);
 			}
-			
+
 			if(config.isGraphical()) {
 				// print commands/goals
 			}
-			
+
 			draw();
+			
+			command = getInput();
+			
+			setAllDragonStates();
 
-			// If dragons can sleep
-			if(difficulty == 2) {
-				setAllDragonStates();
-			}
-
-			// ------------------------------------------------------------------
-			if(config.isGraphical()) { // Get key strokes
-				
-				do{
-					
-					if(gameWindow.getKeyCode() != 0) {
-						command = getCurrentCommand(gameWindow.getKeyCode());
-					}
-					
-				}while(command == -1);
-				
-				gameWindow.resetKeyCode();
-				
-			}
-			else { // Get command line keys
-				
-				out.drawMsg(MSG.GET_KEY.ordinal());
-				command = in.get();
-			}
-			// ------------------------------------------------------------------
-
-			// Act upon the given command
 			switch(command) {
 			case 4: // SPACE
 				sendEagle();
@@ -498,50 +547,29 @@ public class GameLogic {
 				break;
 			}
 			
-			if(hero.hasEagle()) {
-				eagle.updatePosition(hero.getX(), hero.getY());
-			}
-			
-			if(eagle.isMoving() && eagle.isAlive()) {
-				if(!eagle.hasSword()) {
-					eagle.moveToSword(maze, sword);
-				}
-				else {
-					eagle.moveBack();
-					sword.setX(eagle.getX());
-					sword.setY(eagle.getY());
-				}
-				
-				checkForEagleFoundSword();
-			}
-			
-			checkKillEagle();
-			
-			if(heroWon())
-				break;
-		
-			checkForFoundSword();
-			
-			checkForFoundEagle();
-			
-			if(difficulty > 1) {
-				
-				moveAllDragons();
-				checkIfDragonsFoundSword();
-			}
-			
-			checkForDragonEncounters();
-			
+			checkEagle();
+
+			checkIfHeroFoundSword();
+
+			checkIfHeroFoundEagle();
+
+			checkDragons();
+
+			checkIfHeroFoundDragon();
+
 			checkTasks();
 			
+			if(heroWon()) break;
+
 		}	
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
-		
+
 		out.drawBoard(maze);
 		out.drawGoal(tasks);
 		out.drawGameOver(hero.isAlive());
-		
+
 	}
+
 }
