@@ -20,16 +20,11 @@ public class GameLogic {
 	private int mazeSize;
 	private int difficulty;
 	private int mazeDragons;
-	
-	// KeyCodes
-	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
-	private int gameKeyCodes[] = {87, 68, 83, 65};
-	
-	private boolean inputMethodKeyboard;
 
 	private Input in;
 	private Output out;
 	private GameWindow gameWindow;
+	private GameConfig config;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
@@ -38,6 +33,8 @@ public class GameLogic {
 	}
 
 	public GameLogic(GameConfig config, double dragonPerc) {
+		
+		this.config = config;
 		
 		this.mazeSize = config.getMazeSize();
 		this.difficulty = config.getDifficulty();
@@ -177,7 +174,7 @@ public class GameLogic {
 			tasks[1].setDone(true);
 		}
 		
-		if(checkIfHeroWon()) {
+		if(heroWon()) {
 			tasks[2].setDone(true);
 		}
 	}
@@ -210,7 +207,7 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	public boolean checkIfHeroWon() {
+	public boolean heroWon() {
 
 		if(hero.isAt(maze.getExit())) {
 
@@ -424,8 +421,19 @@ public class GameLogic {
 		}
 		
 		out.drawBoard(board);
+	}
+	
+	private int getCurrentCommand(int keyCode) {
 		
-
+		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
+			
+			if(config.getGameKeyCodes()[i] == keyCode) {
+				
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 
 
@@ -437,35 +445,35 @@ public class GameLogic {
 	public void loop() {
 		
 		int command = -1;
-		int keyCode;
 		
-		// TEMP
-		//
-		// ------------------------------------------------
-		//   Game currently using W,A,S,D for movement ;)
-		// ------------------------------------------------
-		inputMethodKeyboard = true;
-		
-		out.drawCommands();
-		out.drawGoal(tasks);
-		draw();
-
+		// +++++++++++++++++++++++++++++++++++++
+		//				Begin Loop
+		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive()) {
+			
+			if(config.isConsole()) {
+				out.drawCommands();
+				out.drawGoal(tasks);
+			}
+			
+			if(config.isGraphical()) {
+				// print commands/goals
+			}
+			
+			draw();
 
-			//out.drawMsg(MSG.GET_KEY.ordinal());
-
+			// If dragons can sleep
 			if(difficulty == 2) {
 				setAllDragonStates();
 			}
 
 			// ------------------------------------------------------------------
-			if(inputMethodKeyboard) { // Get key strokes
+			if(config.isGraphical()) { // Get key strokes
 				
 				do{
-					keyCode = gameWindow.getKeyCode();
 					
-					if(keyCode != 0) {
-						command = getCurrentCommand(keyCode);
+					if(gameWindow.getKeyCode() != 0) {
+						command = getCurrentCommand(gameWindow.getKeyCode());
 					}
 					
 				}while(command == -1);
@@ -474,26 +482,25 @@ public class GameLogic {
 				
 			}
 			else { // Get command line keys
+				
+				out.drawMsg(MSG.GET_KEY.ordinal());
 				command = in.get();
 			}
-			
+			// ------------------------------------------------------------------
+
+			// Act upon the given command
 			switch(command) {
 			case 4: // SPACE
 				sendEagle();
 				break;
 			default:
-				
 				moveHero(command);
-				
-				if(hero.hasEagle()) {
-					eagle.updatePosition(hero.getX(), hero.getY());
-				}
 				break;
 			}
-			// ------------------------------------------------------------------
 			
-			out.debugPrint(">  hero: (" + hero.getX() + ", " + hero.getY() + ")");
-			out.debugPrint("> sword: (" + sword.getX() + ", " + sword.getY() + ")");
+			if(hero.hasEagle()) {
+				eagle.updatePosition(hero.getX(), hero.getY());
+			}
 			
 			if(eagle.isMoving() && eagle.isAlive()) {
 				if(!eagle.hasSword()) {
@@ -510,15 +517,15 @@ public class GameLogic {
 			
 			checkKillEagle();
 			
-			if(checkIfHeroWon() == true) {
+			if(heroWon())
 				break;
-			}
 		
 			checkForFoundSword();
 			
 			checkForFoundEagle();
 			
 			if(difficulty > 1) {
+				
 				moveAllDragons();
 				checkIfDragonsFoundSword();
 			}
@@ -526,38 +533,15 @@ public class GameLogic {
 			checkForDragonEncounters();
 			
 			checkTasks();
-
-			//out.drawCommands();
-			//out.drawGoal(tasks);
 			
-			draw();
-			
-			command = -1;
-			
-		}
-		
-		// END OF LOOP
-		
-		boolean won = hero.isAlive();
-		
-		checkTasks();
+		}	
+		// +++++++++++++++++++++++++++++++++++++
+		//				END OF LOOP
+		// +++++++++++++++++++++++++++++++++++++
 		
 		out.drawBoard(maze);
 		out.drawGoal(tasks);
-		out.drawGameOver(won);
+		out.drawGameOver(hero.isAlive());
 		
-	}
-
-	private int getCurrentCommand(int keyCode) {
-		
-		for(int i = 0; i < gameKeyCodes.length; i++) {
-			
-			if(gameKeyCodes[i] == keyCode) {
-				
-				return i;
-			}
-		}
-		
-		return -1;
 	}
 }

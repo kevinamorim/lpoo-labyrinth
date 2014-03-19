@@ -153,7 +153,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		assertTrue(gameTest.checkIfHeroWon());
+		assertTrue(gameTest.heroWon());
 	}
 	
 	@Test
@@ -175,11 +175,11 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		assertFalse(gameTest.checkIfHeroWon());
+		assertFalse(gameTest.heroWon());
 		
 		gameTest.getHero().setArmed(true);
 		
-		assertFalse(gameTest.checkIfHeroWon());
+		assertFalse(gameTest.heroWon());
 	}
 	
 	/**

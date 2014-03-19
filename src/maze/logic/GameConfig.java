@@ -9,21 +9,47 @@ public class GameConfig {
 	private Output out;
 	private int mazeSize;
 	private int difficulty;
+	private boolean isConsole;
+
+	// KeyCodes
+	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
+	private int gameKeyCodes[] = {87, 68, 83, 65};
 
 	public GameConfig() {
-		
+
 		in = new Input();
 		out = new Output();
 		
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
+		
+		this.isConsole = true;
 
 	}
 	
-	public GameConfig(int mazeSize, int difficulty) {
+	public GameConfig(int mazeSize, int difficulty, boolean isConsole) {
 		
 		this.mazeSize = mazeSize;
 		this.difficulty = difficulty;
+		this.isConsole = isConsole;
+	}
+	
+	public void setGameKey(int index, int code) {
+		this.gameKeyCodes[index] = code;
+	}
+
+	/**
+	 * @return the gameKeyCodes
+	 */
+	public int[] getGameKeyCodes() {
+		return gameKeyCodes;
+	}
+
+	/**
+	 * @param gameKeyCodes the gameKeyCodes to set
+	 */
+	public void setGameKeyCodes(int[] gameKeyCodes) {
+		this.gameKeyCodes = gameKeyCodes;
 	}
 
 	/**
@@ -122,6 +148,27 @@ public class GameConfig {
 		this.difficulty = difficulty;
 	}
 	
+	/**
+	 * @return the isConsole
+	 */
+	public boolean isConsole() {
+		return isConsole;
+	}
+	
+	/**
+	 * @return the isConsole
+	 */
+	public boolean isGraphical() {
+		return (!isConsole);
+	}
+
+	/**
+	 * @param isConsole the isConsole to set
+	 */
+	public void setConsole(boolean isConsole) {
+		this.isConsole = isConsole;
+	}
+
 	/**
 	 * Helpers
 	 */
