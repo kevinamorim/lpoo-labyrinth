@@ -378,7 +378,7 @@ public class GameLogic {
 				
 				if(eagle.foundDragon(dragon)) {
 
-					eagle.setAlive(false);
+					eagle.die();
 					
 					if((sword != null) && eagle.hasSword()) {
 						
@@ -459,10 +459,22 @@ public class GameLogic {
 		return command;
 	}
 	
+	public void switchCommand(int command) {
+
+		switch(command) {
+		case 4: // SPACE
+			sendEagle();
+			break;
+		default:
+			moveHero(command);
+			break;
+		}
+	}
+	
 	/**
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
-	public void draw() {
+	public void drawGameBoard() {
 		
 		char board[][] = new char[maze.getSize()][maze.getSize()];
 		
@@ -496,6 +508,25 @@ public class GameLogic {
 		out.drawBoard(board);
 	}
 	
+	public void drawGameOver() {
+		
+		out.drawBoard(maze);
+		out.drawGoal(tasks);
+		out.drawGameOver(hero.isAlive());
+	}
+
+	public void drawMenu() {
+		
+		if(config.isConsole()) {
+			out.drawCommands();
+			out.drawGoal(tasks);
+		}
+
+		if(config.isGraphical()) {
+			// print commands/goals
+		}
+	}
+	
 	public int getCurrentCommand(int keyCode) {
 		
 		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
@@ -522,30 +553,16 @@ public class GameLogic {
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive()) {
-
-			if(config.isConsole()) {
-				out.drawCommands();
-				out.drawGoal(tasks);
-			}
-
-			if(config.isGraphical()) {
-				// print commands/goals
-			}
-
-			draw();
+			
+			drawMenu();
+			
+			drawGameBoard();
+			
+			setAllDragonStates();
 			
 			command = getInput();
 			
-			setAllDragonStates();
-
-			switch(command) {
-			case 4: // SPACE
-				sendEagle();
-				break;
-			default:
-				moveHero(command);
-				break;
-			}
+			switchCommand(command);
 			
 			checkEagle();
 
@@ -565,11 +582,8 @@ public class GameLogic {
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
-
-		out.drawBoard(maze);
-		out.drawGoal(tasks);
-		out.drawGameOver(hero.isAlive());
-
+		
+		drawGameOver();
 	}
 
 }
