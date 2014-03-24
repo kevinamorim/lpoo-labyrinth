@@ -487,7 +487,7 @@ public class GameLogic {
 		return command;
 	}
 	
-	public void switchCommand(int command) {
+	public void runCommand(int command) {
 
 		switch(command) {
 		case 4: // SPACE
@@ -602,6 +602,7 @@ public class GameLogic {
 	//			   MAIN GAME LOOP				//
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
+	
 	public void loop() {
 
 		int command;
@@ -619,7 +620,7 @@ public class GameLogic {
 			
 			command = getInput();
 			
-			switchCommand(command);
+			runCommand(command);
 			
 			checkEagle();
 

@@ -35,7 +35,7 @@ public class GameConfig {
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
 		
-		this.isConsole = true;
+		this.isConsole = isConsole;
 
 	}
 	
@@ -168,7 +168,7 @@ public class GameConfig {
 	}
 	
 	/**
-	 * @return the isConsole
+	 * @return true if the game is Graphical
 	 */
 	public boolean isGraphical() {
 		return (!isConsole);
