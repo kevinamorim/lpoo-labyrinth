@@ -5,6 +5,7 @@ import java.util.Random;
 
 import maze.cli.*;
 import maze.gui.GameWindow;
+import maze.gui.GameWindow_old;
 
 public class GameLogic {
 
@@ -29,7 +30,6 @@ public class GameLogic {
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
 	public GameLogic() { 
-		out = new Output();
 	}
 
 	public GameLogic(GameConfig config, double dragonPerc) {
@@ -79,6 +79,14 @@ public class GameLogic {
 		
 		gameWindow = new GameWindow(this);
 
+	}
+	
+	public GameConfig getConfig() {
+		return this.config;
+	}
+	
+	public void setConfig(GameConfig config) {
+		this.config = config;
 	}
 
 	/**
@@ -643,5 +651,6 @@ public class GameLogic {
 		
 		drawGameOver();
 	}
+
 
 }
