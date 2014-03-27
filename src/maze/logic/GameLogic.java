@@ -643,6 +643,8 @@ public class GameLogic {
 			checkTasks();
 			
 			if(heroWon()) break;
+			
+			gameWindow.paint();
 
 		}	
 		// +++++++++++++++++++++++++++++++++++++

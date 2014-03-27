@@ -37,6 +37,7 @@ import java.io.IOException;
 import javax.swing.Action;
 import javax.swing.JMenuBar;
 
+import maze.logic.Dragon;
 import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 import maze.logic.Maze;
@@ -49,7 +50,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JButton;
 
 
-public class GameWindow implements KeyListener {
+public class GameWindow extends JFrame implements KeyListener {
 
 	private JFrame frame;
 	private JLabel label;
@@ -58,7 +59,7 @@ public class GameWindow implements KeyListener {
 	private GameLogic game;
 	private GameConfig config;
 
-	BufferedImage wall, floor, dragon, hero, eagle, sword;
+	BufferedImage wall, floor, dragonPic, hero, eagle, sword, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
 
 	private int xSize,ySize;
 
@@ -82,12 +83,13 @@ public class GameWindow implements KeyListener {
 	private void initialize() {
 		
 		frame = new JFrame();
+		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//frame.getContentPane().setLayout(new GridLayout(game.getMaze().getSize(), game.getMaze().getSize(), 0, 0));
-		frame.getContentPane().setLayout(new GridLayout(9,9, 0, 0));
+		frame.getContentPane().setLayout(new GridLayout(game.getMaze().getSize(), game.getMaze().getSize(), 0, 0));
+		//frame.getContentPane().setLayout(new GridLayout(9,9, 0, 0));
 		
 		xSize = 1000;
 		ySize = 1000;
@@ -105,6 +107,7 @@ public class GameWindow implements KeyListener {
 		frame.setJMenuBar(menuBar);
 		
 		JButton btnNewGame = new JButton("New Game");
+		btnNewGame.setFocusable(false);
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -112,6 +115,7 @@ public class GameWindow implements KeyListener {
 		menuBar.add(btnNewGame);
 		
 		JButton btnNewButton = new JButton("Restart");
+		btnNewButton.setFocusable(false);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -119,6 +123,7 @@ public class GameWindow implements KeyListener {
 		menuBar.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Configurations");
+		btnNewButton_1.setFocusable(false);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -126,6 +131,7 @@ public class GameWindow implements KeyListener {
 		menuBar.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Help");
+		btnNewButton_2.setFocusable(false);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frame, "A tua mae", "HELP", JOptionPane.INFORMATION_MESSAGE);
@@ -134,6 +140,7 @@ public class GameWindow implements KeyListener {
 		menuBar.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Exit");
+		btnNewButton_3.setFocusable(false);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -145,29 +152,80 @@ public class GameWindow implements KeyListener {
 		frame.setVisible(true);
 		
 	}
+
+	public void paint() {
+		drawBoard();
+	}
 	
 	private void drawBoard() {
 		
-		int i,j;
+		int i,j,index;
+		
+		index = 0;
 
 		Container maze = frame.getContentPane();
+		
+		maze.removeAll();
 
 		for(i = 0; i < game.getMaze().getSize(); i++) {
 			for(j = 0; j < game.getMaze().getSize(); j++) {
+				
+				System.out.println(" > " + index);
 				
 				drawCorrectImageToPanel(i, j);
 
 				//label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-				maze.add(label, BorderLayout.CENTER);
+				maze.add(label, BorderLayout.CENTER, index);
+				
+				index++;
 			}
 		}
+		
+		maze.revalidate();
 
 	}
 
-	private void drawCorrectImageToPanel(int i, int j) {
+	private void drawCorrectImageToPanel(int x, int y) {
 		
-		switch(game.getMaze().getTiles()[i][j]) {
+		for(Dragon dragon: game.getDragons()) {
+			if(dragon.isAt(x, y)) {
+				if(game.getEagle().isAt(x, y)) {
+					drawToPanel(eagleUponDragon);
+				}
+				else {
+					drawToPanel(dragonPic);
+				}
+				return;
+			}
+		}
+
+		if(game.getEagle().isAt(x, y)) {
+			if(game.getEagle().hasSword()) {
+				if(game.getMaze().getTiles()[x][y] == 'x') {
+					drawToPanel(eagleUponWall);
+				}
+				else {
+					drawToPanel(eagle);
+				}
+			}
+			else {
+				if(game.getMaze().getTiles()[x][y] == 'x') {
+					drawToPanel(eagleUponWallWithSword);
+				}
+				else {
+					drawToPanel(eagle);
+				}
+			}
+			return;
+		}
+
+		if(game.getSword().isAt(x, y)) {
+			drawToPanel(sword);
+			return;
+		}
+		
+		switch(game.getMaze().getTiles()[x][y]) {
 		case 'x':
 			drawToPanel(wall);
 			break;
@@ -203,13 +261,20 @@ public class GameWindow implements KeyListener {
 			
 			wall = ImageIO.read(new File("bin/textures/wall.png"));
 			floor = ImageIO.read(new File("bin/textures/floor.png"));
-//			dragon = ImageIO.read(new File("textures/dragon.png"));
-//			hero = ImageIO.read(new File("textures/hero.png"));
-//			eagle = ImageIO.read(new File("textures/eagle.png"));
-//			sword = ImageIO.read(new File("textures/sword.png"));
+			dragonPic = ImageIO.read(new File("bin/textures/dragon_on_floor.png"));
+			//hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
+			eagle = ImageIO.read(new File("bin/textures/eagle_on_floor.png"));
+			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
+			
+			//heroWithEagle = ImageIO.read(new File("bin/textures/hero_with_eagle.png"));
+			eagleWithSword = ImageIO.read(new File("bin/textures/eagle_on_floor_with_sword.png"));
+			eagleUponDragon = ImageIO.read(new File("bin/textures/eagle_upon_dragon.png"));
+			eagleUponWall = ImageIO.read(new File("bin/textures/eagle_upon_wall.png"));
+			eagleUponWallWithSword = ImageIO.read(new File("bin/textures/eagle_upon_wall_with_sword.png"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("Exception" + e);
 		}
 	}
 	
@@ -226,6 +291,21 @@ public class GameWindow implements KeyListener {
 	public void setKeyCode(int keyCode) {
 		this.keyCode = keyCode;
 	}
+	
+	/**
+	 * @return the frame
+	 */
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	/**
+	 * @param frame the frame to set
+	 */
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
 	
 	/**
 	 * @param keyCode the keyCode to set
