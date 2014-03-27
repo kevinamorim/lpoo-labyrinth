@@ -159,9 +159,7 @@ public class GameWindow extends JFrame implements KeyListener {
 	
 	private void drawBoard() {
 		
-		int i,j,index;
-		
-		index = 0;
+		int i,j;
 
 		Container maze = frame.getContentPane();
 		
@@ -170,15 +168,12 @@ public class GameWindow extends JFrame implements KeyListener {
 		for(i = 0; i < game.getMaze().getSize(); i++) {
 			for(j = 0; j < game.getMaze().getSize(); j++) {
 				
-				System.out.println(" > " + index);
-				
 				drawCorrectImageToPanel(i, j);
 
 				//label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-				maze.add(label, BorderLayout.CENTER, index);
+				maze.add(label, BorderLayout.CENTER);
 				
-				index++;
 			}
 		}
 		
@@ -187,44 +182,50 @@ public class GameWindow extends JFrame implements KeyListener {
 	}
 
 	private void drawCorrectImageToPanel(int x, int y) {
-		
+
 		for(Dragon dragon: game.getDragons()) {
-			if(dragon.isAt(x, y)) {
-				if(game.getEagle().isAt(x, y)) {
-					drawToPanel(eagleUponDragon);
+			if(dragon.isAlive()) {
+				if(dragon.isAt(x, y)) {
+					if(game.getEagle().isAt(x, y)) {
+						drawToPanel(eagleUponDragon);
+					}
+					else {
+						drawToPanel(dragonPic);
+					}
+					return;
+				}
+			}
+		}
+
+		if(game.getEagle().isAlive()) {
+			if(game.getEagle().isAt(x, y)) {
+				if(game.getEagle().hasSword()) {
+					if(game.getMaze().getTiles()[x][y] == 'x') {
+						drawToPanel(eagleUponWall);
+					}
+					else {
+						drawToPanel(eagle);
+					}
 				}
 				else {
-					drawToPanel(dragonPic);
+					if(game.getMaze().getTiles()[x][y] == 'x') {
+						drawToPanel(eagleUponWallWithSword);
+					}
+					else {
+						drawToPanel(eagle);
+					}
 				}
 				return;
 			}
 		}
 
-		if(game.getEagle().isAt(x, y)) {
-			if(game.getEagle().hasSword()) {
-				if(game.getMaze().getTiles()[x][y] == 'x') {
-					drawToPanel(eagleUponWall);
-				}
-				else {
-					drawToPanel(eagle);
-				}
+		if(!game.getHero().isArmed() && !game.getEagle().hasSword()) {
+			if(game.getSword().isAt(x, y)) {
+				drawToPanel(sword);
+				return;
 			}
-			else {
-				if(game.getMaze().getTiles()[x][y] == 'x') {
-					drawToPanel(eagleUponWallWithSword);
-				}
-				else {
-					drawToPanel(eagle);
-				}
-			}
-			return;
 		}
 
-		if(game.getSword().isAt(x, y)) {
-			drawToPanel(sword);
-			return;
-		}
-		
 		switch(game.getMaze().getTiles()[x][y]) {
 		case 'x':
 			drawToPanel(wall);

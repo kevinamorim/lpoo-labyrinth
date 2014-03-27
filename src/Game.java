@@ -9,7 +9,7 @@ public class Game {
 		
 		GameConfig config = new GameConfig(isConsole);
 		
-		GameLogic game = new GameLogic(config, 0.05);
+		GameLogic game = new GameLogic(config, 0.01);
 
 		game.init();
 	
