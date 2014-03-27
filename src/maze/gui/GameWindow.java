@@ -59,7 +59,7 @@ public class GameWindow extends JFrame implements KeyListener {
 	private GameLogic game;
 	private GameConfig config;
 
-	BufferedImage wall, floor, dragonPic, hero, eagle, sword, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
+	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
 
 	private int xSize,ySize;
 
@@ -266,6 +266,7 @@ public class GameWindow extends JFrame implements KeyListener {
 			//hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
 			eagle = ImageIO.read(new File("bin/textures/eagle_on_floor.png"));
 			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
+			//exit = ImageIO.read(new File("bin/textures/exit.png"));
 			
 			//heroWithEagle = ImageIO.read(new File("bin/textures/hero_with_eagle.png"));
 			eagleWithSword = ImageIO.read(new File("bin/textures/eagle_on_floor_with_sword.png"));
