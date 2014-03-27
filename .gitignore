@@ -1,5 +1,4 @@
-/bin
-/maze*
+/bin/maze/*
 /bin/Game.class
 *.metadata/
 RemoteSystemTempFiles/*
