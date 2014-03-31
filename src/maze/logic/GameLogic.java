@@ -423,9 +423,7 @@ public class GameLogic {
 
 				drawGameBoard();
 				
-				for(Dragon dragon : dragons) {
-					dragon.update(this);
-				}
+				updateAllDragons();
 				
 				runCommand(getCurrentCommand(command));
 				
@@ -459,6 +457,12 @@ public class GameLogic {
 		
 	}
 	
+	private void updateAllDragons() {
+		for(Dragon dragon: dragons) {
+			dragon.update(this);
+		}
+	}
+
 	/**
 	 * Sets stopping flag to true.
 	 */

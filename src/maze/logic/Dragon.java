@@ -112,15 +112,17 @@ public class Dragon extends Moveable {
 	public void update(GameLogic game) {
 		
 		// Sets dragon state.
+		
 		if(game.getConfig().getDifficulty() == 2) {
 			if(alive) {
 				setDragonState();
 			}
 		}
 		
+		
 		// Moves dragon. 
 		if(game.getConfig().getDifficulty() > 1) {
-			if(isAwake() && isAlive()) {
+			if(awake && alive) {
 				Random r = new Random();
 				move(game, r.nextInt(4));
 				
@@ -128,12 +130,12 @@ public class Dragon extends Moveable {
 					moveBack();
 				}
 			}
-		}
-		
-		// Checks if dragon has found the sword.
-		hasSword = false;
-		if(foundSword(game.getSword())) {
-			hasSword = true;
+			
+			// Checks if dragon has found the sword.
+			hasSword = false;
+			if(foundSword(game.getSword())) {
+				hasSword = true;
+			}
 		}
 		
 	}
