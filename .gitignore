@@ -3,3 +3,4 @@
 /bin/textures/Thumbs.db
 *.metadata/
 RemoteSystemTempFiles/*
+*.db

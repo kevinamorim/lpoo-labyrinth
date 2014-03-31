@@ -243,7 +243,6 @@ public class GameWindow extends JFrame implements KeyListener {
 						}
 					}
 					
-					
 					return;
 				}
 			}
@@ -276,15 +275,15 @@ public class GameWindow extends JFrame implements KeyListener {
 				return;
 			}
 		}
-
-		if(gameLogic.getEagle().isAlive() && !gameLogic.getHero().hasEagle()) {
+		
+		if (gameLogic.getEagle().isAlive() && !gameLogic.getHero().hasEagle()) {
 			
 			if(gameLogic.getEagle().isAt(x, y)) {
 				
 				if(gameLogic.getEagle().hasSword()) {
 					
 					if(gameLogic.getMaze().getTiles()[x][y] == 'x') {
-						drawToPanel(eagleUponWall);
+						drawToPanel(eagleUponWallWithSword);
 					}
 					else {
 						drawToPanel(eagle);
@@ -292,7 +291,7 @@ public class GameWindow extends JFrame implements KeyListener {
 				}
 				else {
 					if(gameLogic.getMaze().getTiles()[x][y] == 'x') {
-						drawToPanel(eagleUponWallWithSword);
+						drawToPanel(eagleUponWall);
 					}
 					else {
 						drawToPanel(eagle);
@@ -301,7 +300,7 @@ public class GameWindow extends JFrame implements KeyListener {
 				return;
 			}
 		}
-
+		
 		if(!gameLogic.getHero().isArmed() && !gameLogic.getEagle().hasSword()) {
 			if(gameLogic.getSword().isAt(x, y)) {
 				drawToPanel(sword);
