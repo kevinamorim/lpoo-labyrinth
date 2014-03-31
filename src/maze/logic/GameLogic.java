@@ -46,6 +46,8 @@ public class GameLogic {
 		
 	}
 
+	public GameLogic() {}
+
 	/**
 	 * Initializes all game variables
 	 */
