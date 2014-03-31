@@ -43,7 +43,11 @@ public class GameWindow extends JFrame implements KeyListener {
 	private JPanel configuration;
 	private JSlider slider;
 	
-	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
+	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit;
+	BufferedImage heroWithEagle, heroWithSword, heroWithSwordAndEagle;
+	BufferedImage eagleWithSword, eagleUponDragon, eagleUponDragonAsleep, eagleUponDragonWithSwordAsleep, eagleUponDragonWithSword, eagleUponWall, eagleUponWallWithSword;
+	BufferedImage dragonAsleep, dragonWithSword, dragonWithSwordAsleep;
+	
 	private JLabel label;
 
 	private int keyCode;
@@ -161,7 +165,7 @@ public class GameWindow extends JFrame implements KeyListener {
 			}
 		});
 		menuBar.add(exitMenuItem);
-		//frame.pack();
+		frame.pack();
 		frame.setVisible(true);
 	}
 	
@@ -169,7 +173,6 @@ public class GameWindow extends JFrame implements KeyListener {
 		drawBoard();
 	}
 	
-
 	private void drawBoard() {
 		
 		int i,j;
@@ -197,22 +200,89 @@ public class GameWindow extends JFrame implements KeyListener {
 	private void drawCorrectImageToPanel(int x, int y) {
 
 		for(Dragon dragon: gameLogic.getDragons()) {
+			
 			if(dragon.isAlive()) {
+				
 				if(dragon.isAt(x, y)) {
+					
 					if(gameLogic.getEagle().isAt(x, y)) {
-						drawToPanel(eagleUponDragon);
+						
+						if(dragon.hasSword()) {
+							if(dragon.isAwake()) {
+								drawToPanel(eagleUponDragonWithSword);
+							}
+							else {
+								drawToPanel(eagleUponDragonWithSwordAsleep);
+							}			
+						}
+						else {
+							if(dragon.isAwake()) {
+								drawToPanel(eagleUponDragon);
+							}
+							else {
+								drawToPanel(eagleUponDragonAsleep);
+							}
+						}
 					}
 					else {
-						drawToPanel(dragonPic);
+						if(dragon.hasSword()) {
+							if(dragon.isAwake()) {
+								drawToPanel(dragonWithSword);
+							}
+							else {
+								drawToPanel(dragonWithSwordAsleep);
+							}
+						}
+						else {
+							if(dragon.isAwake()) {
+								drawToPanel(dragonPic);
+							}
+							else {
+								drawToPanel(dragonAsleep);
+							}
+						}
 					}
+					
+					
 					return;
 				}
 			}
 		}
+		
+		if(gameLogic.getHero().isAlive()) {
+			
+			if(gameLogic.getHero().isAt(x, y)) {
+				
+				if(gameLogic.getHero().hasEagle()) {
+					
+					if(gameLogic.getHero().isArmed()) {		
+						drawToPanel(heroWithSwordAndEagle);
+					}
+					else {
+						drawToPanel(heroWithEagle);
+					}
+					
+				}
+				else {
+					
+					if(gameLogic.getHero().isArmed()) {
+						drawToPanel(heroWithSword);
+					}
+					else {
+						drawToPanel(hero);
+					}
+				}
+				
+				return;
+			}
+		}
 
-		if(gameLogic.getEagle().isAlive()) {
+		if(gameLogic.getEagle().isAlive() && !gameLogic.getHero().hasEagle()) {
+			
 			if(gameLogic.getEagle().isAt(x, y)) {
+				
 				if(gameLogic.getEagle().hasSword()) {
+					
 					if(gameLogic.getMaze().getTiles()[x][y] == 'x') {
 						drawToPanel(eagleUponWall);
 					}
@@ -238,6 +308,11 @@ public class GameWindow extends JFrame implements KeyListener {
 				return;
 			}
 		}
+		
+		if(gameLogic.getMaze().getExit().isAt(x, y)) {
+			drawToPanel(exit);
+			return; 
+		}
 
 		switch(gameLogic.getMaze().getTiles()[x][y]) {
 		case 'x':
@@ -250,7 +325,6 @@ public class GameWindow extends JFrame implements KeyListener {
 			drawToPanel(floor);
 			break;
 		}
-		
 		
 	}
 
@@ -276,20 +350,31 @@ public class GameWindow extends JFrame implements KeyListener {
 			wall = ImageIO.read(new File("bin/textures/wall.png"));
 			floor = ImageIO.read(new File("bin/textures/floor.png"));
 			dragonPic = ImageIO.read(new File("bin/textures/dragon_on_floor.png"));
-			//hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
+			hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
 			eagle = ImageIO.read(new File("bin/textures/eagle_on_floor.png"));
 			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
-			//exit = ImageIO.read(new File("bin/textures/exit.png"));
+			exit = ImageIO.read(new File("bin/textures/exit.png"));
 			
-			//heroWithEagle = ImageIO.read(new File("bin/textures/hero_with_eagle.png"));
+			heroWithEagle = ImageIO.read(new File("bin/textures/hero_with_eagle.png"));
+			heroWithSword = ImageIO.read(new File("bin/textures/hero_with_sword.png"));
+			heroWithSwordAndEagle = ImageIO.read(new File("bin/textures/hero_with_sword_and_eagle.png"));
+			
 			eagleWithSword = ImageIO.read(new File("bin/textures/eagle_on_floor_with_sword.png"));
 			eagleUponDragon = ImageIO.read(new File("bin/textures/eagle_upon_dragon.png"));
 			eagleUponWall = ImageIO.read(new File("bin/textures/eagle_upon_wall.png"));
 			eagleUponWallWithSword = ImageIO.read(new File("bin/textures/eagle_upon_wall_with_sword.png"));
+			eagleUponDragonWithSword = ImageIO.read(new File("bin/textures/eagle_upon_dragon_with_sword.png"));
+			eagleUponDragonWithSwordAsleep = ImageIO.read(new File("bin/textures/eagle_upon_dragon_with_sword_asleep.png"));
+			
+			dragonAsleep = ImageIO.read(new File("bin/textures/dragon_asleep.png"));
+			dragonWithSword = ImageIO.read(new File("bin/textures/dragon_with_sword.png"));
+			dragonWithSwordAsleep = ImageIO.read(new File("bin/textures/dragon_with_sword_asleep.png"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Exception" + e);
+			
+			System.exit(0);
 		}
 	}
 	
