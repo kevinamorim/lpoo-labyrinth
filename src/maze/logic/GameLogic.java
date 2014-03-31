@@ -43,6 +43,8 @@ public class GameLogic {
 		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
 		
 		done = false;
+		
+		init();
 	}
 
 	/**
@@ -81,6 +83,8 @@ public class GameLogic {
 		createTasks();
 		
 		gameWindow = new GameWindow(this);
+		
+		loop();
 
 	}
 	
@@ -475,16 +479,16 @@ public class GameLogic {
 	public int getInput() {
 		
 		int command = -1;
-		
+		//System.out.println("isGraphical: " + config.isGraphical());	
 		if(config.isGraphical()) { // Get key strokes
 
-			do{
+			do {
 
 				if(gameWindow.getKeyCode() != 0) {
 					command = getCurrentCommand(gameWindow.getKeyCode());
 				}
 
-			}while(command == -1 && gameWindow.getGamePanel().isVisible());
+			} while(command == -1 && gameWindow.getGamePanel().isVisible());
 
 			gameWindow.resetKeyCode();
 
@@ -648,6 +652,8 @@ public class GameLogic {
 			if(heroWon()) break;
 			
 			gameWindow.paint();
+			
+			System.out.println("looping");
 
 		}	
 		// +++++++++++++++++++++++++++++++++++++

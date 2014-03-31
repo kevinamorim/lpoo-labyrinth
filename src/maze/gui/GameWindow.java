@@ -137,12 +137,9 @@ public class GameWindow extends JFrame implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				
 				gameLogic.stop();
-				
-				gameLogic = new GameLogic(gameLogic.getConfig(), 0.01);
-				gameLogic.init();
-				//gameLogic.loop();
-				
 				frame.dispose();
+				
+				new GameLogic(gameLogic.getConfig(), 0.01);
 
 			}
 		});

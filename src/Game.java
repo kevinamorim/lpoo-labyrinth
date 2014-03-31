@@ -11,9 +11,9 @@ public class Game {
 		
 		GameLogic game = new GameLogic(config, 0.01);
 
-		game.init();
+		//game.init();
 		
-		game.loop();
+		//game.loop();
 		
 	}
 
