@@ -323,6 +323,12 @@ public class GameLogic {
 		}
 	}
 	
+	/**
+	 * Checks if the eagle has found a dragon while not flying.
+	 * If a dragon has been found the eagle dies.
+	 * @return True if the eagle found a dragon.
+	 * @return False otherwise.
+	 */
 	public boolean checkIfEagleFoundDragon() {
 
 		if(!eagle.isFlying() && !hero.hasEagle()) {
@@ -351,6 +357,11 @@ public class GameLogic {
 		return false;
 	}
 	
+	/**
+	 * Checks if the eagle has found the sword.
+	 * @return True if the eagle has found the sword.
+	 * @return False otherwise.
+	 */
 	public boolean checkIfEagleFoundSword() {
 		
 		if(!eagle.hasSword() && eagle.foundSword(sword)) {
@@ -363,6 +374,9 @@ public class GameLogic {
 		return false;
 	}
 	
+	/** 
+	 * Checks the state of the eagle.
+	 */
 	public void checkEagle() {
 
 		if(eagle != null && eagle.isUseful()) {
@@ -403,6 +417,12 @@ public class GameLogic {
 	//					MISC					//
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
+	
+	/** 
+	 * Gets user input, depending in whether we are in graphic mode or console mode the getting input
+	 * method is different.
+	 * @return keycode.
+	 */
 	public int getInput() {
 
 		if(config.isGraphical()) { // Get key strokes
@@ -414,6 +434,10 @@ public class GameLogic {
 		}
 	}
 	
+	/** 
+	 * Executes a command.
+	 * @param command Command to execute.
+	 */
 	public void runCommand(int command) {
 
 		switch(command) {
@@ -427,7 +451,7 @@ public class GameLogic {
 	}
 	
 	/**
-	 * 
+	 * Creates the list of user tasks.
 	 */
 	public void createTasks() {
 		
@@ -437,7 +461,7 @@ public class GameLogic {
 	}
 	
 	/**
-	 * 
+	 * Checks the state of all the tasks.
 	 */
 	public void checkTasks() {
 		
@@ -492,25 +516,11 @@ public class GameLogic {
 		out.drawBoard(board);
 	}
 	
-	public void drawGameOver() {
-		
-		out.drawBoard(maze);
-		out.drawGoal(tasks);
-		out.drawGameOver(hero.isAlive());
-	}
-
-	public void drawMenu() {
-		
-		if(config.isConsole()) {
-			out.drawCommands();
-			out.drawGoal(tasks);
-		}
-
-		if(config.isGraphical()) {
-			// print commands/goals
-		}
-	}
-	
+	/**
+	 * Transforms a keycode to a game command.
+	 * @param keyCode Key pressed by the user.
+	 * @return Respective game command.
+	 */
 	public int getCurrentCommand(int keyCode) {
 		
 		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
@@ -523,6 +533,30 @@ public class GameLogic {
 		
 		return -1;
 	}
+	
+	// TODO: Console related.
+	/**
+	 * Draws game over screen.
+	 */
+	public void drawGameOver() {
+		
+		out.drawBoard(maze);
+		out.drawGoal(tasks);
+		out.drawGameOver(hero.isAlive());
+	}
+
+	/**
+	 * Draws menu screen.
+	 */
+	public void drawMenu() {
+		
+		if(config.isConsole()) {
+			out.drawCommands();
+			out.drawGoal(tasks);
+		}
+
+	}
+	
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
