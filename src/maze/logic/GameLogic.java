@@ -477,29 +477,14 @@ public class GameLogic {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	public int getInput() {
-		
-		int command = -1;
-		//System.out.println("isGraphical: " + config.isGraphical());	
+
 		if(config.isGraphical()) { // Get key strokes
-
-			do {
-
-				if(gameWindow.getKeyCode() != 0) {
-					command = getCurrentCommand(gameWindow.getKeyCode());
-				}
-
-			} while(command == -1 && gameWindow.getGamePanel().isVisible());
-
-			gameWindow.resetKeyCode();
-
+			return gameWindow.getKeyCode();
 		}
 		else { // Get command line keys
-
 			out.drawMsg(MSG.GET_KEY.ordinal());
-			command = in.get();
+			return in.get();
 		}
-		
-		return command;
 	}
 	
 	public void runCommand(int command) {
@@ -618,49 +603,68 @@ public class GameLogic {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
-	public void loop() {
+	public int loop() {
 
 		int command;
+
+		drawMenu();
+
+		drawGameBoard();
+
 
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive() && !done) {
 			
-			drawMenu();
-			
-			drawGameBoard();
-			
-			setAllDragonStates();
-			
+
 			command = getInput();
-			
-			runCommand(command);
-			
-			checkEagle();
 
-			checkIfHeroFoundEagle();
-			
-			checkIfHeroFoundSword();
+			if(getCurrentCommand(command) >= 0) {
+				
+				gameWindow.resetKeyCode();
 
-			checkDragons();
+				drawMenu();
 
-			checkIfHeroFoundDragon();
+				drawGameBoard();
+				
+				setAllDragonStates();
+				
+				runCommand(getCurrentCommand(command));
 
-			checkTasks();
-			
-			if(heroWon()) break;
-			
-			gameWindow.paint();
-			
-			System.out.println("looping");
+				checkEagle();
 
+				checkIfHeroFoundEagle();
+				
+				checkIfHeroFoundSword();
+
+				checkDragons();
+
+				checkIfHeroFoundDragon();
+
+				checkTasks();
+				
+				if(heroWon()) break;
+				
+				gameWindow.paint();
+			}
+	
+			
 		}	
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
 		
-		drawGameOver();
+		if(gameWindow.getState() == 1) {
+			gameWindow.getFrame().dispose();
+			return 1;
+		} else {
+			drawGameOver();
+			
+			return 0;
+		}
+
+		
 	}
 	
 	public void stop() {

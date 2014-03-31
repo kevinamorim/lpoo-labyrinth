@@ -51,6 +51,7 @@ public class GameWindow extends JFrame implements KeyListener {
 	private int xSize,ySize;
 	
 	private boolean pause;
+	private int state; 
 	
 	/**
 	 * Create the application.
@@ -58,6 +59,7 @@ public class GameWindow extends JFrame implements KeyListener {
 	public GameWindow(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
 		this.keyCode = 0;
+		this.state = 0;
 		pause = false;
 		initialize();
 	}
@@ -137,9 +139,7 @@ public class GameWindow extends JFrame implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				
 				gameLogic.stop();
-				frame.dispose();
-				
-				new GameLogic(gameLogic.getConfig(), 0.01);
+				state = 1;
 
 			}
 		});
@@ -161,6 +161,7 @@ public class GameWindow extends JFrame implements KeyListener {
 			}
 		});
 		menuBar.add(exitMenuItem);
+		//frame.pack();
 		frame.setVisible(true);
 	}
 	
@@ -175,6 +176,7 @@ public class GameWindow extends JFrame implements KeyListener {
 		
 		game.removeAll();
 		game.setLayout(new GridLayout(gameLogic.getMaze().getSize(), gameLogic.getMaze().getSize()));
+		//game.setLayout(new GridLayout(9, 9, 0, 0));
 
 		for(i = 0; i < gameLogic.getMaze().getSize(); i++) {
 			for(j = 0; j < gameLogic.getMaze().getSize(); j++) {
@@ -352,4 +354,11 @@ public class GameWindow extends JFrame implements KeyListener {
 		return pause;
 	}
 
+	public void setState(int state) {
+		this.state = state;
+	}
+	
+	public int getState() {
+		return state;
+	}
 }
