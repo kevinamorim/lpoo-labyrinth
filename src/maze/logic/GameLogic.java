@@ -152,95 +152,6 @@ public class GameLogic {
 			eagle.sendEagle();
 		}
 	}
-	
-	/**
-	 * Checks if the eagle has found a dragon while not flying.
-	 * If a dragon has been found the eagle dies.
-	 * @return True if the eagle found a dragon.
-	 * @return False otherwise.
-	 */
-	public boolean checkIfEagleFoundDragon() {
-
-		if(!eagle.isFlying() && !hero.hasEagle()) {
-
-			for(Dragon dragon : dragons) {
-				
-				if(eagle.foundDragon(dragon)) {
-
-					eagle.die();
-
-					if((sword != null) && eagle.hasSword()) {
-
-						eagle.setHasSword(false);
-						eagle.setMoving(false);
-						eagle.setFlying(false);
-
-						sword.setX(eagle.getX());
-						sword.setY(eagle.getY());
-					}
-
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-	
-	/**
-	 * Checks if the eagle has found the sword.
-	 * @return True if the eagle has found the sword.
-	 * @return False otherwise.
-	 */
-	public boolean checkIfEagleFoundSword() {
-		
-		if(!eagle.hasSword() && eagle.foundSword(sword)) {
-			eagle.setHasSword(true);
-			eagle.setFlying(false);
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/** 
-	 * Checks the state of the eagle.
-	 */
-	public void checkEagle() {
-
-		if(eagle != null && eagle.isUseful()) {
-			
-			// If the hero has the eagle, he carries her
-			if(hero.hasEagle()) {
-				eagle.updatePosition(hero.getX(), hero.getY());
-			}
-
-			// If the eagle is on the move
-			if(eagle.isAlive() && eagle.isMoving()) {
-				
-				if(!eagle.hasSword()) {
-					eagle.moveToSword(sword);
-					
-					checkIfEagleFoundSword();
-					
-				}
-				else {
-					
-					eagle.moveBack();
-					
-					sword.setX(eagle.getX());
-					sword.setY(eagle.getY());
-				}
-				
-			}
-			
-			// If the eagle finds a dragon, it dies.
-			if(checkIfEagleFoundDragon()) {
-				out.debugPrint("> Eagle found dragon");
-			}
-		}
-	}
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -427,7 +338,7 @@ public class GameLogic {
 				
 				runCommand(getCurrentCommand(command));
 				
-				checkEagle();
+				eagle.update(this);
 
 				hero.update(this);
 

@@ -163,5 +163,49 @@ public class Eagle extends Moveable {
 		moving = true;
 	}
 	
+	public void update(GameLogic game) {
+		
+		if(useful) {
+			
+			if(game.getHero().hasEagle()) {
+				updatePosition(game.getHero().getX(), game.getHero().getY());
+			}
+			
+			if(alive && moving) {
+				if(!hasSword) {
+					moveToSword(game.getSword());
+					if(!hasSword() && foundSword(game.getSword())) {
+						hasSword = true;
+						flying = false;
+					}
+				} else {
+					moveBack();
+					game.getSword().setX(x);
+					game.getSword().setY(y);
+				}
+			}
+			
+			if(!flying && !game.getHero().hasEagle()) {
+
+				for(Dragon dragon : game.getDragons()) {
+					
+					if(foundDragon(dragon)) {
+
+						die();
+
+						if((game.getSword() != null) && hasSword) {
+
+							hasSword = false;
+							moving = false;
+							flying = false;
+
+							game.getSword().setX(x);
+							game.getSword().setY(y);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 }
