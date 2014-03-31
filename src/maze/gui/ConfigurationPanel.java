@@ -1,8 +1,5 @@
 package maze.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +10,8 @@ import javax.swing.border.EmptyBorder;
 
 import maze.logic.GameConfig;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.SpinnerListModel;
 
@@ -25,23 +19,23 @@ import java.awt.Font;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSlider;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class ConfigurationPanel extends JFrame {
 
 	private JPanel contentPane;
 	private GameConfig config;
-	private boolean confirm;
 
 	/**
 	 * Create the frame.
 	 */
-	public ConfigurationPanel(GameConfig config) {
+	public ConfigurationPanel(final GameConfig config) {
 		setResizable(false);
 		
 		this.config = config;
-		this.confirm = false;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 693, 501);
@@ -59,7 +53,7 @@ public class ConfigurationPanel extends JFrame {
 		List<Integer> sizes = Arrays.asList(5,7,9,11,13,15,17,19,21);
 		SpinnerListModel sizesSpin = new SpinnerListModel(sizes);
 		
-		JSlider slider = new JSlider();
+		final JSlider slider = new JSlider();
 		slider.setPaintLabels(true);
 		slider.setFocusable(false);
 		slider.setPaintTicks(true);
@@ -95,6 +89,8 @@ public class ConfigurationPanel extends JFrame {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				config.setMazeSize(slider.getValue());
+				System.out.println(slider.getValue());
 			}
 		});
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 40));
@@ -108,21 +104,7 @@ public class ConfigurationPanel extends JFrame {
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 40));
 		contentPane.add(btnCancel);
 		
+		this.pack();
 		this.setVisible(true);
 	}
-
-	/**
-	 * @return the confirm
-	 */
-	public boolean isConfirm() {
-		return confirm;
-	}
-
-	/**
-	 * @param confirm the confirm to set
-	 */
-	public void setConfirm(boolean confirm) {
-		this.confirm = confirm;
-	}
-
 }

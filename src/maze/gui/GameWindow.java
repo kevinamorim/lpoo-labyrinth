@@ -1,79 +1,64 @@
 package maze.gui;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-
-import java.awt.GridLayout;
-
-import javax.swing.JSplitPane;
-
-import java.awt.Window.Type;
-
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-import javax.swing.JMenuItem;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Image;
 
-import javax.swing.AbstractAction;
-
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.Action;
-import javax.swing.JMenuBar;
+import javax.swing.BorderFactory;
+import javax.swing.JSlider;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
 import maze.logic.Dragon;
 import maze.logic.GameConfig;
 import maze.logic.GameLogic;
-import maze.logic.Maze;
-
-import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JButton;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
-
+@SuppressWarnings("serial")
 public class GameWindow extends JFrame implements KeyListener {
 
+	private GameLogic gameLogic;
+	private GameConfig gameConfig;
 	private JFrame frame;
+	private JPanel game;
+	private JPanel configuration;
+	private JSlider slider;
+	
+	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
 	private JLabel label;
+
 	private int keyCode;
 
-	private GameLogic game;
-	private GameConfig config;
-
-	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit, heroWithEagle, eagleWithSword, eagleUponDragon, eagleUponWall, eagleUponWallWithSword;
-
 	private int xSize,ySize;
-
+	
+	private boolean pause;
+	
 	/**
 	 * Create the application.
 	 */
-	public GameWindow(GameLogic game) {
-		
-		this.game = game;
-		this.config = game.getConfig();
-		
-		// Inicializes the variable keyCode;
-		this.setKeyCode(0);
-
+	public GameWindow(GameLogic gameLogic) {
+		this.gameLogic = gameLogic;
+		this.keyCode = 0;
+		pause = false;
 		initialize();
 	}
 
@@ -87,106 +72,135 @@ public class GameWindow extends JFrame implements KeyListener {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		frame.getContentPane().setLayout(new GridLayout(game.getMaze().getSize(), game.getMaze().getSize(), 0, 0));
-		//frame.getContentPane().setLayout(new GridLayout(9,9, 0, 0));
+		frame.getContentPane().setLayout(new CardLayout(0, 0));
+
+		game = new JPanel();
+		frame.getContentPane().add(game, "name_22011620685826");
+		// Default grid layout, just for the sake of design. 
+		game.setLayout(new GridLayout(9, 9, 0, 0));
+
+		configuration = new JPanel();
+		frame.getContentPane().add(configuration, "name_22189615902194");
+		configuration.setLayout(null);
 		
 		xSize = 1000;
 		ySize = 1000;
 		
 		frame.setPreferredSize(new Dimension(xSize, ySize));
 		
-		// Adds a keyListener to the game JFrame
 		frame.addKeyListener(this);
 		
 		initBufferedImages();
-		
-		drawBoard();
+		paint();
+
+		slider = new JSlider();
+		slider.setSnapToTicks(true);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setMinorTickSpacing(2);
+		slider.setMajorTickSpacing(2);
+		slider.setMaximum(21);
+		slider.setMinimum(5);
+		slider.setBounds(190, 53, 234, 45);
+		configuration.add(slider);
+
+		JLabel lblSize = new JLabel("SIZE");
+		lblSize.setBounds(53, 53, 46, 14);
+		configuration.add(lblSize);
+
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				configuration.setVisible(false);
+				game.setVisible(true);
+			}
+		});
+		btnBack.setBounds(236, 227, 89, 23);
+		configuration.add(btnBack);
+
+		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gameLogic.getConfig().setMazeSize(slider.getValue());
+				configuration.setVisible(false);
+				game.setVisible(true);
+			}
+		});
+		btnConfirm.setBounds(106, 227, 89, 23);
+		configuration.add(btnConfirm);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
-		JButton btnNewGame = new JButton("New Game");
-		btnNewGame.setFocusable(false);
-		btnNewGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		menuBar.add(btnNewGame);
-		
-		JButton btnNewButton = new JButton("Restart");
-		btnNewButton.setFocusable(false);
-		btnNewButton.addActionListener(new ActionListener() {
+		JMenuItem newGameMenuItem = new JMenuItem("New Game");
+		newGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				gameLogic.stop();
+				
+				gameLogic = new GameLogic(gameLogic.getConfig(), 0.01);
+				gameLogic.init();
+				//gameLogic.loop();
+				
+				frame.dispose();
+
 			}
 		});
-		menuBar.add(btnNewButton);
+		menuBar.add(newGameMenuItem);
 		
-		JButton btnNewButton_1 = new JButton("Configurations");
-		btnNewButton_1.setFocusable(false);
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JMenuItem configurationMenuItem = new JMenuItem("Configuration");
+		configurationMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.setVisible(false);
+				configuration.setVisible(true);
 			}
 		});
-		menuBar.add(btnNewButton_1);
+		menuBar.add(configurationMenuItem);
 		
-		JButton btnNewButton_2 = new JButton("Help");
-		btnNewButton_2.setFocusable(false);
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frame, "A tua mae", "HELP", JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		menuBar.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton("Exit");
-		btnNewButton_3.setFocusable(false);
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		exitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		menuBar.add(btnNewButton_3);
-		
-		frame.pack();
+		menuBar.add(exitMenuItem);
 		frame.setVisible(true);
-		
 	}
-
+	
 	public void paint() {
 		drawBoard();
 	}
 	
+
 	private void drawBoard() {
 		
 		int i,j;
-
-		Container maze = frame.getContentPane();
 		
-		maze.removeAll();
+		game.removeAll();
+		game.setLayout(new GridLayout(gameLogic.getMaze().getSize(), gameLogic.getMaze().getSize()));
 
-		for(i = 0; i < game.getMaze().getSize(); i++) {
-			for(j = 0; j < game.getMaze().getSize(); j++) {
+		for(i = 0; i < gameLogic.getMaze().getSize(); i++) {
+			for(j = 0; j < gameLogic.getMaze().getSize(); j++) {
 				
 				drawCorrectImageToPanel(i, j);
 
-				//label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-				maze.add(label, BorderLayout.CENTER);
+				game.add(label, BorderLayout.CENTER);
 				
 			}
 		}
 		
-		maze.revalidate();
+		game.revalidate();
 
 	}
 
 	private void drawCorrectImageToPanel(int x, int y) {
 
-		for(Dragon dragon: game.getDragons()) {
+		for(Dragon dragon: gameLogic.getDragons()) {
 			if(dragon.isAlive()) {
 				if(dragon.isAt(x, y)) {
-					if(game.getEagle().isAt(x, y)) {
+					if(gameLogic.getEagle().isAt(x, y)) {
 						drawToPanel(eagleUponDragon);
 					}
 					else {
@@ -197,10 +211,10 @@ public class GameWindow extends JFrame implements KeyListener {
 			}
 		}
 
-		if(game.getEagle().isAlive()) {
-			if(game.getEagle().isAt(x, y)) {
-				if(game.getEagle().hasSword()) {
-					if(game.getMaze().getTiles()[x][y] == 'x') {
+		if(gameLogic.getEagle().isAlive()) {
+			if(gameLogic.getEagle().isAt(x, y)) {
+				if(gameLogic.getEagle().hasSword()) {
+					if(gameLogic.getMaze().getTiles()[x][y] == 'x') {
 						drawToPanel(eagleUponWall);
 					}
 					else {
@@ -208,7 +222,7 @@ public class GameWindow extends JFrame implements KeyListener {
 					}
 				}
 				else {
-					if(game.getMaze().getTiles()[x][y] == 'x') {
+					if(gameLogic.getMaze().getTiles()[x][y] == 'x') {
 						drawToPanel(eagleUponWallWithSword);
 					}
 					else {
@@ -219,14 +233,14 @@ public class GameWindow extends JFrame implements KeyListener {
 			}
 		}
 
-		if(!game.getHero().isArmed() && !game.getEagle().hasSword()) {
-			if(game.getSword().isAt(x, y)) {
+		if(!gameLogic.getHero().isArmed() && !gameLogic.getEagle().hasSword()) {
+			if(gameLogic.getSword().isAt(x, y)) {
 				drawToPanel(sword);
 				return;
 			}
 		}
 
-		switch(game.getMaze().getTiles()[x][y]) {
+		switch(gameLogic.getMaze().getTiles()[x][y]) {
 		case 'x':
 			drawToPanel(wall);
 			break;
@@ -319,7 +333,6 @@ public class GameWindow extends JFrame implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		this.keyCode = e.getKeyCode();
-		
 	}
 
 	@Override
@@ -333,4 +346,13 @@ public class GameWindow extends JFrame implements KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public JPanel getGamePanel() {
+		return this.game;
+	}
+	
+	public boolean isPause() {
+		return pause;
+	}
+
 }

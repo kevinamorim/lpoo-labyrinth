@@ -5,7 +5,6 @@ import java.util.Random;
 
 import maze.cli.*;
 import maze.gui.GameWindow;
-import maze.gui.GameWindow_old;
 
 public class GameLogic {
 
@@ -28,6 +27,8 @@ public class GameLogic {
 	private GameConfig config;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
+	
+	private boolean done;
 
 	public GameLogic() { 
 	}
@@ -40,6 +41,8 @@ public class GameLogic {
 		this.difficulty = config.getDifficulty();
 		
 		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
+		
+		done = false;
 	}
 
 	/**
@@ -481,7 +484,7 @@ public class GameLogic {
 					command = getCurrentCommand(gameWindow.getKeyCode());
 				}
 
-			}while(command == -1);
+			}while(command == -1 && gameWindow.getGamePanel().isVisible());
 
 			gameWindow.resetKeyCode();
 
@@ -618,7 +621,7 @@ public class GameLogic {
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
-		while(hero.isAlive()) {
+		while(hero.isAlive() && !done) {
 			
 			drawMenu();
 			
@@ -652,6 +655,14 @@ public class GameLogic {
 		// +++++++++++++++++++++++++++++++++++++
 		
 		drawGameOver();
+	}
+	
+	public void stop() {
+		done = true;
+	}
+	
+	public boolean isDone() {
+		return done;
 	}
 
 
