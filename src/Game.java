@@ -13,7 +13,7 @@ public class Game {
 		
 		while(state != 0) {
 			
-			GameLogic game = new GameLogic(config, 0.01);
+			GameLogic game = new GameLogic(config);
 			
 			state = game.loop();
 			

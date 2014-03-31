@@ -10,10 +10,11 @@ public class GameConfig {
 	private int mazeSize;
 	private int difficulty;
 	private boolean isConsole;
+	private double dragonPerc;
 
 	// KeyCodes
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
-	private int gameKeyCodes[] = {87, 68, 83, 65};
+	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 
 	public GameConfig() {
 
@@ -22,6 +23,8 @@ public class GameConfig {
 		
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
+		
+		setDragonPerc(0.01);
 		
 		this.isConsole = true;
 
@@ -203,6 +206,20 @@ public class GameConfig {
 	
 	public boolean isOdd(int i) {
 		return ((i % 2) != 0);
+	}
+
+	/**
+	 * @return the dragonPerc
+	 */
+	public double getDragonPerc() {
+		return dragonPerc;
+	}
+
+	/**
+	 * @param dragonPerc the dragonPerc to set
+	 */
+	public void setDragonPerc(double dragonPerc) {
+		this.dragonPerc = dragonPerc;
 	}
 	
 

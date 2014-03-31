@@ -17,8 +17,6 @@ public class GameLogic {
 	private Task[] tasks;
 	private int TASKNUM = 3;
 	
-	private int mazeSize;
-	private int difficulty;
 	private int mazeDragons;
 
 	private Input in;
@@ -30,21 +28,22 @@ public class GameLogic {
 	
 	private boolean done;
 
-	public GameLogic() { 
-	}
-
-	public GameLogic(GameConfig config, double dragonPerc) {
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//			   INITIALIZATION			    //
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	
+	/**
+	 * GameLogic constructor.
+	 * @param config Game configuration.
+	 */
+	public GameLogic(GameConfig config) {
 		
 		this.config = config;
 		
-		this.mazeSize = config.getMazeSize();
-		this.difficulty = config.getDifficulty();
-		
-		this.mazeDragons = (int) (mazeSize * mazeSize * dragonPerc);
-		
-		done = false;
-		
 		init();
+		
 	}
 
 	/**
@@ -52,8 +51,12 @@ public class GameLogic {
 	 */
 	public void init() {
 		
+		done = false;
+		
+		mazeDragons = (int) (config.getMazeSize() * config.getMazeSize()  * config.getDragonPerc());
+		
 		// Creates the Labyrinth
-		maze = new Maze(mazeSize);
+		maze = new Maze(config.getMazeSize());
 
 		// Creates our hero/player
 		hero = new Hero(this);
@@ -84,137 +87,46 @@ public class GameLogic {
 		
 		gameWindow = new GameWindow(this);
 		
+		// Starts game loop.
 		loop();
 
 	}
-	
-	public GameConfig getConfig() {
-		return this.config;
-	}
-	
-	public void setConfig(GameConfig config) {
-		this.config = config;
-	}
 
-	/**
-	 * Returns the game maze
-	 * @return the maze
-	 */
-	public Maze getMaze() {
-		return maze;
-	}
-
-	/**
-	 * Sets the variable maze with the passed value
-	 * @param maze the maze to set
-	 */
-	public void setMaze(Maze maze) {
-		this.maze = maze;
-	}
-
-	/**
-	 * Returns the hero
-	 * @return the hero
-	 */
-	public Hero getHero() {
-		return hero;
-	}
-
-	/**
-	 * Sets the hero with the passed value
-	 * @param hero
-	 */
-	public void setHero(Hero hero) {
-		this.hero = hero;
-	}
-
-	/**
-	 * Returns the eagle
-	 * @return the eagle
-	 */
-	public Eagle getEagle() {
-		return eagle;
-	}
-
-	/**
-	 * Sets the eagle with the passed value
-	 * @param eagle the eagle to set
-	 */
-	public void setEagle(Eagle eagle) {
-		this.eagle = eagle;
-	}
-
-	/**
-	 * @return the dragons
-	 */
-	public Dragon[] getDragons() {
-		return dragons;
-	}
-
-	/**
-	 * @param dragons the dragons to set
-	 */
-	public void setDragons(Dragon[] dragons) {
-		this.dragons = dragons;
-	}
-
-	/**
-	 * @return the sword
-	 */
-	public Element getSword() {
-		return sword;
-	}
-
-	/**
-	 * @param sword the sword to set
-	 */
-	public void setSword(Element sword) {
-		this.sword = sword;
-	}
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
 	//					HERO					//
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
-	/**
-	 * 
-	 */
-	public void moveHero(int command) {
-		
-		hero.move(this, command);
-	}
 
 	/**
-	 * 
+	 * Checks if hero found the sword. 
+	 * If the sword was found the hero is armed. 
+	 * In case the eagle has the sword we take it back.
 	 */
-	public boolean checkIfHeroFoundSword() {
+	public void checkIfHeroFoundSword() {
 
-		if(!hero.isArmed() && hero.foundSword(sword)) {
-
-			out.drawMsg(MSG.FOUND_SWORD.ordinal());
-
+		if(hero.foundSword(sword)) {
+			
 			hero.arm();
 			
 			if(eagle.hasSword()) {
 				eagle.setHasSword(false);
 			}
 			
-			sword.setX(0);
-			sword.setY(0);
-			
-			return true;
 		}
 	
-		return false;
 	}
 	
-	public boolean checkIfHeroFoundEagle() {
+	/**
+	 * Checks if the hero has found the eagle. 
+	 * If the eagle has the sword the hero gets armed.
+	 */
+	public void checkIfHeroFoundEagle() {
 
-		if((!hero.hasEagle()) && (hero.foundEagle(eagle))) {
+		if(hero.foundEagle(eagle)) {
 
 			hero.setHasEagle(true);
-			out.drawMsg(3);
 
 			if(eagle.hasSword()) {
 
@@ -222,32 +134,33 @@ public class GameLogic {
 
 				eagle.setHasSword(false);
 				eagle.setUseful(false);
+				
 			}
+			
 			else {
+				
 				hero.setSymbol('Y');
+				
 			}
 
 			eagle.setMoving(false);
 			eagle.setFlying(false);
-			
-			return true;
+
 		}
-		
-		return false;
+
 	}
 
 	/**
-	 * 
+	 * Checks if the hero has found any dragon. If the hero is armed the dragon gets killed.
+	 * Else, if the hero is not armed and the dragon is awake, the hero gets killed.
 	 */
-	public boolean checkIfHeroFoundDragon() {
+	public void checkIfHeroFoundDragon() {
 
 		for(Dragon dragon: dragons) {
 
 			if(dragon.isAlive() && hero.foundDragon(dragon)) {
 
 				if(hero.isArmed()) {
-
-					out.drawMsg(MSG.KILLED_DRAGON.ordinal());
 					dragon.die();
 				}
 				else {
@@ -256,16 +169,15 @@ public class GameLogic {
 					}
 				}
 				
-				return true;
 			}
 		}	
 		
-		return false;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Checks if hero has won the game.
+	 * @return True if the hero is at the exit and all dragons are dead.
+	 * @return False otherwise.
 	 */
 	public boolean heroWon() {
 
@@ -289,11 +201,11 @@ public class GameLogic {
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
 	/**
-	 * 
+	 * Sets the dragon awake/sleeping if the we are on the difficulty 2. 
 	 */
 	public void setAllDragonStates() {
 
-		if(difficulty == 2) {
+		if(config.getDifficulty() == 2) {
 			
 			for(Dragon dragon: dragons) {
 
@@ -305,7 +217,7 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
+	 * Randomly moves all dragons that are awake.
 	 */
 	public void moveAllDragons() {
 
@@ -325,7 +237,11 @@ public class GameLogic {
 
 	}
 
-	public boolean checkIfDragonFoundSword() {
+	/**
+	 * Checks if a dragon has found the sword. 
+	 * @return
+	 */
+	public void checkIfDragonFoundSword() {
 
 		for(Dragon dragon: dragons) {
 				dragon.setHasSword(false);
@@ -335,24 +251,28 @@ public class GameLogic {
 			
 			if(dragon.foundSword(sword)) {
 				dragon.setHasSword(true);
-				return true;
 			}		
 		}
 
-		return false;
 	}
 
+	/**
+	 * Calls all methods related to managing the dragons.
+	 */
 	public void checkDragons() {
 
-		if(difficulty > 1) {
+		if(config.getDifficulty() > 1) {
 
 			moveAllDragons();
 			checkIfDragonFoundSword();
+			
 		}
 	}
 	
 	/**
-	 * @return
+	 * Checks if all dragons are dead.
+	 * @return True if all dragons are dead.
+	 * @return False otherwise.
 	 */
 	public boolean allDragonsAreDead() {
 
@@ -367,8 +287,9 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Checks if there is a dragon with a sword. 
+	 * @return True if any dragon has a sword. 
+	 * @return False otherwise.
 	 */
 	public boolean noDragonIsUponSword() {
 
@@ -388,6 +309,10 @@ public class GameLogic {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 
+	/**
+	 * Sends the eagle towards the sword. 
+	 * The hero loses the eagle and the eagle starts moving.
+	 */
 	public void sendEagle() {
 		if(hero.hasEagle()) {
 			hero.setHasEagle(false);
@@ -494,7 +419,7 @@ public class GameLogic {
 			sendEagle();
 			break;
 		default:
-			moveHero(command);
+			hero.move(this, command);
 			break;
 		}
 	}
@@ -603,6 +528,12 @@ public class GameLogic {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
+	/**
+	 * Main game loop.
+	 * @return Stopping state. 
+	 * 			0 - End of game.
+	 * 			1 - New game.
+	 */
 	public int loop() {
 
 		int command;
@@ -634,9 +565,13 @@ public class GameLogic {
 
 				checkEagle();
 
-				checkIfHeroFoundEagle();
+				if(!hero.hasEagle()) {
+					checkIfHeroFoundEagle();
+				}
 				
-				checkIfHeroFoundSword();
+				if(!hero.isArmed()) {
+					checkIfHeroFoundSword();
+				}
 
 				checkDragons();
 
@@ -667,13 +602,113 @@ public class GameLogic {
 		
 	}
 	
+	/**
+	 * Sets stopping flag to true.
+	 */
 	public void stop() {
 		done = true;
 	}
+
+
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//			   GETTERS/SETTERS				//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
 	
-	public boolean isDone() {
-		return done;
+
+	/**
+	 * Returns the game maze
+	 * @return the maze
+	 */
+	public Maze getMaze() {
+		return maze;
 	}
 
+	/**
+	 * Sets the variable maze with the passed value
+	 * @param maze the maze to set
+	 */
+	public void setMaze(Maze maze) {
+		this.maze = maze;
+	}
+	
+	/**
+	 * Returns the hero
+	 * @return the hero
+	 */
+	public Hero getHero() {
+		return hero;
+	}
 
+	/**
+	 * Sets the hero with the passed value
+	 * @param hero
+	 */
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
+	
+
+	/**
+	 * @return the sword
+	 */
+	public Element getSword() {
+		return sword;
+	}
+
+	/**
+	 * @param sword the sword to set
+	 */
+	public void setSword(Element sword) {
+		this.sword = sword;
+	}
+
+	
+	/**
+	 * Returns the eagle
+	 * @return the eagle
+	 */
+	public Eagle getEagle() {
+		return eagle;
+	}
+
+	/**
+	 * Sets the eagle with the passed value
+	 * @param eagle the eagle to set
+	 */
+	public void setEagle(Eagle eagle) {
+		this.eagle = eagle;
+	}
+	
+	/**
+	 * @return the dragons
+	 */
+	public Dragon[] getDragons() {
+		return dragons;
+	}
+
+	/**
+	 * @param dragons the dragons to set
+	 */
+	public void setDragons(Dragon[] dragons) {
+		this.dragons = dragons;
+	}
+	
+	/**
+	 * @return Actual game configuration.
+	 */
+	public GameConfig getConfig() {
+		return this.config;
+	}
+	
+	/**
+	 * Sets a new game configuration.
+	 * @param config New game configuration.
+	 */
+	public void setConfig(GameConfig config) {
+		this.config = config;
+	}
+
+	
 }
