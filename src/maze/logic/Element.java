@@ -9,20 +9,11 @@ public class Element {
 	protected int oldX;
 	protected int oldY;
 	protected char symbol;
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		
-		if((this.x == ((Element) obj).getX()) && (this.y == ((Element) obj).getY()))
-			return true;
-		
-		return false;
-	}
 
 	/**
+	 * Constructor for Element.
+	 * Receives its initial position (x, y) along with its symbol.
+	 * 
 	 * @param x
 	 * @param y
 	 * @param symbol
@@ -37,11 +28,16 @@ public class Element {
 	}
 	
 	/**
+	 * Constructor for Element.
+	 * Receives its symbol and sets the initial position to te origin (0, 0).
+	 * 
 	 * @param maze
 	 * @param symbol
 	 */
 	public Element(char symbol) {
 		
+		this.x = 0;
+		this.y = 0;
 		this.oldX = x;
 		this.oldY = y;
 		this.symbol = symbol;
@@ -49,6 +45,10 @@ public class Element {
 	}
 	
 	/**
+	 * Constructor for Element.
+	 * Receives the gameLogic instance of the game it is in and its symbol.
+	 * Generates the element's position randomly.
+	 * 
 	 * @param maze
 	 * @param symbol
 	 */
@@ -62,6 +62,8 @@ public class Element {
 	}
 	
 	/**
+	 * Returns the element's old x coordinate.
+	 * 
 	 * @return the oldX
 	 */
 	public int getOldX() {
@@ -69,6 +71,8 @@ public class Element {
 	}
 
 	/**
+	 * Sets the element's old x coordinate.
+	 * 
 	 * @param oldX the oldX to set
 	 */
 	public void setOldX(int oldX) {
@@ -76,6 +80,8 @@ public class Element {
 	}
 
 	/**
+	 * Returns the element's old y coordinate.
+	 * 
 	 * @return the oldY
 	 */
 	public int getOldY() {
@@ -83,6 +89,8 @@ public class Element {
 	}
 
 	/**
+	 * Sets the element's old y coordinate.
+	 * 
 	 * @param oldY the oldY to set
 	 */
 	public void setOldY(int oldY) {
@@ -90,6 +98,8 @@ public class Element {
 	}
 
 	/**
+	 * Returns the element's x coordinate.
+	 * 
 	 * @return the x
 	 */
 	public int getX() {
@@ -97,6 +107,8 @@ public class Element {
 	}
 
 	/**
+	 * Sets the element's x coordinate.
+	 * 
 	 * @param x the x to set
 	 */
 	public void setX(int x) {
@@ -104,6 +116,8 @@ public class Element {
 	}
 
 	/**
+	 * Returns the element's y coordinate.
+	 * 
 	 * @return the y
 	 */
 	public int getY() {
@@ -111,6 +125,8 @@ public class Element {
 	}
 
 	/**
+	 * Sets the element's x coordinate.
+	 * 
 	 * @param y the y to set
 	 */
 	public void setY(int y) {
@@ -118,6 +134,8 @@ public class Element {
 	}
 	
 	/**
+	 * Returns the element's symbol.
+	 * 
 	 * @return the symbol
 	 */
 	public char getSymbol() {
@@ -125,6 +143,8 @@ public class Element {
 	}
 
 	/**
+	 * Sets the element's symbol.
+	 * 
 	 * @param symbol the symbol to set
 	 */
 	public void setSymbol(char symbol) {
@@ -132,31 +152,35 @@ public class Element {
 	}
 	
 	/**
+	 * Generates a valid random position for an Element. 
 	 * 
-	 * Generates a random valid position for the tile. 
-	 * @param maze Labyrinth object 
+	 * @param game the gameLogic instance which contains the maze
 	 */
 	public void GeneratePos(GameLogic game) {
 		Random r = new Random();
 		
 		int MAX = game.getMaze().getSize();
 		int posX = 0, posY = 0;
-		
-		boolean done = false;
-		while(!done) {
+
+		do {
 			posX = r.nextInt(MAX);
 			posY = r.nextInt(MAX);
-			
-			// Checks if it's a valid position.
-			
-			done = isValidInitialPosition(game, posX, posY);
-		}
+
+		}while(!isValidInitialPosition(game, posX, posY));
 		
 		this.x = posX;
 		this.y = posY;
 		
 	}
 
+	/**
+	 * Checks if the position (x, y) is valid for the Element to be in it.
+	 * 
+	 * @param game the gameLogic instance which contains the maze
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return true if valid position
+	 */
 	protected boolean isValidInitialPosition(GameLogic game, int x, int y) {
 
 		if(!(game.getMaze() == null)) {
@@ -195,6 +219,44 @@ public class Element {
 
 		return true;
 	}
+	
+	/**
+	 * Checks if the Element [b] is in the same position of the Element which calls the function.
+	 * 
+	 * @param b element to compare
+	 * @return true if in the same position
+	 */
+	public boolean isAt(Element b) {
+		if((this.getX() == b.getX()) && (this.getY() == b.getY())) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the Element is at the position (x, y).
+	 * 
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return true if Element is at (x, y)
+	 */
+	public boolean isAt(int x, int y) {
+		if(this.getX() == x && this.getY() == y)
+			return true;
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if((this.x == ((Element) obj).getX()) && (this.y == ((Element) obj).getY()))
+			return true;
+		
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -206,19 +268,6 @@ public class Element {
 		s += " (" + this.x;
 		s += ", " + this.y + ")";
 		return s;
-	}
-	
-	public boolean isAt(Element b) {
-		if((this.getX() == b.getX()) && (this.getY() == b.getY())) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean isAt(int x, int y) {
-		if(this.getX() == x && this.getY() == y)
-			return true;
-		return false;
 	}
 
 }

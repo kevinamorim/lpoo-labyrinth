@@ -16,7 +16,15 @@ public class GameConfig {
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 
-	public GameConfig() {
+	/**
+	 * Constructor for a game configuration.
+	 * Sets the dragon number percentage.
+	 * Reads the difficulty and the maze size from the user.
+	 * Sets the game to NON-graphical mode.
+	 * 
+	 * @param dragonPerc percentage of dragons in the maze
+	 */
+	public GameConfig(double dragonPerc) {
 
 		in = new Input();
 		out = new Output();
@@ -24,13 +32,22 @@ public class GameConfig {
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
 		
-		setDragonPerc(0.01);
+		setDragonPerc(dragonPerc);
 		
 		this.isConsole = true;
 
 	}
 	
-	public GameConfig(boolean isConsole) {
+	/**
+	 * Constructor for a game configuration.
+	 * Sets the dragon number percentage.
+	 * Reads the difficulty and the maze size from the user.
+	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
+	 * 
+	 * @param isConsole true if the game is in NON-graphical mode
+	 * @param dragonPerc percentage of dragons in the maze
+	 */
+	public GameConfig(boolean isConsole, double dragonPerc) {
 
 		in = new Input();
 		out = new Output();
@@ -38,17 +55,37 @@ public class GameConfig {
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
 		
+		setDragonPerc(dragonPerc);
+		
 		this.isConsole = isConsole;
 
 	}
 	
-	public GameConfig(int mazeSize, int difficulty, boolean isConsole) {
+	/**
+	 * Constructor for a game configuration.
+	 * Sets the dragon number percentage.
+	 * Sets the maze size and difficulty.
+	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
+	 * 
+	 * @param mazeSize the size of the maze
+	 * @param difficulty the difficulty of the game [3 available]
+	 * @param isConsole true if the game is in NON-graphical mode
+	 * @param dragonPerc percentage of dragons in the maze
+	 */
+	public GameConfig(int mazeSize, int difficulty, boolean isConsole, double dragonPerc) {
 		
 		this.mazeSize = mazeSize;
 		this.difficulty = difficulty;
 		this.isConsole = isConsole;
+		
+		setDragonPerc(dragonPerc);
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 * @param code
+	 */
 	public void setGameKey(int index, int code) {
 		this.gameKeyCodes[index] = code;
 	}

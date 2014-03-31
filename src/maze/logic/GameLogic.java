@@ -497,11 +497,11 @@ public class GameLogic {
 				setAllDragonStates();
 				
 				runCommand(getCurrentCommand(command));
-				
-				hero.update(this);
 
 				checkEagle();
 
+				hero.update(this);
+				
 				checkDragons();
 
 				checkTasks();
