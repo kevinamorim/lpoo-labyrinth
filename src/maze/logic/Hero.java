@@ -168,6 +168,7 @@ public class Hero extends Moveable {
 				if(dragon.isAlive()) win = false;
 			}
 			if(!win) moveBack();
+			System.out.println("Is at exit. " + win);
 		}
 
 	}

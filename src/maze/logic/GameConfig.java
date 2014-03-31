@@ -11,7 +11,7 @@ public class GameConfig {
 	private int difficulty;
 	private boolean isConsole;
 	private double dragonPerc;
-
+	
 	// KeyCodes
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};

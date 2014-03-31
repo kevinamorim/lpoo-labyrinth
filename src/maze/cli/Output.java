@@ -40,7 +40,7 @@ public class Output {
 		System.out.println("+-------------------------+");
 	}
 	
-	public void drawGoal(Task[] tasks) {
+	public void drawGoals(Task[] tasks) {
 		System.out.println("+--------- Goals ---------+");
 		for(int i = 0; i < tasks.length; i++) {
 			System.out.print((i + 1) + ". ");
@@ -55,8 +55,12 @@ public class Output {
 		System.out.println("+-------------------------+");
 	}
 	
-	public void drawGameOver(boolean won) {
-		if(won) {
+	public void drawGameOver(GameLogic game) {
+		
+		drawBoard(game.getMaze());
+		drawGoals(game.getTasks());
+		
+		if(game.getHero().isWin()) {
 			System.out.println("+-------------------------+");
 			System.out.println("+---------- WIN ----------+");	
 			System.out.println("+-------------------------+");	
@@ -66,6 +70,7 @@ public class Output {
 			System.out.println("+--------- LOSE ----------+");	
 			System.out.println("+-------------------------+");	
 		}
+		
 	}
 	
 	public void drawMsg(int msg) {
@@ -105,4 +110,14 @@ public class Output {
 		System.out.println(msg);
 	}
 
+	public void draw(GameLogic game) {
+		
+		// Draws menu.
+		drawCommands();
+		drawGoals(game.getTasks());
+		
+		// Draws board.
+		drawBoard(game.getBoard());
+		
+	}
 }

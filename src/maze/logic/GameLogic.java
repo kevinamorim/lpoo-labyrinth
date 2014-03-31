@@ -1,12 +1,11 @@
-
 package maze.logic;
-
-import java.util.Random;
 
 import maze.cli.*;
 import maze.gui.GameWindow;
 
 public class GameLogic {
+	
+	private char board[][];
 
 	private Maze maze;
 	private Hero hero;
@@ -15,6 +14,7 @@ public class GameLogic {
 	private Element sword;
 	
 	private Task[] tasks;
+
 	private int TASKNUM = 3;
 	
 	private int mazeDragons;
@@ -55,6 +55,8 @@ public class GameLogic {
 		
 		done = false;
 		
+		board = new char[config.getMazeSize()][config.getMazeSize()];
+		
 		mazeDragons = (int) (config.getMazeSize() * config.getMazeSize()  * config.getDragonPerc());
 		
 		// Creates the Labyrinth
@@ -73,7 +75,6 @@ public class GameLogic {
 		dragons = new Dragon[mazeDragons];
 
 		for(int i = 0; i < dragons.length; i++) {
-
 			dragons[i] = new Dragon(this);
 		}
 		
@@ -109,7 +110,6 @@ public class GameLogic {
 	public boolean allDragonsAreDead() {
 
 		for(Dragon dragon: dragons) {
-
 			if(dragon.isAlive()) {
 				return false;
 			}	
@@ -126,7 +126,6 @@ public class GameLogic {
 	public boolean noDragonIsUponSword() {
 
 		for(Dragon dragon: dragons) {
-
 			if(dragon.hasSword()) {
 				return false;
 			}
@@ -153,9 +152,44 @@ public class GameLogic {
 		}
 	}
 
+	
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
-	//					MISC					//
+	//					TASKS					//
+	//											//
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	
+	/**
+	 * Creates the list of user tasks.
+	 */
+	public void createTasks() {
+		
+		tasks[0] = new Task("Get a weapon.");
+		tasks[1] = new Task("Kill all dragons.");
+		tasks[2] = new Task("Find the exit.");
+	}
+	
+	/**
+	 * Checks the state of all the tasks.
+	 */
+	public void checkTasks() {
+		
+		if(hero.isArmed()) {
+			tasks[0].setDone(true);
+		}
+		
+		if(allDragonsAreDead()) {
+			tasks[1].setDone(true);
+		}
+		
+		if(hero.isWin()) {
+			tasks[2].setDone(true);
+		}
+	}
+	
+	// ++++++++++++++++++++++++++++++++++++++++	//
+	//											//
+	//					INPUT					//
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
@@ -190,42 +224,31 @@ public class GameLogic {
 			break;
 		}
 	}
-	
+
 	/**
-	 * Creates the list of user tasks.
+	 * Transforms a keycode to a game command.
+	 * @param keyCode Key pressed by the user.
+	 * @return Respective game command.
 	 */
-	public void createTasks() {
+	public int getCurrentCommand(int keyCode) {
 		
-		tasks[0] = new Task("Get a weapon.");
-		tasks[1] = new Task("Kill all dragons.");
-		tasks[2] = new Task("Find the exit.");
+		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
+			
+			if(config.getGameKeyCodes()[i] == keyCode) {
+				
+				return i;
+			}
+		}
+		
+		return -1;
 	}
-	
-	/**
-	 * Checks the state of all the tasks.
-	 */
-	public void checkTasks() {
-		
-		if(hero.isArmed()) {
-			tasks[0].setDone(true);
-		}
-		
-		if(allDragonsAreDead()) {
-			tasks[1].setDone(true);
-		}
-		
-		if(hero.isWin()) {
-			tasks[2].setDone(true);
-		}
-	}
+
 	
 	/**
 	 * Draws the game board
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
-	public void drawGameBoard() {
-		
-		char board[][] = new char[maze.getSize()][maze.getSize()];
+	public void setGameBoard() {
 		
 		// Get board without elements.
 		for(int i = 0; i < maze.getSize(); i++) {
@@ -253,51 +276,9 @@ public class GameLogic {
 		if(!hero.isArmed() && noDragonIsUponSword() && !eagle.hasSword()) {
 			board[sword.getX()][sword.getY()] = sword.getSymbol();
 		}
-		
-		out.drawBoard(board);
-	}
-	
-	/**
-	 * Transforms a keycode to a game command.
-	 * @param keyCode Key pressed by the user.
-	 * @return Respective game command.
-	 */
-	public int getCurrentCommand(int keyCode) {
-		
-		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
-			
-			if(config.getGameKeyCodes()[i] == keyCode) {
-				
-				return i;
-			}
-		}
-		
-		return -1;
-	}
-	
-	// TODO: Console related.
-	/**
-	 * Draws game over screen.
-	 */
-	public void drawGameOver() {
-		
-		out.drawBoard(maze);
-		out.drawGoal(tasks);
-		out.drawGameOver(hero.isAlive());
 	}
 
-	/**
-	 * Draws menu screen.
-	 */
-	public void drawMenu() {
-		
-		if(config.isConsole()) {
-			out.drawCommands();
-			out.drawGoal(tasks);
-		}
 
-	}
-	
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -315,9 +296,8 @@ public class GameLogic {
 
 		int command;
 
-		drawMenu();
-
-		drawGameBoard();
+		setGameBoard();
+		out.draw(this);
 
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
@@ -329,11 +309,12 @@ public class GameLogic {
 			if(getCurrentCommand(command) >= 0) {
 				
 				gameWindow.resetKeyCode();
-
-				drawMenu();
-
-				drawGameBoard();
+		
+				setGameBoard();
 				
+				out.draw(this);
+				gameWindow.paint();
+
 				updateAllDragons();
 				
 				runCommand(getCurrentCommand(command));
@@ -344,9 +325,10 @@ public class GameLogic {
 
 				checkTasks();
 				
-				if(hero.isWin()) break;
-				
-				gameWindow.paint();
+				if(hero.isWin()) {
+					done = true;
+					break;
+				}
 				
 			}
 	
@@ -360,8 +342,7 @@ public class GameLogic {
 			gameWindow.getFrame().dispose();
 			return 1;
 		} else {
-			drawGameOver();
-			
+			out.drawGameOver(this);
 			return 0;
 		}
 
@@ -482,5 +463,32 @@ public class GameLogic {
 		this.config = config;
 	}
 
+	/**
+	 * @return the tasks
+	 */
+	public Task[] getTasks() {
+		return tasks;
+	}
+
+	/**
+	 * @param tasks the tasks to set
+	 */
+	public void setTasks(Task[] tasks) {
+		this.tasks = tasks;
+	}
+
+	/**
+	 * @return the board
+	 */
+	public char[][] getBoard() {
+		return board;
+	}
+
+	/**
+	 * @param board the board to set
+	 */
+	public void setBoard(char board[][]) {
+		this.board = board;
+	}
 	
 }

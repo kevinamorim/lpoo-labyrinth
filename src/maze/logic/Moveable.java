@@ -177,7 +177,6 @@ public class Moveable extends Element {
 
 		}
 		
-		
 		if(game.getMaze().getTiles()[x][y] == 'x') {
 			return false;
 		}
