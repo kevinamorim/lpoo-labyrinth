@@ -94,107 +94,6 @@ public class GameLogic {
 
 	}
 
-
-	// ++++++++++++++++++++++++++++++++++++++++	//
-	//											//
-	//					HERO					//
-	//											//
-	// ++++++++++++++++++++++++++++++++++++++++	//
-
-	/**
-	 * Checks if hero found the sword. 
-	 * If the sword was found the hero is armed. 
-	 * In case the eagle has the sword we take it back.
-	 */
-	public void checkIfHeroFoundSword() {
-
-		if(hero.foundSword(sword)) {
-			
-			hero.arm();
-			
-			if(eagle.hasSword()) {
-				eagle.setHasSword(false);
-			}
-			
-		}
-	
-	}
-	
-	/**
-	 * Checks if the hero has found the eagle. 
-	 * If the eagle has the sword the hero gets armed.
-	 */
-	public void checkIfHeroFoundEagle() {
-
-		if(hero.foundEagle(eagle)) {
-
-			hero.setHasEagle(true);
-
-			if(eagle.hasSword()) {
-
-				hero.arm();
-
-				eagle.setHasSword(false);
-				eagle.setUseful(false);
-				
-			}
-			
-			else {
-				
-				hero.setSymbol('Y');
-				
-			}
-
-			eagle.setMoving(false);
-			eagle.setFlying(false);
-
-		}
-
-	}
-
-	/**
-	 * Checks if the hero has found any dragon. If the hero is armed the dragon gets killed.
-	 * Else, if the hero is not armed and the dragon is awake, the hero gets killed.
-	 */
-	public void checkIfHeroFoundDragon() {
-
-		for(Dragon dragon: dragons) {
-
-			if(dragon.isAlive() && hero.foundDragon(dragon)) {
-
-				if(hero.isArmed()) {
-					dragon.die();
-				}
-				else {
-					if(dragon.isAwake()) {
-						hero.die();
-					}
-				}
-				
-			}
-		}	
-		
-	}
-	
-	/**
-	 * Checks if hero has won the game.
-	 * @return True if the hero is at the exit and all dragons are dead.
-	 * @return False otherwise.
-	 */
-	public boolean heroWon() {
-
-		if(hero.isAt(maze.getExit())) {
-
-			if(allDragonsAreDead()) {
-				return true;
-			}
-			else {
-				hero.moveBack();
-			}
-		}
-		
-		return false;
-	}
 	
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -473,7 +372,7 @@ public class GameLogic {
 			tasks[1].setDone(true);
 		}
 		
-		if(heroWon()) {
+		if(hero.isWin()) {
 			tasks[2].setDone(true);
 		}
 	}
@@ -598,24 +497,16 @@ public class GameLogic {
 				setAllDragonStates();
 				
 				runCommand(getCurrentCommand(command));
+				
+				hero.update(this);
 
 				checkEagle();
 
-				if(!hero.hasEagle()) {
-					checkIfHeroFoundEagle();
-				}
-				
-				if(!hero.isArmed()) {
-					checkIfHeroFoundSword();
-				}
-
 				checkDragons();
-
-				checkIfHeroFoundDragon();
 
 				checkTasks();
 				
-				if(heroWon()) break;
+				if(hero.isWin()) break;
 				
 				gameWindow.paint();
 			}

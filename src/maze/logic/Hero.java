@@ -8,6 +8,7 @@ import java.util.Random;
  */
 public class Hero extends Moveable {
 
+	private boolean win;
 	private boolean armed;
 	private boolean hasEagle;
 
@@ -15,12 +16,14 @@ public class Hero extends Moveable {
 		super(game, 'Y');
 		this.armed = false;
 		this.hasEagle = true;
+		this.setWin(false);
 	}
 	
 	public Hero(int x, int y, char symbol) { // TEST
 		super(x,y, symbol);
 		this.armed = false;
 		this.hasEagle = false;
+		this.setWin(false);
 	}
 	
 	/**
@@ -113,6 +116,74 @@ public class Hero extends Moveable {
 		}
 		
 		return true;
+	}
+	
+	public void update(GameLogic game) {
+		
+		// Checks if hero has found the eagle.
+		if(!hasEagle && foundEagle(game.getEagle())) {
+			hasEagle = true;
+			
+			if(game.getEagle().hasSword()) {
+				arm();
+				game.getEagle().setHasSword(false);
+				game.getEagle().setUseful(false);
+			} else {
+				symbol = 'Y';
+			}
+			
+			game.getEagle().setMoving(false);
+			game.getEagle().setFlying(false);
+		}
+		
+		// Checks if hero has found the sword. 
+		if(!armed && foundSword(game.getSword())) {
+			arm();
+		}
+		
+		// Checks if hero has found any dragon.
+		Dragon[] dragons = game.getDragons();
+		for(Dragon dragon : dragons) {
+
+			if(dragon.isAlive() && foundDragon(dragon)) {
+
+				if(armed) {
+					dragon.die();
+				}
+				else {
+					if(dragon.isAwake()) {
+						die();
+					}
+				}
+				
+			}
+		}	
+		
+		game.setDragons(dragons);
+		
+		//Checks if hero has won the game and sets a flag.
+		if(isAt(game.getMaze().getExit())) {
+			win = true;
+			for(Dragon dragon : dragons) {
+				if(dragon.isAlive()) win = false;
+			}
+			if(!win) moveBack();
+		}
+
+	}
+
+	/**
+	 * @return the win
+	 */
+	public boolean isWin() {
+		return win;
+	}
+
+	/**
+	 * @param win the win to set
+	 */
+	public void setWin(boolean win) {
+		this.win = win;
 	}
 	
 }
