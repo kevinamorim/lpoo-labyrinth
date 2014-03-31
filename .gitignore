@@ -1,4 +1,5 @@
 /bin/maze/*
 /bin/Game.class
+/bin/textures/Thumbs.db
 *.metadata/
 RemoteSystemTempFiles/*
