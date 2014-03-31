@@ -108,4 +108,33 @@ public class Dragon extends Moveable {
 			}
 		}
 	}
+	
+	public void update(GameLogic game) {
+		
+		// Sets dragon state.
+		if(game.getConfig().getDifficulty() == 2) {
+			if(alive) {
+				setDragonState();
+			}
+		}
+		
+		// Moves dragon. 
+		if(game.getConfig().getDifficulty() > 1) {
+			if(isAwake() && isAlive()) {
+				Random r = new Random();
+				move(game, r.nextInt(4));
+				
+				if(isAt(game.getMaze().getExit())) {
+					moveBack();
+				}
+			}
+		}
+		
+		// Checks if dragon has found the sword.
+		hasSword = false;
+		if(foundSword(game.getSword())) {
+			hasSword = true;
+		}
+		
+	}
 }

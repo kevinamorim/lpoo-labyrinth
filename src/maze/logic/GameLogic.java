@@ -102,75 +102,6 @@ public class GameLogic {
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
 	/**
-	 * Sets the dragon awake/sleeping if the we are on the difficulty 2. 
-	 */
-	public void setAllDragonStates() {
-
-		if(config.getDifficulty() == 2) {
-			
-			for(Dragon dragon: dragons) {
-
-				if(dragon.isAlive()) {
-					dragon.setDragonState();
-				}	
-			}
-		}
-	}
-
-	/**
-	 * Randomly moves all dragons that are awake.
-	 */
-	public void moveAllDragons() {
-
-		for(Dragon dragon: dragons) {
-
-			if(dragon.isAwake() && dragon.isAlive()) {
-
-				Random r = new Random();
-
-				dragon.move(this, r.nextInt(4));
-
-				if(dragon.isAt(maze.getExit())) {
-					dragon.moveBack();
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Checks if a dragon has found the sword. 
-	 * @return
-	 */
-	public void checkIfDragonFoundSword() {
-
-		for(Dragon dragon: dragons) {
-				dragon.setHasSword(false);
-		}
-
-		for(Dragon dragon: dragons) {
-			
-			if(dragon.foundSword(sword)) {
-				dragon.setHasSword(true);
-			}		
-		}
-
-	}
-
-	/**
-	 * Calls all methods related to managing the dragons.
-	 */
-	public void checkDragons() {
-
-		if(config.getDifficulty() > 1) {
-
-			moveAllDragons();
-			checkIfDragonFoundSword();
-			
-		}
-	}
-	
-	/**
 	 * Checks if all dragons are dead.
 	 * @return True if all dragons are dead.
 	 * @return False otherwise.
@@ -477,13 +408,11 @@ public class GameLogic {
 
 		drawGameBoard();
 
-
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive() && !done) {
 			
-
 			command = getInput();
 
 			if(getCurrentCommand(command) >= 0) {
@@ -494,21 +423,22 @@ public class GameLogic {
 
 				drawGameBoard();
 				
-				setAllDragonStates();
+				for(Dragon dragon : dragons) {
+					dragon.update(this);
+				}
 				
 				runCommand(getCurrentCommand(command));
-
+				
 				checkEagle();
 
 				hero.update(this);
-				
-				checkDragons();
 
 				checkTasks();
 				
 				if(hero.isWin()) break;
 				
 				gameWindow.paint();
+				
 			}
 	
 			
