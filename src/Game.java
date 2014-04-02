@@ -9,7 +9,7 @@ public class Game {
 		
 		boolean isConsole = false;
 		
-		GameConfig config = new GameConfig(isConsole, 0.01);
+		GameConfig config = new GameConfig(1, 0.01);
 		
 		while(state != 0) {
 			

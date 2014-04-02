@@ -2,6 +2,7 @@ package maze.logic;
 
 import maze.cli.*;
 import maze.gui.GameWindow;
+import maze.gui.InputHandler;
 
 public class GameLogic {
 	
@@ -20,6 +21,7 @@ public class GameLogic {
 	private int mazeDragons;
 
 	private Input in;
+	private InputHandler inputHandler;
 	private Output out;
 	private GameWindow gameWindow;
 	private GameConfig config;
@@ -27,6 +29,12 @@ public class GameLogic {
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
 	private boolean done;
+	
+	private final int FRAMES_PER_SECOND = 30;
+	private final int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
+	
+	private double next_game_tick = System.currentTimeMillis();
+	int sleep_time = 0;
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -89,6 +97,8 @@ public class GameLogic {
 		createTasks();
 		
 		gameWindow = new GameWindow(this);
+		
+		inputHandler = new InputHandler(gameWindow);
 		
 		// Starts game loop.
 		loop();
@@ -200,7 +210,7 @@ public class GameLogic {
 	 */
 	public int getInput() {
 
-		if(config.isGraphical()) { // Get key strokes
+		if(config.getMode() == 1) { // Get key strokes
 			return gameWindow.getKeyCode();
 		}
 		else { // Get command line keys
@@ -293,28 +303,30 @@ public class GameLogic {
 	 * 			1 - New game.
 	 */
 	public int loop() {
+		
+		Thread inputThread = new Thread(inputHandler);
+		inputThread.start();
 
-		int command;
+		int command = -1;
 
-		setGameBoard();
-		out.draw(this);
+		// First draw.
+		if(config.getMode() == 0) {
+			out.draw(this);
+		} else if(config.getMode() == 1) {
+			gameWindow.paint();
+		}
 
 		// +++++++++++++++++++++++++++++++++++++
 		//				Begin Loop
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive() && !done) {
 			
-			command = getInput();
-
+			command = inputHandler.getNextCommand();
+			
 			if(getCurrentCommand(command) >= 0) {
-				
-				gameWindow.resetKeyCode();
-		
+
 				setGameBoard();
 				
-				out.draw(this);
-				gameWindow.paint();
-
 				updateAllDragons();
 				
 				runCommand(getCurrentCommand(command));
@@ -330,8 +342,13 @@ public class GameLogic {
 					break;
 				}
 				
+				if(config.getMode() == 0) {
+					out.draw(this);
+				} else if(config.getMode() == 1) {
+					gameWindow.paint();
+				}
+
 			}
-	
 			
 		}	
 		// +++++++++++++++++++++++++++++++++++++

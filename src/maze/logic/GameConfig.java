@@ -9,8 +9,14 @@ public class GameConfig {
 	private Output out;
 	private int mazeSize;
 	private int difficulty;
-	private boolean isConsole;
+	
 	private double dragonPerc;
+	
+	/**
+	 * 0 - Console mode.
+	 * 1 - Graphical mode.
+	 */
+	private int mode;
 	
 	// KeyCodes
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
@@ -34,7 +40,8 @@ public class GameConfig {
 		
 		setDragonPerc(dragonPerc);
 		
-		this.isConsole = true;
+		// Console mode is the default mode.
+		mode = 0;
 
 	}
 	
@@ -47,7 +54,7 @@ public class GameConfig {
 	 * @param isConsole true if the game is in NON-graphical mode
 	 * @param dragonPerc percentage of dragons in the maze
 	 */
-	public GameConfig(boolean isConsole, double dragonPerc) {
+	public GameConfig(int mode, double dragonPerc) {
 
 		in = new Input();
 		out = new Output();
@@ -57,7 +64,7 @@ public class GameConfig {
 		
 		setDragonPerc(dragonPerc);
 		
-		this.isConsole = isConsole;
+		this.mode = mode;
 
 	}
 	
@@ -76,7 +83,6 @@ public class GameConfig {
 		
 		this.mazeSize = mazeSize;
 		this.difficulty = difficulty;
-		this.isConsole = isConsole;
 		
 		setDragonPerc(dragonPerc);
 	}
@@ -221,33 +227,6 @@ public class GameConfig {
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
-	
-	/**
-	 * Checks the variable [isConsole], which is true if the game is in NON-graphical mode.
-	 * 
-	 * @return the isConsole
-	 */
-	public boolean isConsole() {
-		return isConsole;
-	}
-	
-	/**
-	 * Checks the variable [isConsole], which is true if the game is in NON-graphical mode.
-	 * 
-	 * @return true if the game is Graphical (not isConsole)
-	 */
-	public boolean isGraphical() {
-		return (!isConsole);
-	}
-
-	/**
-	 * Sets the [isConsole] variable. If the game is in graphical mode, this variable is set to false.
-	 * 
-	 * @param isConsole the isConsole to set
-	 */
-	public void setConsole(boolean isConsole) {
-		this.isConsole = isConsole;
-	}
 
 	/**
 	 * Checks if a string is a number.
@@ -307,6 +286,19 @@ public class GameConfig {
 	public void setDragonPerc(double dragonPerc) {
 		this.dragonPerc = dragonPerc;
 	}
-	
+
+	/**
+	 * @return the mode
+	 */
+	public int getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode the mode to set
+	 */
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
 
 }

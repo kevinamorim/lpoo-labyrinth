@@ -43,10 +43,10 @@ public class GameWindow extends JFrame implements KeyListener {
 	private JPanel configuration;
 	private JSlider slider;
 	
-	BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit;
-	BufferedImage heroWithEagle, heroWithSword, heroWithSwordAndEagle;
-	BufferedImage eagleWithSword, eagleUponDragon, eagleUponDragonAsleep, eagleUponDragonWithSwordAsleep, eagleUponDragonWithSword, eagleUponWall, eagleUponWallWithSword;
-	BufferedImage dragonAsleep, dragonWithSword, dragonWithSwordAsleep;
+	private BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit;
+	private BufferedImage heroWithEagle, heroWithSword, heroWithSwordAndEagle;
+	private BufferedImage eagleWithSword, eagleUponDragon, eagleUponDragonAsleep, eagleUponDragonWithSwordAsleep, eagleUponDragonWithSword, eagleUponWall, eagleUponWallWithSword;
+	private BufferedImage dragonAsleep, dragonWithSword, dragonWithSwordAsleep;
 	
 	private JLabel label;
 
@@ -54,7 +54,6 @@ public class GameWindow extends JFrame implements KeyListener {
 
 	private int xSize,ySize;
 	
-	private boolean pause;
 	private int state; 
 	
 	/**
@@ -62,9 +61,6 @@ public class GameWindow extends JFrame implements KeyListener {
 	 */
 	public GameWindow(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
-		this.keyCode = 0;
-		this.state = 0;
-		pause = false;
 		initialize();
 	}
 
@@ -72,6 +68,9 @@ public class GameWindow extends JFrame implements KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		keyCode = 0;
+		state = 0;
 		
 		frame = new JFrame();
 		frame.setAlwaysOnTop(true);
@@ -185,8 +184,6 @@ public class GameWindow extends JFrame implements KeyListener {
 			for(j = 0; j < gameLogic.getMaze().getSize(); j++) {
 				
 				drawCorrectImageToPanel(i, j);
-
-				label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 				game.add(label, BorderLayout.CENTER);
 				
@@ -370,11 +367,14 @@ public class GameWindow extends JFrame implements KeyListener {
 			dragonWithSwordAsleep = ImageIO.read(new File("bin/textures/dragon_with_sword_asleep.png"));
 			
 		} catch (IOException e) {
+			
 			e.printStackTrace();
-			System.out.println("Exception" + e);
+			
+			System.out.println("Error loading images. Exception: " + e);
 			
 			System.exit(0);
 		}
+		
 	}
 	
 	/**
@@ -434,9 +434,6 @@ public class GameWindow extends JFrame implements KeyListener {
 		return this.game;
 	}
 	
-	public boolean isPause() {
-		return pause;
-	}
 
 	public void setState(int state) {
 		this.state = state;
