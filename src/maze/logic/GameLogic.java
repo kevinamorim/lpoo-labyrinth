@@ -44,7 +44,9 @@ public class GameLogic {
 	
 	/**
 	 * GameLogic constructor.
-	 * @param config Game configuration.
+	 * Calls methot init() for parameters initialization.
+	 * 
+	 * @param config : current game configuration
 	 */
 	public GameLogic(GameConfig config) {
 		
@@ -54,10 +56,13 @@ public class GameLogic {
 		
 	}
 
+	/** 
+	 * Default GameLogic constructor.
+	 */
 	public GameLogic() {}
 
 	/**
-	 * Initializes all game variables
+	 * Initializes all game parameters.
 	 */
 	public void init() {
 		
@@ -114,8 +119,8 @@ public class GameLogic {
 	
 	/**
 	 * Checks if all dragons are dead.
-	 * @return True if all dragons are dead.
-	 * @return False otherwise.
+	 * 
+	 * @return true if all dragons are dead
 	 */
 	public boolean allDragonsAreDead() {
 
@@ -130,8 +135,8 @@ public class GameLogic {
 
 	/**
 	 * Checks if there is a dragon with a sword. 
-	 * @return True if any dragon has a sword. 
-	 * @return False otherwise.
+	 * 
+	 * @return true if any dragon has a sword
 	 */
 	public boolean noDragonIsUponSword() {
 
@@ -152,7 +157,7 @@ public class GameLogic {
 
 	/**
 	 * Sends the eagle towards the sword. 
-	 * The hero loses the eagle and the eagle starts moving.
+	 * The hero looses the eagle and the eagle starts moving.
 	 */
 	public void sendEagle() {
 		if(hero.hasEagle()) {
@@ -171,6 +176,7 @@ public class GameLogic {
 	
 	/**
 	 * Creates the list of user tasks.
+	 * This tasks are objectives to be completed by the hero/player.
 	 */
 	public void createTasks() {
 		
@@ -184,7 +190,7 @@ public class GameLogic {
 	 */
 	public void checkTasks() {
 		
-		if(hero.isArmed()) {
+		if(hero.hasSword()) {
 			tasks[0].setDone(true);
 		}
 		
@@ -192,7 +198,7 @@ public class GameLogic {
 			tasks[1].setDone(true);
 		}
 		
-		if(hero.isWin()) {
+		if(hero.hasWon()) {
 			tasks[2].setDone(true);
 		}
 	}
@@ -204,9 +210,10 @@ public class GameLogic {
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
 	/** 
-	 * Gets user input, depending in whether we are in graphic mode or console mode the getting input
-	 * method is different.
-	 * @return keycode.
+	 * Gets user input.
+	 * Depending whether the game is in graphic mode or console mode the input method is different.
+	 * 
+	 * @return keycode : input keycode
 	 */
 	public int getInput() {
 
@@ -220,8 +227,9 @@ public class GameLogic {
 	}
 	
 	/** 
-	 * Executes a command.
-	 * @param command Command to execute.
+	 * Executes a hero command (receives a command - after it has been converted from keycode - and executes the order).
+	 * 
+	 * @param command : order to execute
 	 */
 	public void runCommand(int command) {
 
@@ -229,16 +237,17 @@ public class GameLogic {
 		case 4: // SPACE
 			sendEagle();
 			break;
-		default:
+		default: // 0,1,2,3
 			hero.move(this, command);
 			break;
 		}
 	}
 
 	/**
-	 * Transforms a keycode to a game command.
-	 * @param keyCode Key pressed by the user.
-	 * @return Respective game command.
+	 * Converts a keycode into a game command.
+	 * 
+	 * @param keyCode : key pressed by the user
+	 * @return game command corresponding to the keycode
 	 */
 	public int getCurrentCommand(int keyCode) {
 		
@@ -255,7 +264,7 @@ public class GameLogic {
 
 	
 	/**
-	 * Draws the game board
+	 * Draws the game board.
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
 	public void setGameBoard() {
@@ -283,7 +292,7 @@ public class GameLogic {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
 		}
 		// Includes sword.
-		if(!hero.isArmed() && noDragonIsUponSword() && !eagle.hasSword()) {
+		if(!hero.hasSword() && noDragonIsUponSword() && !eagle.hasSword()) {
 			board[sword.getX()][sword.getY()] = sword.getSymbol();
 		}
 	}
@@ -298,6 +307,7 @@ public class GameLogic {
 	
 	/**
 	 * Main game loop.
+	 * 
 	 * @return Stopping state. 
 	 * 			0 - End of game.
 	 * 			1 - New game.
@@ -337,7 +347,7 @@ public class GameLogic {
 
 				checkTasks();
 				
-				if(hero.isWin()) {
+				if(hero.hasWon()) {
 					done = true;
 					break;
 				}
@@ -366,6 +376,10 @@ public class GameLogic {
 		
 	}
 	
+	/**
+	 * Calls method update(GameLogic game) for all dragons.
+	 * For more info consult the methods.
+	 */
 	private void updateAllDragons() {
 		for(Dragon dragon: dragons) {
 			dragon.update(this);
@@ -373,7 +387,7 @@ public class GameLogic {
 	}
 
 	/**
-	 * Sets stopping flag to true.
+	 * Sets [done] flag parameter to true.
 	 */
 	public void stop() {
 		done = true;
@@ -388,23 +402,26 @@ public class GameLogic {
 	
 
 	/**
-	 * Returns the game maze
-	 * @return the maze
+	 * Gets the game instance of [maze].
+	 * 
+	 * @return the current instance of Maze
 	 */
 	public Maze getMaze() {
 		return maze;
 	}
 
 	/**
-	 * Sets the variable maze with the passed value
-	 * @param maze the maze to set
+	 * Sets the game instance of [sword].
+	 * 
+	 * @param maze : parameter to be set
 	 */
 	public void setMaze(Maze maze) {
 		this.maze = maze;
 	}
 	
 	/**
-	 * Returns the hero
+	 * Gets the game instance of [hero].
+	 * 
 	 * @return the hero
 	 */
 	public Hero getHero() {
@@ -412,8 +429,9 @@ public class GameLogic {
 	}
 
 	/**
-	 * Sets the hero with the passed value
-	 * @param hero
+	 * Sets the game instance of [hero].
+	 * 
+	 * @param hero : parameter to be set
 	 */
 	public void setHero(Hero hero) {
 		this.hero = hero;
@@ -421,6 +439,8 @@ public class GameLogic {
 	
 
 	/**
+	 * Gets the game instance of [sword].
+	 * 
 	 * @return the sword
 	 */
 	public Element getSword() {
@@ -428,7 +448,9 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param sword the sword to set
+	 * Sets the game instance of [sword].
+	 *  
+	 * @param sword : parameter to be set
 	 */
 	public void setSword(Element sword) {
 		this.sword = sword;
@@ -436,7 +458,8 @@ public class GameLogic {
 
 	
 	/**
-	 * Returns the eagle
+	 * Gets the game instance of [eagle].
+	 *  
 	 * @return the eagle
 	 */
 	public Eagle getEagle() {
@@ -444,14 +467,17 @@ public class GameLogic {
 	}
 
 	/**
-	 * Sets the eagle with the passed value
-	 * @param eagle the eagle to set
+	 * Sets the game instance of [eagle].
+	 * 
+	 * @param eagle : parameter to be set
 	 */
 	public void setEagle(Eagle eagle) {
 		this.eagle = eagle;
 	}
 	
 	/**
+	 * Gets the game instances of [dragon] from the array [dragons].
+	 * 
 	 * @return the dragons
 	 */
 	public Dragon[] getDragons() {
@@ -459,28 +485,35 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param dragons the dragons to set
+	 * Sets the array [dragons].
+	 * 
+	 * @param dragons : parameter to be set
 	 */
 	public void setDragons(Dragon[] dragons) {
 		this.dragons = dragons;
 	}
 	
 	/**
-	 * @return Actual game configuration.
+	 * Gets the current game configuration.
+	 * 
+	 * @return GameConfig configuration
 	 */
 	public GameConfig getConfig() {
 		return this.config;
 	}
 	
 	/**
-	 * Sets a new game configuration.
-	 * @param config New game configuration.
+	 * Sets the current game configuration.
+	 * 
+	 * @param config : configuration to set
 	 */
 	public void setConfig(GameConfig config) {
 		this.config = config;
 	}
 
 	/**
+	 * Gets the array containing the tasks.
+	 * 
 	 * @return the tasks
 	 */
 	public Task[] getTasks() {
@@ -488,13 +521,17 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param tasks the tasks to set
+	 * Sets the array containing the tasks.
+	 * 
+	 * @param tasks : array of tasks to be set
 	 */
 	public void setTasks(Task[] tasks) {
 		this.tasks = tasks;
 	}
 
 	/**
+	 * Gets the array containing the game board chars.
+	 * 
 	 * @return the board
 	 */
 	public char[][] getBoard() {
@@ -502,7 +539,9 @@ public class GameLogic {
 	}
 
 	/**
-	 * @param board the board to set
+	 * Sets the array containing the game board chars.
+	 * 
+	 * @param board : array of game board chars to be set
 	 */
 	public void setBoard(char board[][]) {
 		this.board = board;

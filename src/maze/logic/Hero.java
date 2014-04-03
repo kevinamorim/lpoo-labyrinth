@@ -2,61 +2,86 @@ package maze.logic;
 
 import java.util.Random;
 
-/**
- * @author Luís
- *
- */
 public class Hero extends Moveable {
 
-	private boolean win;
-	private boolean armed;
+	private boolean won;
 	private boolean hasEagle;
 
+	/**
+	 * Constructor for Hero.
+	 * Receives the current GameLogic in order to call super(game, symbol).
+	 * 
+	 * @param game current GameLogic
+	 */
 	public Hero(GameLogic game) {
+		
 		super(game, 'Y');
-		this.armed = false;
+		
+		this.hasSword = false;
 		this.hasEagle = true;
-		this.setWin(false);
+		this.won = false;
 	}
 	
-	public Hero(int x, int y, char symbol) { // TEST
+	/**
+	 * Constructor for Hero.
+	 * Receives the x and y coordinates in order to call super(x, y, symbol).
+	 * 
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param symbol
+	 */
+	public Hero(int x, int y, char symbol) {
+		
 		super(x,y, symbol);
-		this.armed = false;
+		
+		this.hasSword = false;
 		this.hasEagle = false;
-		this.setWin(false);
-	}
-	
-	/**
-	 * 
-	 * @return True if the player is armed, false otherwise.
-	 */
-	public boolean isArmed() {
-		return armed;
+		this.won = false;
 	}
 
 	/**
+	 * Gets the value of the parameter [hasEagle].
 	 * 
-	 * @param armed True if the player is armed, false otherwise.
-	 */
-	public void setArmed(boolean armed) {
-		this.armed = armed;
-	}
-
-	
-	/**
-	 * @return the hasEagle
+	 * @return true if the hero has the eagle
 	 */
 	public boolean hasEagle() {
 		return hasEagle;
 	}
 
 	/**
-	 * @param hasEagle the hasEagle to set
+	 * Sets the value of the parameter [hasEagle].
+	 * 
+	 * @param hasEagle : value to be set
 	 */
 	public void setHasEagle(boolean hasEagle) {
 		this.hasEagle = hasEagle;
 	}
+	
+	/**
+	 * Gets the value of the parameter [won].
+	 * 
+	 * @return true if the hero has won the game
+	 */
+	public boolean hasWon() {
+		return won;
+	}
 
+	/**
+	 * Sets the value of the parameter [won].
+	 * This parameter declares if the hero has won the game or not.
+	 * 
+	 * @param win : value to be set
+	 */
+	public void setWon(boolean win) {
+		this.won = win;
+	}
+
+	/**
+	 * Checks if the hero found the eagle.
+	 * 
+	 * @param eagle : the eagle to be found
+	 * @return true if hero/eagle at the same position (x, y)
+	 */
 	public boolean foundEagle(Eagle eagle) {
 		if(this.isAt(eagle)) {
 			return true;
@@ -65,10 +90,10 @@ public class Hero extends Moveable {
 	}
 	
 	/**
-	 * 
+	 * Arms the player by changing its representing symbol and by setting the parameter [hasSword] to true.
 	 */
 	public void arm() {
-		this.armed = true;
+		this.hasSword = true;
 		this.symbol = 'A';
 	}
 
@@ -78,7 +103,7 @@ public class Hero extends Moveable {
 	@Override
 	public String toString() {
 		String s = super.toString();
-		s += "\n    armed: " + this.armed;
+		s += "\n    armed: " + this.hasSword;
 		return s;
 	}
 
@@ -118,6 +143,15 @@ public class Hero extends Moveable {
 		return true;
 	}
 	
+	/**
+	 * Updates a hero:
+	 * 	- checks for found eagle;
+	 *  - checks for found sword;
+	 *  - checks for dragon encounters;
+	 *  - check for found exit.
+	 *  
+	 * @param game : current GameLogic instance
+	 */
 	public void update(GameLogic game) {
 		
 		// Checks if hero has found the eagle.
@@ -137,17 +171,16 @@ public class Hero extends Moveable {
 		}
 		
 		// Checks if hero has found the sword. 
-		if(!armed && foundSword(game.getSword())) {
+		if(!hasSword && foundSword(game.getSword())) {
 			arm();
 		}
 		
 		// Checks if hero has found any dragon.
-		Dragon[] dragons = game.getDragons();
-		for(Dragon dragon : dragons) {
+		for(Dragon dragon : game.getDragons()) {
 
 			if(dragon.isAlive() && foundDragon(dragon)) {
 
-				if(armed) {
+				if(hasSword) {
 					dragon.die();
 				}
 				else {
@@ -159,32 +192,23 @@ public class Hero extends Moveable {
 			}
 		}	
 		
-		game.setDragons(dragons);
-		
 		//Checks if hero has won the game and sets a flag.
 		if(isAt(game.getMaze().getExit())) {
-			win = true;
-			for(Dragon dragon : dragons) {
-				if(dragon.isAlive()) win = false;
+			
+			for(Dragon dragon : game.getDragons()) {
+				if(dragon.isAlive()) {
+					won = false;
+				}
 			}
-			if(!win) moveBack();
-			System.out.println("Is at exit. " + win);
+			
+			if(!won) {
+				moveBack();
+			}
+			else {
+				won = true;
+			}
 		}
 
-	}
-
-	/**
-	 * @return the win
-	 */
-	public boolean isWin() {
-		return win;
-	}
-
-	/**
-	 * @param win the win to set
-	 */
-	public void setWin(boolean win) {
-		this.win = win;
 	}
 	
 }

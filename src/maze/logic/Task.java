@@ -17,7 +17,8 @@ public class Task {
 	}
 
 	/**
-	 * Returns the Task description. What is to be done.
+	 * Returns the Task description.
+	 * What is to be done.
 	 * 
 	 * @return the description
 	 */
@@ -28,7 +29,7 @@ public class Task {
 	/**
 	 * Sets the Task description.
 	 * 
-	 * @param description the description to set
+	 * @param description : string value to be set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -37,16 +38,16 @@ public class Task {
 	/**
 	 * Gets the value of this task (whether it is performed or not).
 	 * 
-	 * @return true done
+	 * @return true if done, false otherwise
 	 */
 	public boolean isDone() {
 		return done;
 	}
 
 	/**
-	 * Sets the value of the var [done]
+	 * Sets the value of the parameter [done]
 	 * 
-	 * @param done the done to set
+	 * @param done : value to be set
 	 */
 	public void setDone(boolean done) {
 		this.done = done;

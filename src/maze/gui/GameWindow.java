@@ -251,7 +251,7 @@ public class GameWindow extends JFrame implements KeyListener {
 				
 				if(gameLogic.getHero().hasEagle()) {
 					
-					if(gameLogic.getHero().isArmed()) {		
+					if(gameLogic.getHero().hasSword()) {		
 						drawToPanel(heroWithSwordAndEagle);
 					}
 					else {
@@ -261,7 +261,7 @@ public class GameWindow extends JFrame implements KeyListener {
 				}
 				else {
 					
-					if(gameLogic.getHero().isArmed()) {
+					if(gameLogic.getHero().hasSword()) {
 						drawToPanel(heroWithSword);
 					}
 					else {
@@ -298,7 +298,7 @@ public class GameWindow extends JFrame implements KeyListener {
 			}
 		}
 		
-		if(!gameLogic.getHero().isArmed() && !gameLogic.getEagle().hasSword()) {
+		if(!gameLogic.getHero().hasSword() && !gameLogic.getEagle().hasSword()) {
 			if(gameLogic.getSword().isAt(x, y)) {
 				drawToPanel(sword);
 				return;

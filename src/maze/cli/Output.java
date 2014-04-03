@@ -60,7 +60,7 @@ public class Output {
 		drawBoard(game.getMaze());
 		drawGoals(game.getTasks());
 		
-		if(game.getHero().isWin()) {
+		if(game.getHero().hasWon()) {
 			System.out.println("+-------------------------+");
 			System.out.println("+---------- WIN ----------+");	
 			System.out.println("+-------------------------+");	

@@ -227,7 +227,7 @@ public class Element {
 	 * @return true if in the same position
 	 */
 	public boolean isAt(Element b) {
-		if((this.getX() == b.getX()) && (this.getY() == b.getY())) {
+		if((this.x == b.getX()) && (this.y == b.getY())) {
 			return true;
 		}
 		return false;
@@ -241,7 +241,7 @@ public class Element {
 	 * @return true if Element is at (x, y)
 	 */
 	public boolean isAt(int x, int y) {
-		if(this.getX() == x && this.getY() == y)
+		if(this.x == x && this.y == y)
 			return true;
 		return false;
 	}

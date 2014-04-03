@@ -13,8 +13,10 @@ public class Maze {
 	private Element exit;
 
 	/**
-	 * Labyrinth constructor.
-	 * @param size Size of the generated labyrinth. The labyrinth is always square, so the final size will be (size x size).
+	 * Constructor for Maze.
+	 * The game maze is generated randomly.
+	 * 
+	 * @param size : size of the maze to be built (eg: 7 means a 7x7 maze)
 	 */
 	public Maze(int size) {
 		
@@ -32,6 +34,12 @@ public class Maze {
 
 	}
 
+	/**
+	 * Constructor for Maze.
+	 * The game maze is received has a parameter.
+	 * 
+	 * @param tiles : array of chars representing the maze
+	 */
 	public Maze(char tiles[][]) {
 
 		this.tiles = tiles;
@@ -128,7 +136,7 @@ public class Maze {
 	}
 	
 	/**
-	 * Sets the outside wall of the labyrinth.
+	 * Sets the outside walls for the maze.
 	 */
 	public void SetChamber() {
 		
@@ -193,7 +201,7 @@ public class Maze {
 	}
 	
 	/**
-	 * Generates the final labyrinth. Takes our pre-created grid and then randomly opens holes in walls.
+	 * Generates the final maze. Takes our pre-created grid and then randomly opens holes in walls.
 	 * Follows the backtracking algorithm.
 	 */
 	public void GenerateWalls() {

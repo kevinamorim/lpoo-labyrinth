@@ -2,61 +2,61 @@ package maze.logic;
 
 public class Eagle extends Moveable {
 	
-	private boolean hasSword;
 	private boolean movingHorizontally;
 	private boolean moving;
 	private boolean flying;
 	private boolean useful;
 
-
+	/**
+	 * Constructor for Eagle.
+	 * Receives the x and y coordinates in order to call super(x, y, symbol).
+	 * 
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param symbol
+	 */
 	public Eagle(int x, int y, char symbol) {
+		
 		super(x, y, symbol);
 		
-		setHasSword(false);
-		setMovingHorizontally(true);
-		setMoving(false);
-		setFlying(false);
-		setUseful(true);
-			
-	}
-
-	/**
-	 * @return the hasSword
-	 */
-	public boolean hasSword() {
-		return hasSword;
-	}
-
-	/**
-	 * @param hasSword the hasSword to set
-	 */
-	public void setHasSword(boolean hasSword) {
-		this.hasSword = hasSword;
+		this.hasSword = false;
+		this.movingHorizontally = true;
+		this.moving = false;
+		this.flying = false;
+		this.useful = true;			
 	}
 	
 	/**
-	 * @return the movingHorizontally
+	 * Gets the value of the parameter [movingHorizontally].
+	 * 
+	 * @return true if the eagle is moving horizontally
 	 */
 	public boolean isMovingHorizontally() {
 		return movingHorizontally;
 	}
 
 	/**
-	 * @param movingHorizontally the movingHorizontally to set
+	 * Sets the value of the parameter [movingHorizontally].
+	 * 
+	 * @param movingHorizontally : value to be set
 	 */
 	public void setMovingHorizontally(boolean movingHorizontally) {
 		this.movingHorizontally = movingHorizontally;
 	}
 
 	/**
-	 * @return the moving
+	 * Gets the value of the parameter [moving].
+	 * 
+	 * @return true if the eagle is on the move 
 	 */
 	public boolean isMoving() {
 		return moving;
 	}
 
 	/**
-	 * @param moving the moving to set
+	 * Sets the value of the parameter [moving].
+	 * 
+	 * @param moving : value to be set
 	 */
 	public void setMoving(boolean moving) {
 		this.moving = moving;
@@ -64,35 +64,45 @@ public class Eagle extends Moveable {
 	
 
 	/**
-	 * @return the flying
+	 * Gets the value of the parameter [flying].
+	 * 
+	 * @return true if the eagle is flying
 	 */
 	public boolean isFlying() {
 		return flying;
 	}
 
 	/**
-	 * @param flying the flying to set
+	 * Sets the value of the parameter [flying].
+	 * 
+	 * @param flying : value to be set
 	 */
 	public void setFlying(boolean flying) {
 		this.flying = flying;
 	}
 	
 	/**
-	 * @return the useful
+	 * Gets the value of the parameter [useful].
+	 * 
+	 * @return true if the eagle has not retrieved the sword yet
 	 */
 	public boolean isUseful() {
 		return useful;
 	}
 
 	/**
-	 * @param useful the useful to set
+	 * Sets the value of the parameter [useful].
+	 * 
+	 * @param useful : value to be set
 	 */
 	public void setUseful(boolean useful) {
 		this.useful = useful;
 	}
 
 	/**
-	 * @param sword
+	 * Moves the eagle to the sword's position (x, y).
+	 * 
+	 * @param sword : ELement to retrieve
 	 */
 	public void moveToSword(Element sword) {
 		
@@ -130,7 +140,8 @@ public class Eagle extends Moveable {
 	}
 
 	/**
-	 * 
+	 * Moves the eagle from the sword's position back
+	 * to the position where the player loosed her.
 	 */
 	public void moveBack() {
 		
@@ -146,23 +157,41 @@ public class Eagle extends Moveable {
 			if(y < oldY) y++;
 			else y--;
 		}
+		// Stops moving
 		else if(this.isAt(oldX, oldY)){
 			flying = false;
 		}
 		
 	}
 	
+	/**
+	 * Updates the position (x, y) of the eagle with the given parameters.
+	 * 
+	 * @param x : vertical coordinate
+	 * @param y : horizontal coordinate
+	 */
 	public void updatePosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * Updates the eagle's parameters upon loosing.
+	 */
 	public void sendEagle() {
-		oldX = x; 
-		oldY = y;
-		moving = true;
+		this.oldX = x; 
+		this.oldY = y;
+		this.moving = true;
 	}
 	
+	/**
+	 * Updates an eagle:
+	 * 	- if the hero has the eagle - calls the update position with the hero's position;
+	 *  - moves the eagle to the sword or back to the hero;
+	 *  - checks if the eagle finds he sword or gets killed by a dragon.
+	 *  
+	 * @param game : current GameLogic instance
+	 */
 	public void update(GameLogic game) {
 		
 		if(useful) {

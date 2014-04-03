@@ -28,7 +28,7 @@ public class GameConfig {
 	 * Reads the difficulty and the maze size from the user.
 	 * Sets the game to NON-graphical mode.
 	 * 
-	 * @param dragonPerc percentage of dragons in the maze
+	 * @param dragonPerc : percentage of dragons in the maze
 	 */
 	public GameConfig(double dragonPerc) {
 
@@ -51,8 +51,8 @@ public class GameConfig {
 	 * Reads the difficulty and the maze size from the user.
 	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
 	 * 
-	 * @param isConsole true if the game is in NON-graphical mode
-	 * @param dragonPerc percentage of dragons in the maze
+	 * @param isConsole : true if the game is in NON-graphical mode
+	 * @param dragonPerc : percentage of dragons in the maze
 	 */
 	public GameConfig(int mode, double dragonPerc) {
 
@@ -74,10 +74,10 @@ public class GameConfig {
 	 * Sets the maze size and difficulty.
 	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
 	 * 
-	 * @param mazeSize the size of the maze
-	 * @param difficulty the difficulty of the game [3 available]
-	 * @param isConsole true if the game is in NON-graphical mode
-	 * @param dragonPerc percentage of dragons in the maze
+	 * @param mazeSize : the size of the maze
+	 * @param difficulty : the difficulty of the game [3 available]
+	 * @param isConsole : true if the game is in NON-graphical mode
+	 * @param dragonPerc : percentage of dragons in the maze
 	 */
 	public GameConfig(int mazeSize, int difficulty, boolean isConsole, double dragonPerc) {
 		
@@ -90,8 +90,8 @@ public class GameConfig {
 	/**
 	 * Sets the game key code for the array of key codes at the given index.
 	 * 
-	 * @param index position to be replaced
-	 * @param code key code to set
+	 * @param index : position to be replaced
+	 * @param code : key code to set
 	 */
 	public void setGameKey(int index, int code) {
 		this.gameKeyCodes[index] = code;
@@ -109,7 +109,7 @@ public class GameConfig {
 	/**
 	 * Sets the array of key codes
 	 * 
-	 * @param gameKeyCodes the gameKeyCodes to set
+	 * @param gameKeyCodes : the gameKeyCodes to set
 	 */
 	public void setGameKeyCodes(int[] gameKeyCodes) {
 		this.gameKeyCodes = gameKeyCodes;
@@ -118,8 +118,8 @@ public class GameConfig {
 	/**
 	 * Gets the maze size from the user.
 	 * 
-	 * @param in input stream
-	 * @param out output stream
+	 * @param in : input stream
+	 * @param out : output stream
 	 * @return the maze size
 	 */
 	public int inputMazeSize(Input in, Output out) {
@@ -156,8 +156,8 @@ public class GameConfig {
 	/**
 	 * Gets the game difficulty from the user.
 	 * 
-	 * @param in input stream
-	 * @param out output stream
+	 * @param in : input stream
+	 * @param out : output stream
 	 * @return the difficulty
 	 */
 	public int inputGameDifficulty(Input in, Output out) {
@@ -204,7 +204,7 @@ public class GameConfig {
 	/**
 	 * Sets the maze size variable.
 	 * 
-	 * @param mazeSize the mazeSize to set
+	 * @param mazeSize : the mazeSize to set
 	 */
 	public void setMazeSize(int mazeSize) {
 		this.mazeSize = mazeSize;
@@ -222,7 +222,7 @@ public class GameConfig {
 	/**
 	 * Sets the game difficulty.
 	 * 
-	 * @param difficulty the difficulty to set
+	 * @param difficulty : the difficulty to set
 	 */
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
@@ -231,7 +231,7 @@ public class GameConfig {
 	/**
 	 * Checks if a string is a number.
 	 * 
-	 * @param s String to evaluate
+	 * @param s : String to evaluate
 	 * @return true if is a number
 	 */
 	public boolean isValid(String s) {
@@ -247,9 +247,9 @@ public class GameConfig {
 	/**
 	 * Checks if a number is in the interval [min, max].
 	 * 
-	 * @param min minimal value of the interval
-	 * @param max maximal value of the interval
-	 * @param i number to evaluate
+	 * @param min : minimal value of the interval
+	 * @param max : maximal value of the interval
+	 * @param i : number to evaluate
 	 * @return true if in interval
 	 */
 	public boolean isBetween(int min, int max, int i) {
@@ -262,7 +262,7 @@ public class GameConfig {
 	/**
 	 * Checks if a number is odd or even
 	 * 
-	 * @param i number to evaluate
+	 * @param i : number to evaluate
 	 * @return true if odd
 	 */
 	public boolean isOdd(int i) {
@@ -281,7 +281,7 @@ public class GameConfig {
 	/**
 	 * Sets the dragon percentage of the game.
 	 * 
-	 * @param dragonPerc the dragonPerc to set
+	 * @param dragonPerc : the dragonPerc to set
 	 */
 	public void setDragonPerc(double dragonPerc) {
 		this.dragonPerc = dragonPerc;
@@ -295,7 +295,7 @@ public class GameConfig {
 	}
 
 	/**
-	 * @param mode the mode to set
+	 * @param mode : the mode to set
 	 */
 	public void setMode(int mode) {
 		this.mode = mode;
