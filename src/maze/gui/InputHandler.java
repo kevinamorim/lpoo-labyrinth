@@ -19,6 +19,9 @@ public class InputHandler implements Runnable {
 		this.commands = new CopyOnWriteArrayList<Integer>();
 	}
 
+	public InputHandler() {
+	}
+
 	@Override
 	public void run() {
 

@@ -33,6 +33,9 @@ public class GameLogic {
 	
 	private boolean done;
 	
+	int CONSOLE = 0;
+	int GRAPHICAL = 1;
+	
 	int sleep_time = 0;
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
@@ -90,22 +93,23 @@ public class GameLogic {
 			dragons[i] = new Dragon(this);
 		}
 		
-		// Creates our Input
-		in = new Input();
-		
-		// Creates our Output
-		out = new Output();
-		
 		tasks = new Task[TASKNUM];
 
 		createTasks();
-		
-		gameWindow = new GameWindow(this);
-		
-		inputHandler = new InputHandler(gameWindow);
-		
-		// Starts game loop.
-		loop();
+
+		if(config.getMode() == CONSOLE) {
+
+			// Creates our Input
+			in = new Input();
+
+			// Creates our Output
+			out = new Output();
+		}
+		else {
+			gameWindow = new GameWindow(this);
+			
+			inputHandler = new InputHandler(gameWindow);
+		}
 
 	}
 
@@ -214,15 +218,11 @@ public class GameLogic {
 	 * 
 	 * @return keycode : input keycode
 	 */
-	public int getInput() {
+	public int getConsoleInput() {
 
-		if(config.getMode() == 1) { // Get key strokes
-			return gameWindow.getKeyCode();
-		}
-		else { // Get command line keys
-			out.drawMsg(MSG.GET_KEY.ordinal());
-			return in.get();
-		}
+		// Get command line keys
+		out.drawMsg(MSG.GET_KEY.ordinal());
+		return in.get();
 	}
 	
 	/** 
@@ -312,16 +312,20 @@ public class GameLogic {
 	 * 			1 - New game.
 	 */
 	public int loop() {
-		
-		Thread inputThread = new Thread(inputHandler);
-		inputThread.start();
+
+		if(config.getMode() == GRAPHICAL) {
+			Thread inputThread = new Thread(inputHandler);
+			inputThread.start();
+		}
 
 		int command = -1;
+		
+		setGameBoard();
 
 		// First draw.
-		if(config.getMode() == 0) {
+		if(config.getMode() == CONSOLE) {
 			out.draw(this);
-		} else if(config.getMode() == 1) {
+		} else if(config.getMode() == GRAPHICAL) {
 			gameWindow.paint();
 		}
 
@@ -330,14 +334,22 @@ public class GameLogic {
 		// +++++++++++++++++++++++++++++++++++++
 		while(hero.isAlive() && !done) {
 			
-			command = inputHandler.getNextCommand();
-			
+			if(config.getMode() == GRAPHICAL) {
+				command = inputHandler.getNextCommand();
+			}
+			else {
+				command = getConsoleInput();
+				out.debugPrint("> " + command);
+			}
+
 			if(getCurrentCommand(command) >= 0) {
 				
-				inputHandler.removeCommand();
+				out.debugPrint("This is an assurance");
 
-				setGameBoard();
-				
+				if(config.getMode() == GRAPHICAL) {
+					inputHandler.removeCommand();
+				}
+
 				updateAllDragons();
 				
 				runCommand(getCurrentCommand(command));
@@ -353,9 +365,11 @@ public class GameLogic {
 					break;
 				}
 				
-				if(config.getMode() == 0) {
+				setGameBoard();
+				
+				if(config.getMode() == CONSOLE) {
 					out.draw(this);
-				} else if(config.getMode() == 1) {
+				} else if(config.getMode() == GRAPHICAL) {
 					gameWindow.paint();
 				}
 
@@ -366,11 +380,13 @@ public class GameLogic {
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
 		
-		inputHandler.setTerminate(true);
-		
+		if(config.getMode() == GRAPHICAL) {
+			inputHandler.setTerminate(true);
+		}
+
 		return 0;
 	}
-	
+
 	/**
 	 * Calls method update(GameLogic game) for all dragons.
 	 * For more info consult the methods.

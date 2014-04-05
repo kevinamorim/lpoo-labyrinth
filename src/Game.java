@@ -23,40 +23,52 @@ public class Game {
 		int CONSOLE = 0;
 		
 		GameConfig config;
+		MenuWindow menuWindow;
+		ConfigurationWindow configWindow;
+		InputHandler menuHandler;
+		InputHandler configHandler;
+		Thread inputMenuThread;
+		Thread inputConfigThread;
+		
+		menuHandler = new InputHandler();
 		
 		int mode = JOptionPane.showConfirmDialog(null, "Do you wish to play in graphical mode?");
 		
 		switch(mode) {
-		case JOptionPane.YES_OPTION:
+		case JOptionPane.YES_OPTION: // GRAPHICAL
+			
 			config = new GameConfig(GRAPHICAL, 0.06);
+			menuWindow = new MenuWindow();
+			configWindow = new ConfigurationWindow(config);
+			
+			menuHandler = new InputHandler(menuWindow);
+			configHandler = new InputHandler(configWindow);
+			
+			inputMenuThread = new Thread(menuHandler);
+			inputConfigThread = new Thread(configHandler);
+			
+			inputMenuThread.start();
+			
+			
 			break;
-		case JOptionPane.NO_OPTION:
+		case JOptionPane.NO_OPTION: // CONSOLE
 			config = new GameConfig(CONSOLE, 0.06);
 			break;
-		case JOptionPane.CANCEL_OPTION:
+		case JOptionPane.CANCEL_OPTION: // CANCEL
 			return;
 		default:
 			return;
 		}
-		
-		
-		MenuWindow menuWindow = new MenuWindow();
-		ConfigurationWindow configWindow = new ConfigurationWindow(config);
-		
-		InputHandler menuHandler = new InputHandler(menuWindow);
-		InputHandler configHandler = new InputHandler(configWindow);
-		
-		Thread inputMenuThread = new Thread(menuHandler);
-		Thread inputConfigThread = new Thread(configHandler);
-
-		//ConfigurationWindow conf = new ConfigurationWindow(config);
 
 		while(true) {
 
-			inputMenuThread.start();
-
-			state = menuHandler.getNextCommand();
-
+			if(config.getMode() == GRAPHICAL) {
+				state = menuHandler.getNextCommand();
+			}
+			else {
+				state = 0;
+			}
+			
 			switch(state) {
 			case -1:
 				return;
