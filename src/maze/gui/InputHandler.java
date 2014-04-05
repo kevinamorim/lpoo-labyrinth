@@ -70,7 +70,6 @@ public class InputHandler implements Runnable {
 	public Integer getNextCommand() {
 		if(!commands.isEmpty()) {
 			int i = commands.get(0);
-			commands.remove(0);
 			return i;
 		} else {
 			return -1;

@@ -1,6 +1,7 @@
 package maze.logic;
 
 import maze.cli.*;
+import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
 
@@ -23,7 +24,10 @@ public class GameLogic {
 	private Input in;
 	private InputHandler inputHandler;
 	private Output out;
+	
 	private GameWindow gameWindow;
+	private ConfigurationWindow configWindow;
+	
 	private GameConfig config;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
@@ -334,6 +338,8 @@ public class GameLogic {
 			command = inputHandler.getNextCommand();
 			
 			if(getCurrentCommand(command) >= 0) {
+				
+				inputHandler.removeCommand();
 
 				setGameBoard();
 				

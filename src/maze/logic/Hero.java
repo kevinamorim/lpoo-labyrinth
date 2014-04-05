@@ -194,6 +194,7 @@ public class Hero extends Moveable {
 		
 		//Checks if hero has won the game and sets a flag.
 		if(isAt(game.getMaze().getExit())) {
+			won = true;
 			
 			for(Dragon dragon : game.getDragons()) {
 				if(dragon.isAlive()) {
