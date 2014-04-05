@@ -398,11 +398,15 @@ public class GameLogic {
 			else {
 				if(config.getMode() == GRAPHICAL) {
 					
+					if(command != -1) {
+						inputHandler.removeCommand();
+					}
+					
 					switch(command) {
-					case -1:
+					case -2: // New Game
 						done = true;
 						break;
-					case -2:// Configurations Panel
+					case -3: // Configurations Panel
 						gameWindow.setVisible(false);
 						configWindow.setVisible(true);
 
@@ -411,12 +415,14 @@ public class GameLogic {
 						do {
 							state = configHandler.getNextCommand();
 						}while(state == -1);
+						
+						configHandler.removeCommand();
 
 						configWindow.setVisible(false);
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
-					case -3:
+					case -4: // Quit
 						done = true;
 						break;
 					default:
@@ -436,6 +442,8 @@ public class GameLogic {
 		if(config.getMode() == GRAPHICAL) {
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
+			
+			gameWindow.dispose();
 			return command;
 		}
 		else if(config.getMode() == CONSOLE) {

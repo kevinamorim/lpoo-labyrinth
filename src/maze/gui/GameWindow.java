@@ -1,7 +1,6 @@
 package maze.gui;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -11,10 +10,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 
-import javax.swing.JSlider;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-
 import maze.logic.Dragon;
 import maze.logic.GameLogic;
 
@@ -35,8 +31,6 @@ public class GameWindow extends Window implements KeyListener {
 	private GameLogic gameLogic;
 
 	private JPanel game;
-	private JPanel configuration;
-	private JSlider slider;
 	
 	private BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit;
 	private BufferedImage heroWithEagle, heroWithSword, heroWithSwordAndEagle;
@@ -70,7 +64,6 @@ public class GameWindow extends Window implements KeyListener {
 		ySize = 1000;
 
 		game = new JPanel();
-		configuration = new JPanel();
 		
 		//frame.setAlwaysOnTop(true);
 		setResizable(false);
@@ -81,59 +74,19 @@ public class GameWindow extends Window implements KeyListener {
 
 		// Default grid layout, just for the sake of design. 
 		game.setLayout(new GridLayout(9, 9, 0, 0));
-		configuration.setLayout(null);
 		
 		getContentPane().add(game, "game");
-		getContentPane().add(configuration, "config");
 
 		initBufferedImages();
 		paint();
 
-		slider = new JSlider();
-		slider.setSnapToTicks(true);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setMinorTickSpacing(2);
-		slider.setMajorTickSpacing(2);
-		slider.setMaximum(21);
-		slider.setMinimum(5);
-		slider.setBounds(190, 53, 234, 45);
-		configuration.add(slider);
-
-		JLabel lblSize = new JLabel("SIZE");
-		lblSize.setBounds(53, 53, 46, 14);
-		configuration.add(lblSize);
-
-		JButton btnBack = new JButton("Back");
-		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				configuration.setVisible(false);
-				game.setVisible(true);
-			}
-		});
-		btnBack.setBounds(236, 227, 89, 23);
-		configuration.add(btnBack);
-
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				gameLogic.getConfig().setMazeSize(slider.getValue());
-				configuration.setVisible(false);
-				game.setVisible(true);
-				
-			}
-		});
-		btnConfirm.setBounds(106, 227, 89, 23);
-		configuration.add(btnConfirm);
-		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
 		JMenuItem newGameMenuItem = new JMenuItem("New Game");
 		newGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -1;
+				keyCode = -2;
 			}
 		});
 		menuBar.add(newGameMenuItem);
@@ -141,7 +94,7 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem configurationMenuItem = new JMenuItem("Configuration");
 		configurationMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -2;
+				keyCode = -3;
 			}
 		});
 		menuBar.add(configurationMenuItem);
@@ -149,7 +102,7 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -3;
+				keyCode = -4;
 			}
 		});
 		menuBar.add(exitMenuItem);

@@ -86,6 +86,8 @@ public class Game {
 						innerState = configHandler.getNextCommand();
 					}while(innerState == -1);
 					
+					configHandler.removeCommand();
+					
 					configWindow.setVisible(false);
 					
 					if(innerState == 1) { // Start game

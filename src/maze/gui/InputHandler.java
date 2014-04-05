@@ -87,7 +87,9 @@ public class InputHandler implements Runnable {
 	 * Removes the first command of the queue.
 	 */
 	public void removeCommand() {
-		commands.remove(0);
+		if(!commands.isEmpty()) {
+			commands.remove(0);
+		}
 	}
 	
 	/**
