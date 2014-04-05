@@ -6,20 +6,16 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 
-import javax.swing.BorderFactory;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import maze.logic.Dragon;
-import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 
 import java.awt.event.ActionListener;
@@ -37,7 +33,6 @@ import javax.swing.JMenuItem;
 public class GameWindow extends JFrame implements KeyListener {
 
 	private GameLogic gameLogic;
-	private GameConfig gameConfig;
 	private JFrame frame;
 	private JPanel game;
 	private JPanel configuration;
@@ -283,7 +278,7 @@ public class GameWindow extends JFrame implements KeyListener {
 						drawToPanel(eagleUponWallWithSword);
 					}
 					else {
-						drawToPanel(eagle);
+						drawToPanel(eagleWithSword);
 					}
 				}
 				else {

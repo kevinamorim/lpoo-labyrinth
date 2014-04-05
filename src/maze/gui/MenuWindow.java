@@ -1,22 +1,18 @@
 package maze.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Rectangle;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
+
 import javax.swing.border.EtchedBorder;
 
+@SuppressWarnings("serial")
 public class MenuWindow extends JFrame {
 
 	private JPanel contentPane;

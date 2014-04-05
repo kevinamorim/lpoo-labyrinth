@@ -17,8 +17,6 @@ import javax.swing.JSlider;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 

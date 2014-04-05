@@ -1,7 +1,6 @@
 package maze.logic;
 
 import maze.cli.*;
-import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
 
@@ -26,7 +25,7 @@ public class GameLogic {
 	private Output out;
 	
 	private GameWindow gameWindow;
-	private ConfigurationWindow configWindow;
+	//private ConfigurationWindow configWindow;
 	
 	private GameConfig config;
 
@@ -34,10 +33,6 @@ public class GameLogic {
 	
 	private boolean done;
 	
-	private final int FRAMES_PER_SECOND = 30;
-	private final int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
-	
-	private double next_game_tick = System.currentTimeMillis();
 	int sleep_time = 0;
 
 	// ++++++++++++++++++++++++++++++++++++++++	//

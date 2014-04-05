@@ -81,7 +81,7 @@ public class TestClass1 {
 		
 		gameTest.checkIfHeroFoundSword();
 		
-		assertTrue(gameTest.getHero().isArmed());
+		assertTrue(gameTest.getHero().hasSword());
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class TestClass1 {
 		
 		gameTest.setHero(new Hero(1,1,'H'));
 		
-		gameTest.getHero().setArmed(true);
+		gameTest.getHero().setHasSword(true);
 		
 		gameTest.setMaze(new Maze(maze));
 		
@@ -139,7 +139,7 @@ public class TestClass1 {
 		
 		gameTest.setHero(new Hero(1,1,'H'));
 		
-		gameTest.getHero().setArmed(true);
+		gameTest.getHero().setHasSword(true);
 		
 		gameTest.setMaze(new Maze(maze));
 		
@@ -153,7 +153,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		assertTrue(gameTest.heroWon());
+		assertTrue(gameTest.getHero().hasWon());
 	}
 	
 	@Test
@@ -175,11 +175,11 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		assertFalse(gameTest.heroWon());
+		assertFalse(gameTest.getHero().hasWon());
 		
-		gameTest.getHero().setArmed(true);
+		gameTest.getHero().setHasSword(true);
 		
-		assertFalse(gameTest.heroWon());
+		assertFalse(gameTest.getHero().hasWon());
 	}
 	
 	/**
