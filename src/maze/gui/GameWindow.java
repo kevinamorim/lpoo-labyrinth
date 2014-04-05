@@ -118,9 +118,11 @@ public class GameWindow extends Window implements KeyListener {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				gameLogic.getConfig().setMazeSize(slider.getValue());
 				configuration.setVisible(false);
 				game.setVisible(true);
+				
 			}
 		});
 		btnConfirm.setBounds(106, 227, 89, 23);
@@ -156,6 +158,7 @@ public class GameWindow extends Window implements KeyListener {
 			}
 		});
 		menuBar.add(exitMenuItem);
+		
 		frame.pack();
 		frame.setVisible(true);
 	}

@@ -16,14 +16,14 @@ import javax.swing.border.EtchedBorder;
 public class MenuWindow extends Window {
 
 	private JPanel contentPane;
-	
-	private int keyCode;
 
 	/**
 	 * Create the frame.
 	 */
 	public MenuWindow() {
+		
 		super();
+		
 		initialize();
 	}
 

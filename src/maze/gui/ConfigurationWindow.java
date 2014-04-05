@@ -24,12 +24,23 @@ import javax.swing.event.ChangeEvent;
 public class ConfigurationWindow extends JFrame {
 
 	private JPanel contentPane;
+	private GameConfig config;
 	
 	/**
 	 * Create the frame.
 	 */
+
+	public ConfigurationWindow(final GameConfig c) {
+		
+		super();
+		this.config = c;
+		
+		initialize();
+		
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ConfigurationWindow(final GameConfig config) {
+	private void initialize() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 711, 512);
@@ -79,10 +90,11 @@ public class ConfigurationWindow extends JFrame {
 		btnConfirm.setFocusable(false);
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				config.setMazeSize(mazeSize.getValue());
 				config.setDifficulty(difficulty.getSelectedIndex());
-				//config.setDragonPerc(dragonPerc);
-				System.out.println(mazeSize.getValue());
+				config.setDragonPerc(dragonPerc.getValue()/100.0);
+				
 			}
 		});
 		
@@ -114,5 +126,6 @@ public class ConfigurationWindow extends JFrame {
 		
 		this.pack();
 		this.setVisible(true);
+		
 	}
 }

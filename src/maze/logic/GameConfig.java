@@ -56,11 +56,15 @@ public class GameConfig {
 	 */
 	public GameConfig(int mode, double dragonPerc) {
 
-		in = new Input();
-		out = new Output();
-		
-		mazeSize = inputMazeSize(in, out);
-		difficulty = inputGameDifficulty(in, out);
+		if(mode == 0) {
+			in = new Input();
+			out = new Output();
+			
+			mazeSize = inputMazeSize(in, out);
+			difficulty = inputGameDifficulty(in, out);
+			
+			
+		}
 		
 		setDragonPerc(dragonPerc);
 		
