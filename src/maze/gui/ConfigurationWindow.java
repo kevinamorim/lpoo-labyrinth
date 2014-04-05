@@ -21,33 +21,37 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
-public class ConfigurationWindow extends JFrame {
+public class ConfigurationWindow extends Window {
 
-	private JPanel contentPane;
+	private JPanel jlabel;
 	private GameConfig config;
 	
 	/**
 	 * Create the frame.
 	 */
 
-	public ConfigurationWindow(final GameConfig c) {
-		
-		super();
-		this.config = c;
-		
-		initialize();
-		
+	public ConfigurationWindow() {
+		initialize();	
 	}
 	
+	public ConfigurationWindow(String title, final GameConfig c) {
+		
+		super(title);
+		this.config = c;
+		
+		initialize();		
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 711, 512);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new GridLayout(4, 2, 0, 0));
-		setContentPane(contentPane);
+		
+		jlabel = new JPanel();
+		jlabel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(jlabel);
+		jlabel.setLayout(new GridLayout(4, 2, 0, 0));
+		
 
 		final JSlider mazeSize = new JSlider();
 		final JComboBox difficulty = new JComboBox();
@@ -95,6 +99,8 @@ public class ConfigurationWindow extends JFrame {
 				config.setDifficulty(difficulty.getSelectedIndex());
 				config.setDragonPerc(dragonPerc.getValue()/100.0);
 				
+				keyCode = 1;
+				
 			}
 		});
 		
@@ -111,21 +117,22 @@ public class ConfigurationWindow extends JFrame {
 		btnCancel.setFocusable(false);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				keyCode = 0;
 			}
 		});
 		btnCancel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
-		contentPane.add(mazeSizeLabel);
-		contentPane.add(mazeSize);
-		contentPane.add(difficultyLabel);
-		contentPane.add(difficulty);
-		contentPane.add(dragonPercLabel);
-		contentPane.add(dragonPerc);
-		contentPane.add(btnConfirm);
-		contentPane.add(btnCancel);
-		
-		this.pack();
-		this.setVisible(true);
+		jlabel.add(mazeSizeLabel);
+		jlabel.add(mazeSize);
+		jlabel.add(difficultyLabel);
+		jlabel.add(difficulty);
+		jlabel.add(dragonPercLabel);
+		jlabel.add(dragonPerc);
+		jlabel.add(btnConfirm);
+		jlabel.add(btnCancel);
+
+		pack();
+		setVisible(true);
 		
 	}
 }

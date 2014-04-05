@@ -6,13 +6,13 @@ import javax.swing.JFrame;
 
 public class InputHandler implements Runnable {
 	
-	protected JFrame window;
+	protected Window window;
 	protected int keyCode;
 	protected boolean terminate;
 
 	protected CopyOnWriteArrayList<Integer> commands;
 	
-	public InputHandler(JFrame w) {
+	public InputHandler(Window w) {
 		this.window = w;
 		this.keyCode = 0;
 		this.terminate = false;
@@ -26,17 +26,12 @@ public class InputHandler implements Runnable {
 	public void run() {
 
 		while(!terminate) {
-			
-			if(window instanceof GameWindow) {
-				
-				if(((GameWindow) window).getKeyCode() != 0) {
-					this.keyCode = ((GameWindow) window).getKeyCode();
-					commands.add(keyCode);
-					((GameWindow) window).resetKeyCode();
-				}
-			}
 
-			
+			if(window.getKeyCode() != 0) {
+				this.keyCode = window.getKeyCode();
+				commands.add(keyCode);
+				window.resetKeyCode();
+			}
 
 			try {
 				Thread.sleep(6);

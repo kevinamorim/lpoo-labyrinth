@@ -14,11 +14,12 @@ public class Game {
 
 		gameMenu();
 
+		System.exit(0);
 	}
 
 	private static void gameMenu() {
 		
-		int state = 0;
+		int state = -1;
 		int GRAPHICAL = 1;
 		int CONSOLE = 0;
 		
@@ -30,16 +31,20 @@ public class Game {
 		Thread inputMenuThread;
 		Thread inputConfigThread;
 		
-		menuHandler = new InputHandler();
+		menuHandler = null;
+		configHandler = null;
+		configWindow = null;
+		menuWindow = null;
 		
-		int mode = JOptionPane.showConfirmDialog(null, "Do you wish to play in graphical mode?");
-		
-		switch(mode) {
+		switch(JOptionPane.showConfirmDialog(null, "Do you wish to play in graphical mode?")) {
 		case JOptionPane.YES_OPTION: // GRAPHICAL
 			
 			config = new GameConfig(GRAPHICAL, 0.06);
-			menuWindow = new MenuWindow();
-			configWindow = new ConfigurationWindow(config);
+			
+			configWindow = new ConfigurationWindow("Options",config);
+			configWindow.setVisible(false);
+			
+			menuWindow = new MenuWindow("Menu");
 			
 			menuHandler = new InputHandler(menuWindow);
 			configHandler = new InputHandler(configWindow);
@@ -48,7 +53,7 @@ public class Game {
 			inputConfigThread = new Thread(configHandler);
 			
 			inputMenuThread.start();
-			
+			inputConfigThread.start();
 			
 			break;
 		case JOptionPane.NO_OPTION: // CONSOLE
@@ -60,33 +65,57 @@ public class Game {
 			return;
 		}
 
-		while(true) {
+		while(state != 0) {
 
 			if(config.getMode() == GRAPHICAL) {
+				
 				state = menuHandler.getNextCommand();
+				
+				if(state > 0) {
+					menuHandler.removeCommand();
+				}
+				
+				switch(state) {
+				case 1: // PLAY
+					int innerState = -1;
+					
+					menuWindow.setVisible(false);
+					configWindow.setVisible(true);
+					
+					do {
+						innerState = configHandler.getNextCommand();
+					}while(innerState == -1);
+					
+					configWindow.setVisible(false);
+					
+					if(innerState == 1) { // Start game
+						
+						GameLogic game = new GameLogic(config, configWindow);
+						game.loop();
+						config = game.getConfig();
+					}
+					
+					menuWindow.setVisible(true);
+					break;
+				case 2: // OPTIONS
+					break;
+				case 3: // CREDITS
+					break;
+				case 4: // CREDITS
+					state = 0;
+					break;
+				default:// QUIT
+					break;
+				}
+				
 			}
 			else {
-				state = 0;
-			}
-			
-			switch(state) {
-			case -1:
-				return;
-			case 0:
 				GameLogic game = new GameLogic(config);
-				game.loop();
+				state = game.loop();
 				config = game.getConfig();
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			default:
-				return;
 			}
-
 		}
 
 	}
-
+	
 }

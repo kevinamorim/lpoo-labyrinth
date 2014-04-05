@@ -15,38 +15,39 @@ import javax.swing.border.EtchedBorder;
 @SuppressWarnings("serial")
 public class MenuWindow extends Window {
 
-	private JPanel contentPane;
+	private JPanel jpanel;
 
-	/**
-	 * Create the frame.
-	 */
 	public MenuWindow() {
-		
-		super();
+	}
+	
+	public MenuWindow(String title) {
+
+		super(title);
 		
 		initialize();
 	}
 
 	private void initialize() {
 		setResizable(false);
-		setTitle("LPOO Game");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		setContentPane(contentPane);
+		
+		jpanel = new JPanel();
+		jpanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		setContentPane(jpanel);
 		
 		JButton btnPlay = new JButton("Play");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				keyCode = 0;
+				keyCode = 1;
 			}
 		});
 		
 		JButton btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = 1;
+				keyCode = 2;
 			}
 		});
 		
@@ -60,11 +61,11 @@ public class MenuWindow extends Window {
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -1;
+				keyCode = 4;
 			}
 		});
 		
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		GroupLayout gl_contentPane = new GroupLayout(jpanel);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
@@ -89,10 +90,10 @@ public class MenuWindow extends Window {
 					.addComponent(btnQuit)
 					.addContainerGap(91, Short.MAX_VALUE))
 		);
-		contentPane.setLayout(gl_contentPane);
+		jpanel.setLayout(gl_contentPane);
 		
-		frame.pack();
-		frame.setVisible(true);
+		pack();
+		setVisible(true);
 		
 	}
 

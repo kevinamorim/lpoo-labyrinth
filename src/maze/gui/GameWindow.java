@@ -45,8 +45,6 @@ public class GameWindow extends Window implements KeyListener {
 	
 	private JLabel label;
 
-	private int keyCode;
-
 	private int xSize,ySize;
 	
 	private int state; 
@@ -55,8 +53,9 @@ public class GameWindow extends Window implements KeyListener {
 	 * Create the application.
 	 */
 	public GameWindow(GameLogic gameLogic) {
-		super();
+		super("Game");
 		this.gameLogic = gameLogic;
+		
 		initialize();
 	}
 
@@ -69,23 +68,23 @@ public class GameWindow extends Window implements KeyListener {
 		
 		xSize = 1000;
 		ySize = 1000;
-		
-		frame.setAlwaysOnTop(true);
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 500, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		frame.setPreferredSize(new Dimension(xSize, ySize));
-		frame.addKeyListener(this);
-		
+
 		game = new JPanel();
-		frame.getContentPane().add(game, "name_22011620685826");
+		configuration = new JPanel();
+		
+		//frame.setAlwaysOnTop(true);
+		setResizable(false);
+		setBounds(100, 100, 500, 500);
+		getContentPane().setLayout(new CardLayout(0, 0));
+		setPreferredSize(new Dimension(xSize, ySize));
+		addKeyListener(this);
+
 		// Default grid layout, just for the sake of design. 
 		game.setLayout(new GridLayout(9, 9, 0, 0));
-
-		configuration = new JPanel();
-		frame.getContentPane().add(configuration, "name_22189615902194");
 		configuration.setLayout(null);
+		
+		getContentPane().add(game, "game");
+		getContentPane().add(configuration, "config");
 
 		initBufferedImages();
 		paint();
@@ -129,15 +128,12 @@ public class GameWindow extends Window implements KeyListener {
 		configuration.add(btnConfirm);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		JMenuItem newGameMenuItem = new JMenuItem("New Game");
 		newGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				gameLogic.stop();
-				state = 1;
-
+				keyCode = -1;
 			}
 		});
 		menuBar.add(newGameMenuItem);
@@ -145,8 +141,7 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem configurationMenuItem = new JMenuItem("Configuration");
 		configurationMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.setVisible(false);
-				configuration.setVisible(true);
+				keyCode = -2;
 			}
 		});
 		menuBar.add(configurationMenuItem);
@@ -154,13 +149,13 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				keyCode = -3;
 			}
 		});
 		menuBar.add(exitMenuItem);
 		
-		frame.pack();
-		frame.setVisible(true);
+		pack();
+		setVisible(true);
 	}
 	
 	public void paint() {
@@ -385,22 +380,7 @@ public class GameWindow extends Window implements KeyListener {
 	public void setKeyCode(int keyCode) {
 		this.keyCode = keyCode;
 	}
-	
-	/**
-	 * @return the frame
-	 */
-	public JFrame getFrame() {
-		return frame;
-	}
 
-	/**
-	 * @param frame the frame to set
-	 */
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
-	
 	/**
 	 * @param keyCode the keyCode to set
 	 */

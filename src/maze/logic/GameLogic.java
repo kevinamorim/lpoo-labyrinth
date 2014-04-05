@@ -1,8 +1,12 @@
 package maze.logic;
 
+import javax.swing.JOptionPane;
+
 import maze.cli.*;
+import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
+import maze.gui.MenuWindow;
 
 public class GameLogic {
 	
@@ -25,13 +29,13 @@ public class GameLogic {
 	private Output out;
 	
 	private GameWindow gameWindow;
-	//private ConfigurationWindow configWindow;
+	private ConfigurationWindow configWindow;
+	private Thread inputConfigThread;
+	private InputHandler configHandler;
 	
 	private GameConfig config;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
-	
-	private boolean done;
 	
 	int CONSOLE = 0;
 	int GRAPHICAL = 1;
@@ -63,12 +67,17 @@ public class GameLogic {
 	 */
 	public GameLogic() {}
 
+	public GameLogic(GameConfig config, ConfigurationWindow configWindow) {
+		this.config = config;
+		this.configWindow = configWindow;
+
+		init();
+	}
+
 	/**
 	 * Initializes all game parameters.
 	 */
 	public void init() {
-		
-		done = false;
 		
 		board = new char[config.getMazeSize()][config.getMazeSize()];
 		
@@ -108,7 +117,10 @@ public class GameLogic {
 		else {
 			gameWindow = new GameWindow(this);
 			
+			inputConfigThread = new Thread(configHandler);
+			
 			inputHandler = new InputHandler(gameWindow);
+			configHandler = new InputHandler(configWindow);
 		}
 
 	}
@@ -296,7 +308,15 @@ public class GameLogic {
 		}
 	}
 
-
+	/**
+	 * Calls method update(GameLogic game) for all dragons.
+	 * For more info consult the methods.
+	 */
+	private void updateAllDragons() {
+		for(Dragon dragon: dragons) {
+			dragon.update(this);
+		}
+	}
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -312,13 +332,17 @@ public class GameLogic {
 	 * 			1 - New game.
 	 */
 	public int loop() {
+		
+		int NO_COMMAND = -10;
 
+		int command = NO_COMMAND;
+		boolean done = false;
+		
 		if(config.getMode() == GRAPHICAL) {
 			Thread inputThread = new Thread(inputHandler);
 			inputThread.start();
+			inputConfigThread.start();
 		}
-
-		int command = -1;
 		
 		setGameBoard();
 
@@ -339,12 +363,9 @@ public class GameLogic {
 			}
 			else {
 				command = getConsoleInput();
-				out.debugPrint("> " + command);
 			}
 
 			if(getCurrentCommand(command) >= 0) {
-				
-				out.debugPrint("This is an assurance");
 
 				if(config.getMode() == GRAPHICAL) {
 					inputHandler.removeCommand();
@@ -374,7 +395,39 @@ public class GameLogic {
 				}
 
 			}
-			
+			else {
+				if(config.getMode() == GRAPHICAL) {
+					
+					switch(command) {
+					case -1:
+						done = true;
+						break;
+					case -2:// Configurations Panel
+						gameWindow.setVisible(false);
+						configWindow.setVisible(true);
+
+						int state = -1;
+
+						do {
+							state = configHandler.getNextCommand();
+						}while(state == -1);
+
+						configWindow.setVisible(false);
+						gameWindow.setVisible(true);
+						gameWindow.setFocusable(true);
+						break;
+					case -3:
+						done = true;
+						break;
+					default:
+						break;
+					}
+				}
+				else {
+					// Console stuff
+				}
+			}
+
 		}	
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
@@ -382,28 +435,21 @@ public class GameLogic {
 		
 		if(config.getMode() == GRAPHICAL) {
 			inputHandler.setTerminate(true);
+			configHandler.setTerminate(true);
+			return command;
 		}
-
-		return 0;
-	}
-
-	/**
-	 * Calls method update(GameLogic game) for all dragons.
-	 * For more info consult the methods.
-	 */
-	private void updateAllDragons() {
-		for(Dragon dragon: dragons) {
-			dragon.update(this);
+		else if(config.getMode() == CONSOLE) {
+			switch(JOptionPane.showConfirmDialog(null, "Do you wish to play again?")) {
+			case JOptionPane.YES_OPTION: // GRAPHICAL
+				config = new GameConfig(CONSOLE, 0.06);		
+				return 0;
+			default:
+				return -1;
+			}
 		}
+		
+		return -1;
 	}
-
-	/**
-	 * Sets [done] flag parameter to true.
-	 */
-	public void stop() {
-		done = true;
-	}
-
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//

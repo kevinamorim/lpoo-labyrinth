@@ -5,13 +5,18 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class Window extends JFrame {
 
-	protected JFrame frame;
+	//protected JFrame frame;
 	
 	protected int keyCode;
 	
-	public Window() {
+	public Window() {	
+	}
+	
+	public Window(String title) {
+		
 		this.keyCode = 0;
-		this.frame = new JFrame();
+		this.setTitle(title);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	/**
@@ -32,17 +37,4 @@ public class Window extends JFrame {
 		this.keyCode = 0;
 	}
 
-	/**
-	 * @return the frame
-	 */
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	/**
-	 * @param frame the frame to set
-	 */
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
 }
