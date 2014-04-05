@@ -13,15 +13,21 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
-public class MenuWindow extends JFrame {
+public class MenuWindow extends Window {
 
 	private JPanel contentPane;
-
+	
+	private int keyCode;
 
 	/**
 	 * Create the frame.
 	 */
 	public MenuWindow() {
+		super();
+		initialize();
+	}
+
+	private void initialize() {
 		setResizable(false);
 		setTitle("LPOO Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,24 +39,28 @@ public class MenuWindow extends JFrame {
 		JButton btnPlay = new JButton("Play");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				keyCode = 0;
 			}
 		});
 		
 		JButton btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				keyCode = 1;
 			}
 		});
 		
 		JButton btnCredits = new JButton("Credits");
 		btnCredits.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				keyCode = -1;
 			}
 		});
 		
@@ -80,5 +90,27 @@ public class MenuWindow extends JFrame {
 					.addContainerGap(91, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
+		
+		frame.pack();
+		frame.setVisible(true);
+		
+	}
+
+	/**
+	 * @return the keyCode
+	 */
+	public int getKeyCode() {
+		return keyCode;
+	}
+
+	/**
+	 * @param keyCode the keyCode to set
+	 */
+	public void setKeyCode(int keyCode) {
+		this.keyCode = keyCode;
+	}
+
+	public void resetKeyCode() {
+		this.keyCode = 0;
 	}
 }

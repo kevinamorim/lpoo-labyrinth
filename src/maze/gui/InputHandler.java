@@ -2,38 +2,47 @@ package maze.gui;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.JFrame;
+
 public class InputHandler implements Runnable {
 	
-	private GameWindow gameWindow;
-	private int keyCode;
-	private CopyOnWriteArrayList<Integer> commands;
+	protected JFrame window;
+	protected int keyCode;
+	protected boolean terminate;
+
+	protected CopyOnWriteArrayList<Integer> commands;
 	
-	public InputHandler(GameWindow gameWindow) {
-		this.gameWindow = gameWindow;
-		this.setKeyCode(0);
+	public InputHandler(JFrame w) {
+		this.window = w;
+		this.keyCode = 0;
+		this.terminate = false;
 		this.commands = new CopyOnWriteArrayList<Integer>();
 	}
 
 	@Override
 	public void run() {
-		
-		while(true) {
+
+		while(!terminate) {
 			
-			if(gameWindow.getKeyCode() != 0) {
-				setKeyCode(gameWindow.getKeyCode());
-				commands.add(keyCode);
-				gameWindow.resetKeyCode();
+			if(window instanceof GameWindow) {
+				
+				if(((GameWindow) window).getKeyCode() != 0) {
+					this.keyCode = ((GameWindow) window).getKeyCode();
+					commands.add(keyCode);
+					((GameWindow) window).resetKeyCode();
+				}
 			}
+
 			
+
 			try {
 				Thread.sleep(6);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -82,5 +91,20 @@ public class InputHandler implements Runnable {
 	public void removeCommand() {
 		commands.remove(0);
 	}
+	
+	/**
+	 * @return the terminate
+	 */
+	public boolean isTerminate() {
+		return terminate;
+	}
+
+	/**
+	 * @param terminate the terminate to set
+	 */
+	public void setTerminate(boolean terminate) {
+		this.terminate = terminate;
+	}
+
 
 }

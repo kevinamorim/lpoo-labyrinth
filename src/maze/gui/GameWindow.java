@@ -30,10 +30,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
-public class GameWindow extends JFrame implements KeyListener {
+public class GameWindow extends Window implements KeyListener {
 
 	private GameLogic gameLogic;
-	private JFrame frame;
+
 	private JPanel game;
 	private JPanel configuration;
 	private JSlider slider;
@@ -55,6 +55,7 @@ public class GameWindow extends JFrame implements KeyListener {
 	 * Create the application.
 	 */
 	public GameWindow(GameLogic gameLogic) {
+		super();
 		this.gameLogic = gameLogic;
 		initialize();
 	}
@@ -64,16 +65,19 @@ public class GameWindow extends JFrame implements KeyListener {
 	 */
 	private void initialize() {
 		
-		keyCode = 0;
 		state = 0;
 		
-		frame = new JFrame();
+		xSize = 1000;
+		ySize = 1000;
+		
 		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
-
+		frame.setPreferredSize(new Dimension(xSize, ySize));
+		frame.addKeyListener(this);
+		
 		game = new JPanel();
 		frame.getContentPane().add(game, "name_22011620685826");
 		// Default grid layout, just for the sake of design. 
@@ -82,14 +86,7 @@ public class GameWindow extends JFrame implements KeyListener {
 		configuration = new JPanel();
 		frame.getContentPane().add(configuration, "name_22189615902194");
 		configuration.setLayout(null);
-		
-		xSize = 1000;
-		ySize = 1000;
-		
-		frame.setPreferredSize(new Dimension(xSize, ySize));
-		
-		frame.addKeyListener(this);
-		
+
 		initBufferedImages();
 		paint();
 

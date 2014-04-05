@@ -1,5 +1,8 @@
 //import maze.gui.ConfigurationWindow;
 //import maze.gui.MenuWindow;
+import maze.gui.ConfigurationWindow;
+import maze.gui.InputMenuHandler;
+import maze.gui.MenuWindow;
 import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 
@@ -9,10 +12,22 @@ public class Game {
 		
 		int state = -1;
 		
-		//MenuWindow menu = new MenuWindow();
+		gameMenu();
+
+	}
+
+	private static void gameMenu() {
 		
-		GameConfig config = new GameConfig(1, 0.01);
+		int GRAPHICAL = 1;
 		
+		MenuWindow menuWindow = new MenuWindow();
+		
+		GameConfig config = new GameConfig(GRAPHICAL, 0.06);
+		
+		ConfigurationWindow configWindow = new ConfigurationWindow(config);
+		
+		Thread inputThread = new Thread(new InputMenuHandler(menuWindow));
+
 		//ConfigurationWindow conf = new ConfigurationWindow(config);
 		
 		while(state != 0) {
@@ -24,7 +39,7 @@ public class Game {
 			config = game.getConfig();
 			
 		}
-
+		
 	}
 
 }

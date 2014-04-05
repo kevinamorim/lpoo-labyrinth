@@ -366,15 +366,9 @@ public class GameLogic {
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
 		
-		if(gameWindow.getState() == 1) {
-			gameWindow.getFrame().dispose();
-			return 1;
-		} else {
-			out.drawGameOver(this);
-			return 0;
-		}
-
+		inputHandler.setTerminate(true);
 		
+		return 0;
 	}
 	
 	/**
