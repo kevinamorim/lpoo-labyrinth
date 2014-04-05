@@ -37,7 +37,7 @@ public class MenuWindow extends Window {
 		
 		setContentPane(jpanel);
 		
-		JButton btnPlay = new JButton("Play");
+		JButton btnPlay = new JButton("New Game");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				keyCode = 1;

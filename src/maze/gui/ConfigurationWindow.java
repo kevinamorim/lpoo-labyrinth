@@ -109,7 +109,7 @@ public class ConfigurationWindow extends Window {
 		dragonPerc.setSnapToTicks(true);
 		dragonPerc.setMinorTickSpacing(2);
 		dragonPerc.setMinimum(2);
-		dragonPerc.setMaximum(50);
+		dragonPerc.setMaximum(10);
 		dragonPerc.setMajorTickSpacing(2);
 		dragonPerc.setFocusable(false);
 		btnConfirm.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));

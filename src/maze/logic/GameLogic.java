@@ -34,6 +34,7 @@ public class GameLogic {
 	private InputHandler configHandler;
 	
 	private GameConfig config;
+	private GameConfig oldConfig;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
@@ -69,6 +70,7 @@ public class GameLogic {
 
 	public GameLogic(GameConfig config, ConfigurationWindow configWindow) {
 		this.config = config;
+		this.oldConfig = config;
 		this.configWindow = configWindow;
 
 		init();
@@ -117,10 +119,11 @@ public class GameLogic {
 		else {
 			gameWindow = new GameWindow(this);
 			
-			inputConfigThread = new Thread(configHandler);
-			
-			inputHandler = new InputHandler(gameWindow);
 			configHandler = new InputHandler(configWindow);
+			inputHandler = new InputHandler(gameWindow);
+			
+			inputConfigThread = new Thread(configHandler);
+
 		}
 
 	}
@@ -406,7 +409,11 @@ public class GameLogic {
 					case -2: // New Game
 						done = true;
 						break;
-					case -3: // Configurations Panel
+					case -3: // Restart this game
+						config = oldConfig;
+						done = true;
+						break;
+					case -4: // Configurations Panel
 						gameWindow.setVisible(false);
 						configWindow.setVisible(true);
 
@@ -422,7 +429,7 @@ public class GameLogic {
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
-					case -4: // Quit
+					case -5: // Quit
 						done = true;
 						break;
 					default:

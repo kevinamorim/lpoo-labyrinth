@@ -91,10 +91,18 @@ public class GameWindow extends Window implements KeyListener {
 		});
 		menuBar.add(newGameMenuItem);
 		
+		JMenuItem restartGameMenuItem = new JMenuItem("Restart");
+		restartGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				keyCode = -3;
+			}
+		});
+		menuBar.add(restartGameMenuItem);
+		
 		JMenuItem configurationMenuItem = new JMenuItem("Configuration");
 		configurationMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -3;
+				keyCode = -4;
 			}
 		});
 		menuBar.add(configurationMenuItem);
@@ -102,7 +110,7 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -4;
+				keyCode = -5;
 			}
 		});
 		menuBar.add(exitMenuItem);

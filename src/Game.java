@@ -91,12 +91,15 @@ public class Game {
 					configWindow.setVisible(false);
 					
 					if(innerState == 1) { // Start game
-						
-						GameLogic game = new GameLogic(config, configWindow);
-						game.loop();
-						config = game.getConfig();
+
+						do {
+							GameLogic game = new GameLogic(config, configWindow);
+							innerState = game.loop();
+							config = game.getConfig();
+							
+						}while(innerState == -2 || innerState == -3);
 					}
-					
+
 					menuWindow.setVisible(true);
 					break;
 				case 2: // OPTIONS
