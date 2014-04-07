@@ -2,8 +2,6 @@ package maze.gui;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.JFrame;
-
 public class InputHandler implements Runnable {
 	
 	protected Window window;
@@ -27,13 +25,12 @@ public class InputHandler implements Runnable {
 
 		while(!terminate) {
 
-			if(window.getKeyCode() != 0) {
-				this.keyCode = window.getKeyCode();
-				commands.add(keyCode);
-				window.resetKeyCode();
-			}
-
 			try {
+				if(window.getKeyCode() != 0) {
+					this.keyCode = window.getKeyCode();
+					commands.add(keyCode);
+					window.resetKeyCode();
+				}
 				Thread.sleep(6);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

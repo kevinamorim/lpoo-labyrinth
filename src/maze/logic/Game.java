@@ -1,3 +1,4 @@
+package maze.logic;
 //import maze.gui.ConfigurationWindow;
 //import maze.gui.MenuWindow;
 import javax.swing.JOptionPane;
@@ -5,8 +6,6 @@ import javax.swing.JOptionPane;
 import maze.gui.ConfigurationWindow;
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
-import maze.logic.GameConfig;
-import maze.logic.GameLogic;
 
 public class Game {
 
@@ -23,6 +22,8 @@ public class Game {
 		int GRAPHICAL = 1;
 		int CONSOLE = 0;
 		
+		GameLogic game;
+		GameLogic oldGame;
 		GameConfig config;
 		MenuWindow menuWindow;
 		ConfigurationWindow configWindow;
@@ -31,6 +32,8 @@ public class Game {
 		Thread inputMenuThread;
 		Thread inputConfigThread;
 		
+		game = null;
+		oldGame = null;
 		menuHandler = null;
 		configHandler = null;
 		configWindow = null;
@@ -69,6 +72,7 @@ public class Game {
 
 			if(config.getMode() == GRAPHICAL) {
 				
+				/* The player choses an option from the menu */
 				state = menuHandler.getNextCommand();
 				
 				if(state > 0) {
@@ -79,9 +83,11 @@ public class Game {
 				case 1: // PLAY
 					int innerState = -1;
 					
+					/* Shows the configurations window */
 					menuWindow.setVisible(false);
 					configWindow.setVisible(true);
 					
+					/* Waits for the player to chose confirm/cancel */
 					do {
 						innerState = configHandler.getNextCommand();
 					}while(innerState == -1);
@@ -90,14 +96,34 @@ public class Game {
 					
 					configWindow.setVisible(false);
 					
-					if(innerState == 1) { // Start game
-
+					if(innerState == 1) { // Confirm - Start game
+						
 						do {
-							GameLogic game = new GameLogic(config, configWindow);
+							
+							if(innerState == 1) { // First Time Game
+								game = new GameLogic(config, configWindow);
+								oldGame = new GameLogic(game);
+							}
+							else if(innerState == -2) { // New Game (with the new configuration)
+								config = game.getConfig();
+								game = new GameLogic(config, configWindow);
+								oldGame = new GameLogic(game);
+							}
+							else if(innerState == -3) { // Restart Game
+								
+								System.out.println("1 > Entered the restart game option");
+								game = oldGame;
+								System.out.println("2 > Assigned oldGame to game");
+								game.initInput();
+								System.out.println("3 > Called initInput()");
+							}
+							
+							System.out.println("4 > Started Loop");
 							innerState = game.loop();
-							config = game.getConfig();
+						
 							
 						}while(innerState == -2 || innerState == -3);
+						
 					}
 
 					menuWindow.setVisible(true);
@@ -115,7 +141,7 @@ public class Game {
 				
 			}
 			else {
-				GameLogic game = new GameLogic(config);
+				game = new GameLogic(config);
 				state = game.loop();
 				config = game.getConfig();
 			}

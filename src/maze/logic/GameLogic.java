@@ -6,17 +6,16 @@ import maze.cli.*;
 import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
-import maze.gui.MenuWindow;
 
 public class GameLogic {
 	
 	private char board[][];
 
-	private Maze maze;
-	private Hero hero;
-	private Eagle eagle;
-	private Dragon[] dragons;
-	private Element sword;
+	private Maze maze, backupMaze;
+	private Hero hero, backupHero;
+	private Eagle eagle, backupEagle;
+	private Dragon[] dragons, backupDragons;
+	private Element sword, backupSword;
 	
 	private Task[] tasks;
 
@@ -25,16 +24,15 @@ public class GameLogic {
 	private int mazeDragons;
 
 	private Input in;
-	private InputHandler inputHandler;
 	private Output out;
 	
 	private GameWindow gameWindow;
 	private ConfigurationWindow configWindow;
-	private Thread inputConfigThread;
+	
+	private InputHandler inputHandler;
 	private InputHandler configHandler;
 	
 	private GameConfig config;
-	private GameConfig oldConfig;
 
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 	
@@ -70,10 +68,26 @@ public class GameLogic {
 
 	public GameLogic(GameConfig config, ConfigurationWindow configWindow) {
 		this.config = config;
-		this.oldConfig = config;
 		this.configWindow = configWindow;
 
 		init();
+	}
+
+	public GameLogic(GameLogic game) {
+		
+		this.mazeDragons = game.mazeDragons;
+		this.hero = game.backupHero;
+		this.eagle = game.backupEagle;
+		this.board = game.board;
+		this.dragons = game.backupDragons;
+		this.sword = game.backupSword;
+		this.maze = game.backupMaze;
+		this.tasks = game.tasks;
+		this.config = game.config;
+		this.configWindow = game.configWindow;
+	
+		createTasks();
+		
 	}
 
 	/**
@@ -84,22 +98,12 @@ public class GameLogic {
 		board = new char[config.getMazeSize()][config.getMazeSize()];
 		
 		mazeDragons = (int) (config.getMazeSize() * config.getMazeSize()  * config.getDragonPerc());
-		
-		// Creates the Labyrinth
 		maze = new Maze(config.getMazeSize());
-
-		// Creates our hero/player
 		hero = new Hero(this);
-		
-		// Creates our eagle
 		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
-
-		// Creates our sword
 		sword = new Element(this, 'E');
 		
-		// Creates our evil Dragons!
 		dragons = new Dragon[mazeDragons];
-
 		for(int i = 0; i < dragons.length; i++) {
 			dragons[i] = new Dragon(this);
 		}
@@ -107,7 +111,22 @@ public class GameLogic {
 		tasks = new Task[TASKNUM];
 
 		createTasks();
+		
+		createBackups();
 
+		initInput();
+		
+	}
+	
+	public void createBackups() {
+		this.backupDragons = dragons;
+		this.backupEagle = eagle;
+		this.backupHero = hero;
+		this.backupMaze = maze;
+		this.backupSword = sword;
+	}
+
+	public void initInput() {
 		if(config.getMode() == CONSOLE) {
 
 			// Creates our Input
@@ -116,16 +135,13 @@ public class GameLogic {
 			// Creates our Output
 			out = new Output();
 		}
-		else {
+		else if(config.getMode() == GRAPHICAL) {
 			gameWindow = new GameWindow(this);
 			
 			configHandler = new InputHandler(configWindow);
 			inputHandler = new InputHandler(gameWindow);
-			
-			inputConfigThread = new Thread(configHandler);
 
 		}
-
 	}
 
 	
@@ -342,9 +358,16 @@ public class GameLogic {
 		boolean done = false;
 		
 		if(config.getMode() == GRAPHICAL) {
-			Thread inputThread = new Thread(inputHandler);
-			inputThread.start();
-			inputConfigThread.start();
+			try {
+				Thread inputThread = new Thread(inputHandler);
+				Thread inputConfigThread = new Thread(configHandler);
+				inputThread.start();
+				inputConfigThread.start();
+			}
+			catch(java.lang.Exception e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
 		}
 		
 		setGameBoard();
@@ -410,7 +433,6 @@ public class GameLogic {
 						done = true;
 						break;
 					case -3: // Restart this game
-						config = oldConfig;
 						done = true;
 						break;
 					case -4: // Configurations Panel
