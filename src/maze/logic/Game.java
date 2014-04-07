@@ -21,44 +21,34 @@ public class Game {
 		int state = -1;
 		int GRAPHICAL = 1;
 		int CONSOLE = 0;
+		int mode = CONSOLE;
 		
 		GameLogic game;
-		GameConfig config;
 		MenuWindow menuWindow;
-		ConfigurationWindow configWindow;
 		InputHandler menuHandler;
-		InputHandler configHandler;
 		Thread inputMenuThread;
-		Thread inputConfigThread;
 		
 		game = null;
 		menuHandler = null;
-		configHandler = null;
-		configWindow = null;
 		menuWindow = null;
 		
+		/*
+		 * 
+		 */
 		switch(JOptionPane.showConfirmDialog(null, "Do you wish to play in graphical mode?")) {
 		case JOptionPane.YES_OPTION: // GRAPHICAL
-			
-			config = new GameConfig(GRAPHICAL, 0.06);
-			
-			configWindow = new ConfigurationWindow("Options",config);
-			configWindow.setVisible(false);
-			
+
 			menuWindow = new MenuWindow("Menu");
-			
 			menuHandler = new InputHandler(menuWindow);
-			configHandler = new InputHandler(configWindow);
 			
 			inputMenuThread = new Thread(menuHandler);
-			inputConfigThread = new Thread(configHandler);
-			
 			inputMenuThread.start();
-			inputConfigThread.start();
+			
+			mode = GRAPHICAL;
 			
 			break;
 		case JOptionPane.NO_OPTION: // CONSOLE
-			config = new GameConfig(CONSOLE, 0.06);
+			mode = CONSOLE;
 			break;
 		case JOptionPane.CANCEL_OPTION: // CANCEL
 			return;
@@ -68,7 +58,7 @@ public class Game {
 
 		while(state != 0) {
 
-			if(config.getMode() == GRAPHICAL) {
+			if(mode == GRAPHICAL) {
 				
 				/* The player choses an option from the menu */
 				state = menuHandler.getNextCommand();
@@ -79,39 +69,22 @@ public class Game {
 				
 				switch(state) {
 				case 1: // PLAY
-					int innerState = -1;
-					
+					int EXIT = -1;
+					int NEW_GAME = 1;
+					int returnValue;
+
 					/* Shows the configurations window */
 					menuWindow.setVisible(false);
-					configWindow.setVisible(true);
-					
-					/* Waits for the player to chose confirm/cancel */
+
 					do {
-						innerState = configHandler.getNextCommand();
-					}while(innerState == -1);
-					
-					configHandler.removeCommand();
-					
-					configWindow.setVisible(false);
-					
-					if(innerState == 1) { // Confirm - Start game
-						
-						do {
-							
-							if(innerState == 1) { // First Time Game
-								game = new GameLogic(config, configWindow);
-							}
-							else if(innerState == -2) { // New Game (with the new configuration)
-								config = game.getConfig();
-								game = new GameLogic(config, configWindow);
-							}
-							
-							innerState = game.loop();
-						
-							
-						}while(innerState == -2 || innerState == -3);
-						
-					}
+						game = new GameLogic(mode);
+						if(game.isValid()) {
+							returnValue = game.loop();
+						}
+						else {
+							returnValue = EXIT;
+						}
+					}while(returnValue == NEW_GAME);
 
 					menuWindow.setVisible(true);
 					break;
@@ -128,9 +101,8 @@ public class Game {
 				
 			}
 			else {
-				game = new GameLogic(config);
+				game = new GameLogic(new GameConfig(mode));
 				state = game.loop();
-				config = game.getConfig();
 			}
 		}
 

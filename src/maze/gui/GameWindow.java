@@ -13,7 +13,6 @@ import java.awt.Image;
 import javax.swing.JLabel;
 
 import maze.logic.Dragon;
-import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 
 import java.awt.event.ActionListener;
@@ -24,13 +23,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JDialog;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.Cursor;
-import java.awt.Point;
 
 @SuppressWarnings("serial")
 public class GameWindow extends Window implements KeyListener {
@@ -46,8 +43,6 @@ public class GameWindow extends Window implements KeyListener {
 	
 	private JLabel label;
 
-	private int xSize,ySize;
-	
 	private int state; 
 	
 	/**
@@ -68,9 +63,6 @@ public class GameWindow extends Window implements KeyListener {
 		
 		state = 0;
 		
-		xSize = 1000;
-		ySize = 1000;
-
 		game = new JPanel();
 		
 		//frame.setAlwaysOnTop(true);

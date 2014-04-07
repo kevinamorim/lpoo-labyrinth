@@ -12,6 +12,9 @@ public class GameConfig {
 	
 	private double dragonPerc;
 	
+	private int CONSOLE = 0;
+	private int GRAPHICAL = 1;
+	
 	/**
 	 * 0 - Console mode.
 	 * 1 - Graphical mode.
@@ -41,7 +44,7 @@ public class GameConfig {
 		setDragonPerc(dragonPerc);
 		
 		// Console mode is the default mode.
-		mode = 0;
+		mode = CONSOLE;
 
 	}
 	
@@ -56,14 +59,12 @@ public class GameConfig {
 	 */
 	public GameConfig(int mode, double dragonPerc) {
 
-		if(mode == 0) {
+		if(mode == CONSOLE) {
 			in = new Input();
 			out = new Output();
 			
 			mazeSize = inputMazeSize(in, out);
 			difficulty = inputGameDifficulty(in, out);
-			
-			
 		}
 		
 		setDragonPerc(dragonPerc);
@@ -88,9 +89,15 @@ public class GameConfig {
 		this.mazeSize = mazeSize;
 		this.difficulty = difficulty;
 		
-		setDragonPerc(dragonPerc);
+		this.dragonPerc = dragonPerc;
 	}
 	
+	public GameConfig() {
+		this.mazeSize = 0;
+		this.difficulty = 1;
+		this.dragonPerc = 0.02;
+	}
+
 	/**
 	 * Sets the game key code for the array of key codes at the given index.
 	 * 

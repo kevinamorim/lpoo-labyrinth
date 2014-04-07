@@ -107,6 +107,7 @@ public class ConfigurationWindow extends Window {
 				
 			}
 		});
+		btnConfirm.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		dragonPerc.setValue(2);
 		dragonPerc.setToolTipText("");
@@ -116,12 +117,12 @@ public class ConfigurationWindow extends Window {
 		dragonPerc.setMaximum(10);
 		dragonPerc.setMajorTickSpacing(2);
 		dragonPerc.setFocusable(false);
-		btnConfirm.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		btnCancel.setFocusable(false);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = 0;
+				
+				keyCode = 2;
 			}
 		});
 		btnCancel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));

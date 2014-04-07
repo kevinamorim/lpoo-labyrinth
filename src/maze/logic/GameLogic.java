@@ -16,11 +16,19 @@ public class GameLogic extends Object {
 	private Dragon[] dragons;
 	private Element sword;
 	
+	private GameConfig config;
+	
 	private Task[] tasks;
+	
+	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
+
+	private boolean valid;
 
 	private int TASKNUM = 3;
-	
 	private int mazeDragons;
+	
+	private int CONSOLE = 0;
+	private int GRAPHICAL = 1;
 
 	private Input in;
 	private Output out;
@@ -31,20 +39,13 @@ public class GameLogic extends Object {
 	private InputHandler inputHandler;
 	private InputHandler configHandler;
 	
-	private GameConfig config;
+	private Thread inputThread;
+	private Thread inputConfigThread;
 
-	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
-	
-	int CONSOLE = 0;
-	int GRAPHICAL = 1;
-	
-	int sleep_time = 0;
-
-	// ++++++++++++++++++++++++++++++++++++++++	//
-	//											//
-	//			   INITIALIZATION			    //
-	//											//
-	// ++++++++++++++++++++++++++++++++++++++++	//
+	/** 
+	 * Default GameLogic constructor.
+	 */
+	public GameLogic() {}
 	
 	/**
 	 * GameLogic constructor.
@@ -53,23 +54,51 @@ public class GameLogic extends Object {
 	 * @param config : current game configuration
 	 */
 	public GameLogic(GameConfig config) {
-		
+
 		this.config = config;
+		
+		initInput();
 		
 		init();
 		
 	}
+	
+	public GameLogic(int mode) {
+		
+		this.valid = true;
 
-	/** 
-	 * Default GameLogic constructor.
-	 */
-	public GameLogic() {}
+		if(mode == CONSOLE) {
+			this.config = new GameConfig(mode, 0.06);
+			initInput();
+		}
+		else if(mode == GRAPHICAL) {
 
-	public GameLogic(GameConfig config, ConfigurationWindow configWindow) {
-		this.config = config;
-		this.configWindow = configWindow;
-
+			config = new GameConfig(mode, 0.02);
+			configWindow = new ConfigurationWindow("Configurações", config);
+			
+			configHandler = new InputHandler(configWindow);
+			inputConfigThread = new Thread(configHandler);
+			inputConfigThread.start();
+			
+			if(getConfiguration() != 0) {
+				this.setValid(false);
+				return;
+			}
+			
+		}
+		
 		init();
+	}
+	
+	public void initInput() {
+		if(config.getMode() == CONSOLE) {
+
+			// Creates our Input
+			in = new Input();
+
+			// Creates our Output
+			out = new Output();
+		}
 	}
 
 	/**
@@ -94,25 +123,13 @@ public class GameLogic extends Object {
 
 		createTasks();
 
-		initInput();
-		
-	}
+		if(config.getMode() == GRAPHICAL) {
 
-	public void initInput() {
-		if(config.getMode() == CONSOLE) {
-
-			// Creates our Input
-			in = new Input();
-
-			// Creates our Output
-			out = new Output();
-		}
-		else if(config.getMode() == GRAPHICAL) {
 			gameWindow = new GameWindow(this);
-			
-			configHandler = new InputHandler(configWindow);
+			gameWindow.setFocusable(true);
 			inputHandler = new InputHandler(gameWindow);
-
+			inputThread = new Thread(inputHandler);
+			inputThread.start();
 		}
 	}
 
@@ -252,43 +269,43 @@ public class GameLogic extends Object {
 	 * @return game command corresponding to the keycode
 	 */
 	public int getCurrentCommand(int keyCode) {
-		
+
 		for(int i = 0; i < config.getGameKeyCodes().length; i++) {
-			
+
 			if(config.getGameKeyCodes()[i] == keyCode) {
-				
+
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
 
-	
+
 	/**
 	 * Draws the game board.
 	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
 	 */
 	public void setGameBoard() {
-		
+
 		// Get board without elements.
 		for(int i = 0; i < maze.getSize(); i++) {
 			for(int j = 0; j < maze.getSize(); j++) {
 				board[i][j] = maze.getTiles()[i][j];
 			}
 		}
-		
+
 		// Includes exit.
 		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
-		
+
 		// Includes hero.
 		board[hero.getX()][hero.getY()] = hero.getSymbol();
-		
+
 		// Includes eagle.
 		if((eagle != null) && !hero.hasEagle() && eagle.isAlive()) {
 			board[eagle.getX()][eagle.getY()] = eagle.getSymbol();
 		}
-		
+
 		// Includes all dragons.
 		for(int i = 0; i < dragons.length; i++) {
 			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
@@ -307,6 +324,27 @@ public class GameLogic extends Object {
 		for(Dragon dragon: dragons) {
 			dragon.update(this);
 		}
+	}
+
+	public int getConfiguration() {
+
+		configWindow.setVisible(true);
+
+		int state = -1;
+
+		do {
+			state = configHandler.getNextCommand();
+		}while(state == -1);
+
+		configHandler.removeCommand();
+
+		configWindow.setVisible(false);
+
+		if(state == 2) {
+			return 1;
+		}
+
+		return 0;
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
@@ -328,19 +366,6 @@ public class GameLogic extends Object {
 
 		int command = NO_COMMAND;
 		boolean done = false;
-		
-		if(config.getMode() == GRAPHICAL) {
-			try {
-				Thread inputThread = new Thread(inputHandler);
-				Thread inputConfigThread = new Thread(configHandler);
-				inputThread.start();
-				inputConfigThread.start();
-			}
-			catch(java.lang.Exception e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
-		}
 		
 		setGameBoard();
 
@@ -409,17 +434,7 @@ public class GameLogic extends Object {
 						break;
 					case -4: // Configurations Panel
 						gameWindow.setVisible(false);
-						configWindow.setVisible(true);
-
-						int state = -1;
-
-						do {
-							state = configHandler.getNextCommand();
-						}while(state == -1);
-						
-						configHandler.removeCommand();
-
-						configWindow.setVisible(false);
+						getConfiguration();
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
@@ -618,6 +633,20 @@ public class GameLogic extends Object {
 	 */
 	public void setBoard(char board[][]) {
 		this.board = board;
+	}
+
+	/**
+	 * @return the valid
+	 */
+	public boolean isValid() {
+		return valid;
+	}
+
+	/**
+	 * @param valid the valid to set
+	 */
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 	
 }
