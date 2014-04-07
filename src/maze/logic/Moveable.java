@@ -34,7 +34,7 @@ public class Moveable extends Element {
 		
 		this.alive = true;
 	}
-	
+
 	/**
 	 * Gets the value of the parameter [hasSword].
 	 * 
@@ -151,20 +151,6 @@ public class Moveable extends Element {
 		this.alive = false;
 		this.symbol = ' ';
 	}
-
-	/**
-	 * Checks if an Element has found a sword.
-	 * 
-	 * @param sword : the sword to be found
-	 * @return true if the Element is at the same position of the sword
-	 */
-	public boolean foundSword(Element sword) {
-		if(this.isAt(sword)) {
-			return true;
-		}
-		
-		return false;
-	}
 	
 	/**
 	 * Checks if an Element is trying to move to a valid position.
@@ -226,27 +212,6 @@ public class Moveable extends Element {
 		return false;
 	}
 	
-	/**
-	 * Checks if the Element has found a Dragon.
-	 * This is done so by calculating the distance between the Element and the Dragon using Pitagoras' theorem: x^2 + y^2 = d^2
-	 * 
-	 * @param dragon : dragon to check
-	 * @return true if found a dragon, false otherwise
-	 */
-	public boolean foundDragon(Dragon dragon) {
-		
-		// Calculating the real distance between the dragon and the player (contiguous cells will necessarily be 1 unit apart)
-		//
-		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
-		//
-		if(Math.sqrt(Math.abs(this.x - dragon.getX()) + Math.abs(this.y - dragon.getY())) <= 1) {
-			return true;
-		}
-		
-		return false;
-		
-	}
-	
 	/* (non-Javadoc)
 	 * @see maze.logic.Element#toString()
 	 */
@@ -255,6 +220,25 @@ public class Moveable extends Element {
 		String s = super.toString();
 		s += "\n    alive: " + this.alive;
 		return s;
+	}
+	
+	/**
+	 * Checks if the Element has found a Dragon.
+	 * This is done so by calculating the distance between the Element and the Dragon using Pitagoras' theorem: x^2 + y^2 = d^2
+	 * 
+	 * @param dragon : dragon to check
+	 * @return true if found a dragon, false otherwise
+	 */
+	public boolean checkIfFound(Element element, int minDistance) {
+		// Calculating the real distance between the dragon and the player (contiguous cells will necessarily be 1 unit apart)
+		//
+		// formula: sqrt(deltaX + deltaY) <--- Pitagoras' theorem
+		//
+		if(Math.sqrt(Math.abs(this.x - element.getX()) + Math.abs(this.y - element.getY())) <= minDistance) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

@@ -129,6 +129,8 @@ public class Dragon extends Moveable {
 		
 		// Sets dragon state.
 		
+		if(game.getConfig() == null) return;
+		
 		if(game.getConfig().getDifficulty() == 2) {
 			if(alive) {
 				setDragonState();
@@ -142,17 +144,20 @@ public class Dragon extends Moveable {
 				Random r = new Random();
 				move(game, r.nextInt(4));
 				
-				if(isAt(game.getMaze().getExit())) {
-					moveBack();
+				if(game.getMaze().getExit() != null) {
+					if(isAt(game.getMaze().getExit())) {
+						moveBack();
+					}
 				}
-			}
-			
-			// Checks if dragon has found the sword.
-			hasSword = false;
-			if(foundSword(game.getSword())) {
-				hasSword = true;
+
 			}
 		}
-		
+
+		// Checks if dragon has found the sword.
+		hasSword = false;
+		if(checkIfFound(game.getSword(), 0)) {
+			hasSword = true;
+		}
+
 	}
 }

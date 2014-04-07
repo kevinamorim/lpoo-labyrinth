@@ -23,7 +23,6 @@ public class Game {
 		int CONSOLE = 0;
 		
 		GameLogic game;
-		GameLogic oldGame;
 		GameConfig config;
 		MenuWindow menuWindow;
 		ConfigurationWindow configWindow;
@@ -33,7 +32,6 @@ public class Game {
 		Thread inputConfigThread;
 		
 		game = null;
-		oldGame = null;
 		menuHandler = null;
 		configHandler = null;
 		configWindow = null;
@@ -102,23 +100,12 @@ public class Game {
 							
 							if(innerState == 1) { // First Time Game
 								game = new GameLogic(config, configWindow);
-								oldGame = new GameLogic(game);
 							}
 							else if(innerState == -2) { // New Game (with the new configuration)
 								config = game.getConfig();
 								game = new GameLogic(config, configWindow);
-								oldGame = new GameLogic(game);
-							}
-							else if(innerState == -3) { // Restart Game
-								
-								System.out.println("1 > Entered the restart game option");
-								game = oldGame;
-								System.out.println("2 > Assigned oldGame to game");
-								game.initInput();
-								System.out.println("3 > Called initInput()");
 							}
 							
-							System.out.println("4 > Started Loop");
 							innerState = game.loop();
 						
 							

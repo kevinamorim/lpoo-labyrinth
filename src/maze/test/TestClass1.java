@@ -79,7 +79,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkIfHeroFoundSword();
+		gameTest.getHero().update(gameTest);
 		
 		assertTrue(gameTest.getHero().hasSword());
 	}
@@ -103,7 +103,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkIfHeroFoundDragon();
+		gameTest.getHero().update(gameTest);
 		
 		assertFalse(gameTest.getDragons()[0].isAlive());
 	}
@@ -125,7 +125,7 @@ public class TestClass1 {
 		
 		execCommands();
 		
-		gameTest.checkIfHeroFoundDragon();
+		gameTest.getHero().update(gameTest);
 		
 		assertFalse(gameTest.getHero().isAlive());
 	}
@@ -152,6 +152,8 @@ public class TestClass1 {
 		gameTest.getMaze().setExit(new Element(0,5,'S'));
 		
 		execCommands();
+		
+		gameTest.getHero().update(gameTest);
 		
 		assertTrue(gameTest.getHero().hasWon());
 	}

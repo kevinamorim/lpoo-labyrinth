@@ -92,6 +92,7 @@ public class MenuWindow extends Window {
 		jpanel.setLayout(gl_contentPane);
 		
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		
 	}

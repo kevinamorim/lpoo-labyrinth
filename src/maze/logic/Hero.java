@@ -76,18 +76,6 @@ public class Hero extends Moveable {
 		this.won = win;
 	}
 
-	/**
-	 * Checks if the hero found the eagle.
-	 * 
-	 * @param eagle : the eagle to be found
-	 * @return true if hero/eagle at the same position (x, y)
-	 */
-	public boolean foundEagle(Eagle eagle) {
-		if(this.isAt(eagle)) {
-			return true;
-		}
-		return false;
-	}
 	
 	/**
 	 * Arms the player by changing its representing symbol and by setting the parameter [hasSword] to true.
@@ -155,61 +143,82 @@ public class Hero extends Moveable {
 	public void update(GameLogic game) {
 		
 		// Checks if hero has found the eagle.
-		if(!hasEagle && foundEagle(game.getEagle())) {
-			hasEagle = true;
-			
-			if(game.getEagle().hasSword()) {
-				arm();
-				game.getEagle().setHasSword(false);
-				game.getEagle().setUseful(false);
-			} else {
-				symbol = 'Y';
+		if(game.getEagle() != null) {
+			if(!hasEagle && checkIfFound(game.getEagle(), 0)) {
+				hasEagle = true;
+				
+				if(game.getEagle().hasSword()) {
+					arm();
+					game.getEagle().setHasSword(false);
+					game.getEagle().setUseful(false);
+				} else {
+					symbol = 'Y';
+				}
+				
+				game.getEagle().setMoving(false);
+				game.getEagle().setFlying(false);
 			}
-			
-			game.getEagle().setMoving(false);
-			game.getEagle().setFlying(false);
 		}
+
 		
 		// Checks if hero has found the sword. 
-		if(!hasSword && foundSword(game.getSword())) {
-			arm();
+		if(game.getSword() != null) {
+			if(!hasSword && checkIfFound(game.getSword(), 0)) {
+				arm();
+			}
 		}
-		
+
 		// Checks if hero has found any dragon.
-		for(Dragon dragon : game.getDragons()) {
-
-			if(dragon.isAlive() && foundDragon(dragon)) {
-
+		if(game.getDragons() != null) {
+			Dragon dragonFound = checkIfFoundAnyDragon(game);
+			if(dragonFound != null) {
 				if(hasSword) {
-					dragon.die();
+					dragonFound.die();
 				}
 				else {
-					if(dragon.isAwake()) {
+					if(dragonFound.isAwake()) {
 						die();
 					}
 				}
+			}
+		}
+
+
+		//Checks if hero has won the game and sets a flag.
+		if(game.getMaze() != null && game.getMaze().getExit() != null) {
+			if(isAt(game.getMaze().getExit())) {
+				won = true;
+				
+				for(Dragon dragon : game.getDragons()) {
+					if(dragon.isAlive()) {
+						won = false;
+					}
+				}
+				
+				if(!won) {
+					moveBack();
+				}
+				else {
+					won = true;
+				}
+			}
+		}
+
+	}
+	
+	
+	public Dragon checkIfFoundAnyDragon(GameLogic game) {
+				
+		for(Dragon dragon : game.getDragons()) {
+
+			if(dragon.isAlive() && checkIfFound(dragon, 1)) {
+				
+				return dragon;
 				
 			}
 		}	
 		
-		//Checks if hero has won the game and sets a flag.
-		if(isAt(game.getMaze().getExit())) {
-			won = true;
-			
-			for(Dragon dragon : game.getDragons()) {
-				if(dragon.isAlive()) {
-					won = false;
-				}
-			}
-			
-			if(!won) {
-				moveBack();
-			}
-			else {
-				won = true;
-			}
-		}
-
+		return null;
 	}
 	
 }

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import maze.logic.Dragon;
 import maze.logic.Element;
+import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 import maze.logic.Maze;
 
@@ -23,6 +24,8 @@ public class TestClass2 {
 			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
 			{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
 			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
+			
+//			nds = "ssssssswwdddaawwwwdddddds"
 	};
 	
 	private GameLogic gameTest;
@@ -65,7 +68,7 @@ public class TestClass2 {
 		
 		gameTest.setMaze(new Maze(maze));
 		
-		gameTest.moveAllDragons();
+		gameTest.updateAllDragons();
 		
 		assertEquals(comp,gameTest.getDragons()[0]);
 	}
@@ -76,6 +79,10 @@ public class TestClass2 {
 		commands = "ddds";
 		
 		gameTest = new GameLogic();
+		
+		GameConfig gameConfig = new GameConfig(10, 3, true, 0.2);
+		
+		gameTest.setConfig(gameConfig);
 		
 		gameTest.setDragons(new Dragon[1]);
 		
@@ -89,7 +96,7 @@ public class TestClass2 {
 		
 		execCommands();
 		
-		gameTest.checkIfDragonFoundSword();
+		gameTest.updateAllDragons();
 		
 		assertTrue(gameTest.getDragons()[0].hasSword());
 	}
@@ -127,6 +134,10 @@ public class TestClass2 {
 		
 		gameTest = new GameLogic();
 		
+		GameConfig gameConfig = new GameConfig(10, 1, true, 0.2);
+		
+		gameTest.setConfig(gameConfig);
+		
 		gameTest.setSword(new Element(2,6,'E'));
 		
 		gameTest.setMaze(new Maze(maze));
@@ -145,7 +156,7 @@ public class TestClass2 {
 		
 		execCommands();
 		
-		gameTest.checkIfDragonFoundSword();
+		gameTest.updateAllDragons();
 		
 		assertTrue(gameTest.getDragons()[0].hasSword());
 		

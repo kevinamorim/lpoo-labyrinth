@@ -60,7 +60,7 @@ public class Element {
 		this.symbol = symbol;
 		
 	}
-	
+
 	/**
 	 * Returns the element's old x coordinate.
 	 * 

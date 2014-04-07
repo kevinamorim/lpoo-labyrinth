@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class ConfigurationWindow extends Window {
@@ -45,6 +47,9 @@ public class ConfigurationWindow extends Window {
 	private void initialize() {
 		
 		setBounds(100, 100, 711, 512);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		
 		jlabel = new JPanel();
 		jlabel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -131,6 +136,7 @@ public class ConfigurationWindow extends Window {
 		jlabel.add(btnCancel);
 
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		
 	}

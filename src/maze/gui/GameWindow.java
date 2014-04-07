@@ -11,7 +11,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.JLabel;
+
 import maze.logic.Dragon;
+import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 
 import java.awt.event.ActionListener;
@@ -22,8 +24,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import java.awt.Cursor;
+import java.awt.Point;
 
 @SuppressWarnings("serial")
 public class GameWindow extends Window implements KeyListener {
@@ -48,6 +55,7 @@ public class GameWindow extends Window implements KeyListener {
 	 */
 	public GameWindow(GameLogic gameLogic) {
 		super("Game");
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		this.gameLogic = gameLogic;
 		
 		initialize();
@@ -69,7 +77,7 @@ public class GameWindow extends Window implements KeyListener {
 		setResizable(false);
 		setBounds(100, 100, 500, 500);
 		getContentPane().setLayout(new CardLayout(0, 0));
-		setPreferredSize(new Dimension(xSize, ySize));
+		setPreferredSize(new Dimension(800, 800));
 		addKeyListener(this);
 
 		// Default grid layout, just for the sake of design. 
@@ -86,15 +94,24 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem newGameMenuItem = new JMenuItem("New Game");
 		newGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -2;
+				switch(JOptionPane.showConfirmDialog(null, "Are you sure? \nNote: all unsaved data will be lost.")) {
+				case JOptionPane.YES_OPTION: // GRAPHICAL
+					
+					keyCode = -2;
+					
+					break;
+				default:
+					return;
+				}
+				
 			}
 		});
 		menuBar.add(newGameMenuItem);
 		
-		JMenuItem restartGameMenuItem = new JMenuItem("Restart");
+		JMenuItem restartGameMenuItem = new JMenuItem("Save Game");
 		restartGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -3;
+				// TODO everything about saving
 			}
 		});
 		menuBar.add(restartGameMenuItem);
@@ -110,12 +127,21 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -5;
+				switch(JOptionPane.showConfirmDialog(null, "Are you sure? \nNote: all unsaved data will be lost.")) {
+				case JOptionPane.YES_OPTION: // GRAPHICAL
+					
+					keyCode = -5;
+					
+					break;
+				default:
+					return;
+				}
 			}
 		});
 		menuBar.add(exitMenuItem);
 		
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	

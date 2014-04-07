@@ -7,6 +7,7 @@ import maze.logic.Dragon;
 import maze.logic.Eagle;
 import maze.logic.Element;
 import maze.logic.GameLogic;
+import maze.logic.Hero;
 import maze.logic.Maze;
 
 import org.junit.Test;
@@ -42,12 +43,11 @@ public class TestClass3 {
 		
 		Element sword = new Element(1, 3, 'E');
 		gameTest.setSword(sword);
-		
-		commands = "dd";
-		
-		execCommands();
-		
-		gameTest.checkIfEagleFoundSword();
+
+		eagle.setMoving(true);
+		for(int i = 0; i < 5; i++) {
+			gameTest.getEagle().update(gameTest);
+		}
 		
 		assertTrue(gameTest.getEagle().hasSword());
 		
@@ -66,11 +66,13 @@ public class TestClass3 {
 		Element sword = new Element(4, 8, 'E');
 		gameTest.setSword(sword);
 		
+		eagle.setMoving(true);
 		// Limit to 100 movements.
 		for(int i = 0; i < 100; i++) {
-			gameTest.getEagle().moveToSword(gameTest.getSword());
-			gameTest.checkIfEagleFoundSword();
-			if(gameTest.getEagle().hasSword()) break;
+			gameTest.getEagle().update(gameTest);
+			if(gameTest.getEagle().hasSword()) {
+				break;
+			}
 		}
 		
 		assertTrue(gameTest.getEagle().hasSword());
@@ -112,13 +114,19 @@ public class TestClass3 {
 
 		Eagle eagle = new Eagle(4, 4, 'V');
 		
+		Hero hero = new Hero(1,1,'Y');
+		
 		gameTest.setEagle(eagle);
+		
+		hero.setHasEagle(false);
+		
+		gameTest.setHero(hero);
 		
 		gameTest.setDragons(new Dragon[1]);
 		
 		gameTest.getDragons()[0] = new Dragon(4, 4, 'D');
 		
-		gameTest.checkIfEagleFoundDragon();
+		gameTest.getEagle().update(gameTest);
 		
 		assertFalse(gameTest.getEagle().isAlive());
 		

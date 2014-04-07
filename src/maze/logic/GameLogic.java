@@ -1,21 +1,20 @@
 package maze.logic;
 
 import javax.swing.JOptionPane;
-
 import maze.cli.*;
 import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
 
-public class GameLogic {
-	
+public class GameLogic extends Object {
+
 	private char board[][];
 
-	private Maze maze, backupMaze;
-	private Hero hero, backupHero;
-	private Eagle eagle, backupEagle;
-	private Dragon[] dragons, backupDragons;
-	private Element sword, backupSword;
+	private Maze maze;
+	private Hero hero;
+	private Eagle eagle;
+	private Dragon[] dragons;
+	private Element sword;
 	
 	private Task[] tasks;
 
@@ -73,23 +72,6 @@ public class GameLogic {
 		init();
 	}
 
-	public GameLogic(GameLogic game) {
-		
-		this.mazeDragons = game.mazeDragons;
-		this.hero = game.backupHero;
-		this.eagle = game.backupEagle;
-		this.board = game.board;
-		this.dragons = game.backupDragons;
-		this.sword = game.backupSword;
-		this.maze = game.backupMaze;
-		this.tasks = game.tasks;
-		this.config = game.config;
-		this.configWindow = game.configWindow;
-	
-		createTasks();
-		
-	}
-
 	/**
 	 * Initializes all game parameters.
 	 */
@@ -111,19 +93,9 @@ public class GameLogic {
 		tasks = new Task[TASKNUM];
 
 		createTasks();
-		
-		createBackups();
 
 		initInput();
 		
-	}
-	
-	public void createBackups() {
-		this.backupDragons = dragons;
-		this.backupEagle = eagle;
-		this.backupHero = hero;
-		this.backupMaze = maze;
-		this.backupSword = sword;
 	}
 
 	public void initInput() {
@@ -331,7 +303,7 @@ public class GameLogic {
 	 * Calls method update(GameLogic game) for all dragons.
 	 * For more info consult the methods.
 	 */
-	private void updateAllDragons() {
+	public void updateAllDragons() {
 		for(Dragon dragon: dragons) {
 			dragon.update(this);
 		}
@@ -467,18 +439,25 @@ public class GameLogic {
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
-		
+
+		// Last draw.
+		if(config.getMode() == CONSOLE) {
+			out.draw(this);
+		} else if(config.getMode() == GRAPHICAL) {
+			gameWindow.paint();
+		}
+
 		if(config.getMode() == GRAPHICAL) {
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
 			
+			JOptionPane.showMessageDialog(gameWindow, "Game Over");
 			gameWindow.dispose();
 			return command;
 		}
 		else if(config.getMode() == CONSOLE) {
 			switch(JOptionPane.showConfirmDialog(null, "Do you wish to play again?")) {
 			case JOptionPane.YES_OPTION: // GRAPHICAL
-				config = new GameConfig(CONSOLE, 0.06);		
 				return 0;
 			default:
 				return -1;

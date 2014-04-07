@@ -25,7 +25,7 @@ public class Eagle extends Moveable {
 		this.flying = false;
 		this.useful = true;			
 	}
-	
+
 	/**
 	 * Gets the value of the parameter [movingHorizontally].
 	 * 
@@ -196,40 +196,48 @@ public class Eagle extends Moveable {
 		
 		if(useful) {
 			
-			if(game.getHero().hasEagle()) {
-				updatePosition(game.getHero().getX(), game.getHero().getY());
+			if (game.getHero() != null) {
+				if(game.getHero().hasEagle()) {
+					updatePosition(game.getHero().getX(), game.getHero().getY());
+				}
 			}
-			
+
 			if(alive && moving) {
-				if(!hasSword) {
-					moveToSword(game.getSword());
-					if(!hasSword() && foundSword(game.getSword())) {
-						hasSword = true;
-						flying = false;
+				if(game.getSword() != null) {
+					if(!hasSword) {
+						moveToSword(game.getSword());
+						if(!hasSword() && checkIfFound(game.getSword(), 0)) {
+							hasSword = true;
+							flying = false;
+						}
+					} else {
+						moveBack();
+						game.getSword().setX(x);
+						game.getSword().setY(y);
 					}
-				} else {
-					moveBack();
-					game.getSword().setX(x);
-					game.getSword().setY(y);
 				}
 			}
 			
-			if(!flying && !game.getHero().hasEagle()) {
+			if (game.getHero() != null) {
+				if(!flying && !game.getHero().hasEagle()) {
 
-				for(Dragon dragon : game.getDragons()) {
-					
-					if(foundDragon(dragon)) {
+					if(game.getDragons() != null) {
+						for(Dragon dragon : game.getDragons()) {
 
-						die();
+							if(checkIfFound(dragon, 0)) {
 
-						if((game.getSword() != null) && hasSword) {
+								die();
 
-							hasSword = false;
-							moving = false;
-							flying = false;
+								if((game.getSword() != null) && hasSword) {
 
-							game.getSword().setX(x);
-							game.getSword().setY(y);
+									hasSword = false;
+									moving = false;
+									flying = false;
+
+									game.getSword().setX(x);
+									game.getSword().setY(y);
+								}
+							}
 						}
 					}
 				}
