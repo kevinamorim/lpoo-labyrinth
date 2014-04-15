@@ -4,3 +4,4 @@
 *.metadata/
 RemoteSystemTempFiles/*
 *.db
+*.sav
