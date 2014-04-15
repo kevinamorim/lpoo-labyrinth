@@ -1,9 +1,15 @@
 package maze.logic;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
+	
+	private static final long serialVersionUID = 1;
 	
 	private String description;
 	private boolean done;
+
+	public Task() {}
 	
 	/**
 	 * Constructor for the Task object.

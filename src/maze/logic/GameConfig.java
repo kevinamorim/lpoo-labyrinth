@@ -7,15 +7,17 @@ import maze.cli.Output;
 
 public class GameConfig implements Serializable {
 	
+	private static final long serialVersionUID = 1;
+
 	private Input in;
 	private Output out;
 	private int mazeSize;
 	private int difficulty;
+	private int mazeDragons;
 	
 	private double dragonPerc;
 	
 	private int CONSOLE = 0;
-	private int GRAPHICAL = 1;
 	
 	/**
 	 * 0 - Console mode.
@@ -26,6 +28,7 @@ public class GameConfig implements Serializable {
 	// KeyCodes
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
+	
 
 	/**
 	 * Constructor for a game configuration.
@@ -43,7 +46,7 @@ public class GameConfig implements Serializable {
 		mazeSize = inputMazeSize(in, out);
 		difficulty = inputGameDifficulty(in, out);
 		
-		setDragonPerc(dragonPerc);
+		this.dragonPerc = dragonPerc;
 		
 		// Console mode is the default mode.
 		mode = CONSOLE;
@@ -69,7 +72,8 @@ public class GameConfig implements Serializable {
 			difficulty = inputGameDifficulty(in, out);
 		}
 		
-		setDragonPerc(dragonPerc);
+		this.dragonPerc = dragonPerc;
+		this.mazeDragons = (int) (this.mazeSize * this.mazeSize * this.dragonPerc);
 		
 		this.mode = mode;
 
@@ -95,7 +99,7 @@ public class GameConfig implements Serializable {
 	}
 	
 	public GameConfig() {
-		this.mazeSize = 0;
+		this.mazeSize = 1;
 		this.difficulty = 1;
 		this.dragonPerc = 0.02;
 	}
@@ -312,6 +316,20 @@ public class GameConfig implements Serializable {
 	 */
 	public void setMode(int mode) {
 		this.mode = mode;
+	}
+
+	/**
+	 * @return the mazeDragons
+	 */
+	public int getMazeDragons() {
+		return mazeDragons;
+	}
+
+	/**
+	 * @param mazeDragons the mazeDragons to set
+	 */
+	public void setMazeDragons(int mazeDragons) {
+		this.mazeDragons = mazeDragons;
 	}
 
 }

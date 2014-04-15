@@ -2,8 +2,12 @@ package maze.logic;
 
 public class Moveable extends Element {
 	
+	private static final long serialVersionUID = 1;
+	
 	protected boolean alive;
 	protected boolean hasSword;
+	
+	public Moveable() {}
 	
 	/**
 	 * Constructor for Element.

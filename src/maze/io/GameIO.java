@@ -13,6 +13,10 @@ public class GameIO {
 	public int save(GameLogic game, String fileName) {
 		ObjectOutputStream os = null;
 		try {
+			
+			if(!fileName.contains(".sav")) {
+				fileName += ".sav";
+			}
 			os = new ObjectOutputStream(new FileOutputStream(fileName));
 			
 			os.writeObject(game);
@@ -36,19 +40,20 @@ public class GameIO {
 	}
 	
 	public int load(GameLogic game, String fileName) {
-		ObjectInputStream is = null;
+		ObjectInputStream in = null;
+		
 		try {
-			is = new ObjectInputStream(new FileInputStream(fileName)); 
-			game = (GameLogic) is.readObject();
+			in = new ObjectInputStream(new FileInputStream(fileName)); 
+			game = (GameLogic) in.readObject();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return -1;
 		}
 		finally {
-			if (is != null) {
+			if (in != null) {
 				try {
-					is.close();
+					in.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 					return -2;

@@ -3,9 +3,15 @@ package maze.logic;
 import java.util.Random;
 
 public class Hero extends Moveable {
-
+	
+	private static final long serialVersionUID = 1;
+	
 	private boolean won;
 	private boolean hasEagle;
+	
+	public Hero() {
+		super();
+	}
 
 	/**
 	 * Constructor for Hero.

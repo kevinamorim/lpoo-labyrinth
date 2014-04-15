@@ -5,11 +5,15 @@ import java.util.Random;
 
 public class Element implements Serializable {
 	
+	private static final long serialVersionUID = 1;
+	
 	protected int x;
 	protected int y;
 	protected int oldX;
 	protected int oldY;
 	protected char symbol;
+
+	public Element() {}
 
 	/**
 	 * Constructor for Element.

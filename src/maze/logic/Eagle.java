@@ -2,10 +2,16 @@ package maze.logic;
 
 public class Eagle extends Moveable {
 	
+	private static final long serialVersionUID = 1;
+	
 	private boolean movingHorizontally;
 	private boolean moving;
 	private boolean flying;
 	private boolean useful;
+	
+	public Eagle() {
+		super();		
+	}
 
 	/**
 	 * Constructor for Eagle.

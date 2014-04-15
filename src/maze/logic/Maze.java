@@ -1,16 +1,20 @@
 package maze.logic;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Stack;
 
-public class Maze {
+public class Maze implements Serializable {
 	
-	// Char matrix representing the labyrinth 
+	private static final long serialVersionUID = 1;
+
 	private char tiles[][];
 	  		
 	private int size;
 
 	private Element exit;
+	
+	public Maze() {}
 
 	/**
 	 * Constructor for Maze.

@@ -14,6 +14,8 @@ import maze.gui.InputHandler;
 import maze.io.GameIO;
 
 public class GameLogic extends Object implements Serializable {
+	
+	private static final long serialVersionUID = 1;
 
 	private char board[][];
 
@@ -26,13 +28,8 @@ public class GameLogic extends Object implements Serializable {
 	private GameConfig config;
 	
 	private Task[] tasks;
-	
-	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
-	public transient boolean valid;
-
-	private int TASKNUM = 3;
-	private int mazeDragons;
+	public boolean valid;
 	
 	private int CONSOLE = 0;
 	private int GRAPHICAL = 1;
@@ -77,7 +74,7 @@ public class GameLogic extends Object implements Serializable {
 		this.valid = true;
 
 		if(mode == CONSOLE) {
-			this.config = new GameConfig(mode, 0.06);
+			config = new GameConfig(mode, 0.06);
 			in = new Input();
 			out = new Output();
 		}
@@ -93,7 +90,7 @@ public class GameLogic extends Object implements Serializable {
 			if(getConfiguration() != 0) {
 				this.valid = false;
 				return;
-			}		
+			}
 		}
 		
 		init();
@@ -105,25 +102,27 @@ public class GameLogic extends Object implements Serializable {
 	 */
 	public void init() {
 		
-		board = new char[config.getMazeSize()][config.getMazeSize()];
+		config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
 		
-		mazeDragons = (int) (config.getMazeSize() * config.getMazeSize()  * config.getDragonPerc());
 		maze = new Maze(config.getMazeSize());
 		hero = new Hero(this);
 		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
 		sword = new Element(this, 'E');
 		
-		dragons = new Dragon[mazeDragons];
+		dragons = new Dragon[config.getMazeDragons()];
 		for(int i = 0; i < dragons.length; i++) {
 			dragons[i] = new Dragon(this);
 		}
 		
-		tasks = new Task[TASKNUM];
+		tasks = new Task[3];
 
 		createTasks();
 	}
 	
-	public void initInput() {
+	public void initNonSerializable() {
+		
+		board = new char[config.getMazeSize()][config.getMazeSize()];
+		
 		if(config.getMode() == GRAPHICAL) {
 
 			gameWindow = new GameWindow(this);
@@ -242,7 +241,7 @@ public class GameLogic extends Object implements Serializable {
 	public int getConsoleInput() {
 
 		// Get command line keys
-		out.drawMsg(MSG.GET_KEY.ordinal());
+		out.drawMsg(2);
 		return in.get();
 	}
 	
@@ -437,7 +436,7 @@ public class GameLogic extends Object implements Serializable {
 						fileChooser.setFileFilter(filter);
 						fileChooser.setCurrentDirectory(new File( "." ));
 						
-						if (fileChooser.showOpenDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
+						if (fileChooser.showSaveDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
 							String fileName = fileChooser.getSelectedFile().getName();
 							gameIO.save(this, fileName);
 						}

@@ -4,12 +4,18 @@ import java.util.Random;
 
 public class Dragon extends Moveable {
 	
+	private static final long serialVersionUID = 1;
+	
 	private boolean awake;
 	private int roundsToWake;
 	
 	private int maxRounds = 2;
 	
 	private int RANDOM_SLEEP = 6;
+	
+	public Dragon() {
+		super();
+	}
 
 	/**
 	 * Constructor for Dragon.
