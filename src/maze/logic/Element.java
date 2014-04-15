@@ -1,8 +1,9 @@
 package maze.logic;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Element {
+public class Element implements Serializable {
 	
 	protected int x;
 	protected int y;

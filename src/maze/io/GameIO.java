@@ -13,7 +13,8 @@ public class GameIO {
 	public int save(GameLogic game, String fileName) {
 		ObjectOutputStream os = null;
 		try {
-			os = new ObjectOutputStream(new FileOutputStream("file.dat"));
+			os = new ObjectOutputStream(new FileOutputStream(fileName));
+			
 			os.writeObject(game);
 		}
 		catch (Exception e) {
@@ -37,7 +38,7 @@ public class GameIO {
 	public int load(GameLogic game, String fileName) {
 		ObjectInputStream is = null;
 		try {
-			is = new ObjectInputStream(new FileInputStream("file.dat")); 
+			is = new ObjectInputStream(new FileInputStream(fileName)); 
 			game = (GameLogic) is.readObject();
 		}
 		catch (Exception e) {

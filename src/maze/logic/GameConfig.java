@@ -1,9 +1,11 @@
 package maze.logic;
 
+import java.io.Serializable;
+
 import maze.cli.Input;
 import maze.cli.Output;
 
-public class GameConfig {
+public class GameConfig implements Serializable {
 	
 	private Input in;
 	private Output out;

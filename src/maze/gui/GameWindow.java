@@ -103,7 +103,7 @@ public class GameWindow extends Window implements KeyListener {
 		JMenuItem restartGameMenuItem = new JMenuItem("Save Game");
 		restartGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO everything about saving
+				keyCode = -3;
 			}
 		});
 		menuBar.add(restartGameMenuItem);

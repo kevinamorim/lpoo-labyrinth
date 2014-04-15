@@ -2,8 +2,6 @@ package maze.logic;
 //import maze.gui.ConfigurationWindow;
 //import maze.gui.MenuWindow;
 import java.io.File;
-import java.io.FileFilter;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -65,6 +63,10 @@ public class Game {
 
 			if(mode == GRAPHICAL) {
 				
+				int EXIT = -1;
+				int NEW_GAME = -2;
+				int returnValue;
+				
 				/* The player choses an option from the menu */
 				state = menuHandler.getNextCommand();
 				
@@ -74,16 +76,15 @@ public class Game {
 				
 				switch(state) {
 				case 1: // PLAY
-					int EXIT = -1;
-					int NEW_GAME = 1;
-					int returnValue;
 
 					/* Shows the configurations window */
 					menuWindow.setVisible(false);
 
 					do {
 						game = new GameLogic(mode);
+						
 						if(game.valid) {
+							game.initInput();
 							returnValue = game.loop();
 						}
 						else {
@@ -103,7 +104,23 @@ public class Game {
 					
 					if (fileChooser.showOpenDialog(menuWindow) == JFileChooser.APPROVE_OPTION) {
 						String fileName = fileChooser.getSelectedFile().getName();
-						gameIO.load(game,fileName);
+						if(gameIO.load(game,fileName) == 0) {
+							do {
+								if(game.valid) {
+									game.initInput();
+									returnValue = game.loop();
+								}
+								else {
+									returnValue = EXIT;
+								}
+								
+								game = new GameLogic(mode);
+								
+							}while(returnValue == NEW_GAME);
+						}
+						else {
+							break;
+						}
 					}
 					break;
 				case 3: // OPTIONS

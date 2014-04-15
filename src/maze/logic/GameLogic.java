@@ -1,12 +1,19 @@
 package maze.logic;
 
+import java.io.File;
+import java.io.Serializable;
+
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import maze.cli.*;
 import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
+import maze.io.GameIO;
 
-public class GameLogic extends Object {
+public class GameLogic extends Object implements Serializable {
 
 	private char board[][];
 
@@ -57,7 +64,9 @@ public class GameLogic extends Object {
 
 		this.config = config;
 		
-		initInput();
+		in = new Input();
+
+		out = new Output();
 		
 		init();
 		
@@ -69,7 +78,8 @@ public class GameLogic extends Object {
 
 		if(mode == CONSOLE) {
 			this.config = new GameConfig(mode, 0.06);
-			initInput();
+			in = new Input();
+			out = new Output();
 		}
 		else if(mode == GRAPHICAL) {
 
@@ -83,23 +93,12 @@ public class GameLogic extends Object {
 			if(getConfiguration() != 0) {
 				this.valid = false;
 				return;
-			}
-			
+			}		
 		}
 		
 		init();
 	}
-	
-	public void initInput() {
-		if(config.getMode() == CONSOLE) {
 
-			// Creates our Input
-			in = new Input();
-
-			// Creates our Output
-			out = new Output();
-		}
-	}
 
 	/**
 	 * Initializes all game parameters.
@@ -122,7 +121,9 @@ public class GameLogic extends Object {
 		tasks = new Task[TASKNUM];
 
 		createTasks();
-
+	}
+	
+	public void initInput() {
 		if(config.getMode() == GRAPHICAL) {
 
 			gameWindow = new GameWindow(this);
@@ -429,8 +430,19 @@ public class GameLogic extends Object {
 					case -2: // New Game
 						done = true;
 						break;
-					case -3: // Restart this game
-						done = true;
+					case -3: // Save this game
+						GameIO gameIO = new GameIO();
+						JFileChooser fileChooser = new JFileChooser();
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
+						fileChooser.setFileFilter(filter);
+						fileChooser.setCurrentDirectory(new File( "." ));
+						
+						if (fileChooser.showOpenDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
+							String fileName = fileChooser.getSelectedFile().getName();
+							gameIO.save(this, fileName);
+						}
+						
+						//done = true;
 						break;
 					case -4: // Configurations Panel
 						gameWindow.setVisible(false);
@@ -466,7 +478,6 @@ public class GameLogic extends Object {
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
 			
-			JOptionPane.showMessageDialog(gameWindow, "Game Over");
 			gameWindow.dispose();
 			return command;
 		}
