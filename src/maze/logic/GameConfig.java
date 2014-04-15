@@ -18,17 +18,14 @@ public class GameConfig implements Serializable {
 	private double dragonPerc;
 	
 	private int CONSOLE = 0;
-	
-	/**
-	 * 0 - Console mode.
-	 * 1 - Graphical mode.
-	 */
+
 	private int mode;
 	
 	// KeyCodes
 	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 	
+	public GameConfig() {}
 
 	/**
 	 * Constructor for a game configuration.
@@ -96,12 +93,6 @@ public class GameConfig implements Serializable {
 		this.difficulty = difficulty;
 		
 		this.dragonPerc = dragonPerc;
-	}
-	
-	public GameConfig() {
-		this.mazeSize = 1;
-		this.difficulty = 1;
-		this.dragonPerc = 0.02;
 	}
 
 	/**

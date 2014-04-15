@@ -89,6 +89,10 @@ public class InputHandler implements Runnable {
 		}
 	}
 	
+	public void addCommand(int keyCode) {
+		commands.add(keyCode);
+	}
+	
 	/**
 	 * @return the terminate
 	 */

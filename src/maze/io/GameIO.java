@@ -1,5 +1,6 @@
 package maze.io;
 
+import maze.logic.Dragon;
 import maze.logic.GameLogic;
 
 import java.io.*;
@@ -21,7 +22,7 @@ public class GameIO {
 			
 			os.writeObject(game);
 		}
-		catch (Exception e) {
+		catch(IOException e) {
 			e.printStackTrace();
 			return -1;
 		}
@@ -42,11 +43,17 @@ public class GameIO {
 	public int load(GameLogic game, String fileName) {
 		ObjectInputStream in = null;
 		
+		GameLogic temp = null;
+		
 		try {
 			in = new ObjectInputStream(new FileInputStream(fileName)); 
-			game = (GameLogic) in.readObject();
+			temp = (GameLogic) in.readObject();
 		}
-		catch (Exception e) {
+		catch (IOException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		catch(ClassNotFoundException e ) {
 			e.printStackTrace();
 			return -1;
 		}
@@ -60,6 +67,16 @@ public class GameIO {
 				}
 			}
 		}
+		
+		game.setBoard(temp.getBoard());
+		game.setConfig(temp.getConfig());
+		game.setDragons(temp.getDragons());
+		game.setEagle(temp.getEagle());
+		game.setHero(temp.getHero());
+		game.setMaze(temp.getMaze());
+		game.setSword(temp.getSword());
+		game.setTasks(temp.getTasks());
+		game.setValid(temp.isValid());
 		
 		return 0;
 	}

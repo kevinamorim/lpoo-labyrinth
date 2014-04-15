@@ -89,8 +89,7 @@ public class GameWindow extends Window implements KeyListener {
 				switch(JOptionPane.showConfirmDialog(null, "Are you sure? \nNote: all unsaved data will be lost.")) {
 				case JOptionPane.YES_OPTION: // GRAPHICAL
 					
-					keyCode = -2;
-					
+					keyCode = 1;
 					break;
 				default:
 					return;
@@ -100,18 +99,26 @@ public class GameWindow extends Window implements KeyListener {
 		});
 		menuBar.add(newGameMenuItem);
 		
-		JMenuItem restartGameMenuItem = new JMenuItem("Save Game");
-		restartGameMenuItem.addActionListener(new ActionListener() {
+		JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
+		saveGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -3;
+				keyCode = 2;
 			}
 		});
-		menuBar.add(restartGameMenuItem);
+		menuBar.add(saveGameMenuItem);
+		
+		JMenuItem loadGameMenuItem = new JMenuItem("Load Game");
+		loadGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				keyCode = 3;
+			}
+		});
+		menuBar.add(loadGameMenuItem);
 		
 		JMenuItem configurationMenuItem = new JMenuItem("Configuration");
 		configurationMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = -4;
+				keyCode = 4;
 			}
 		});
 		menuBar.add(configurationMenuItem);
@@ -122,7 +129,7 @@ public class GameWindow extends Window implements KeyListener {
 				switch(JOptionPane.showConfirmDialog(null, "Are you sure? \nNote: all unsaved data will be lost.")) {
 				case JOptionPane.YES_OPTION: // GRAPHICAL
 					
-					keyCode = -5;
+					keyCode = 5;
 					
 					break;
 				default:

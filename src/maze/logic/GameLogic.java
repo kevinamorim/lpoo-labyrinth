@@ -29,13 +29,13 @@ public class GameLogic extends Object implements Serializable {
 	
 	private Task[] tasks;
 
-	public boolean valid;
+	private boolean valid = true;
 	
 	private int CONSOLE = 0;
 	private int GRAPHICAL = 1;
 
-	private transient Input in;
-	private transient Output out;
+	private Input in;
+	private Output out;
 	
 	private transient GameWindow gameWindow;
 	private transient ConfigurationWindow configWindow;
@@ -49,7 +49,8 @@ public class GameLogic extends Object implements Serializable {
 	/** 
 	 * Default GameLogic constructor.
 	 */
-	public GameLogic() {}
+	public GameLogic() {
+	}
 	
 	/**
 	 * GameLogic constructor.
@@ -62,16 +63,13 @@ public class GameLogic extends Object implements Serializable {
 		this.config = config;
 		
 		in = new Input();
-
 		out = new Output();
-		
-		init();
 		
 	}
 	
 	public GameLogic(int mode) {
 		
-		this.valid = true;
+		this.setValid(true);
 
 		if(mode == CONSOLE) {
 			config = new GameConfig(mode, 0.06);
@@ -88,12 +86,10 @@ public class GameLogic extends Object implements Serializable {
 			inputConfigThread.start();
 			
 			if(getConfiguration() != 0) {
-				this.valid = false;
+				this.setValid(false);
 				return;
 			}
 		}
-		
-		init();
 	}
 
 
@@ -114,15 +110,15 @@ public class GameLogic extends Object implements Serializable {
 			dragons[i] = new Dragon(this);
 		}
 		
+		board = new char[config.getMazeSize()][config.getMazeSize()];
+		
 		tasks = new Task[3];
 
 		createTasks();
 	}
-	
+
 	public void initNonSerializable() {
-		
-		board = new char[config.getMazeSize()][config.getMazeSize()];
-		
+
 		if(config.getMode() == GRAPHICAL) {
 
 			gameWindow = new GameWindow(this);
@@ -133,7 +129,7 @@ public class GameLogic extends Object implements Serializable {
 		}
 	}
 
-	
+
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
 	//					DRAGONS					//
@@ -426,30 +422,27 @@ public class GameLogic extends Object implements Serializable {
 					}
 					
 					switch(command) {
-					case -2: // New Game
+					case 1: // New Game
 						done = true;
 						break;
-					case -3: // Save this game
-						GameIO gameIO = new GameIO();
-						JFileChooser fileChooser = new JFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
-						fileChooser.setFileFilter(filter);
-						fileChooser.setCurrentDirectory(new File( "." ));
-						
-						if (fileChooser.showSaveDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
-							String fileName = fileChooser.getSelectedFile().getName();
-							gameIO.save(this, fileName);
+					case 2: // Save this game
+						if(saveGame() != 0) {
+							done = true;
 						}
-						
-						//done = true;
 						break;
-					case -4: // Configurations Panel
+					case 3:
+						if(loadGame() != 0) {
+							done = true;
+						}
+						gameWindow.paint();
+						break;
+					case 4: // Configurations Panel
 						gameWindow.setVisible(false);
 						getConfiguration();
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
-					case -5: // Quit
+					case 5: // Quit
 						done = true;
 						break;
 					default:
@@ -498,6 +491,44 @@ public class GameLogic extends Object implements Serializable {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
+
+	public int loadGame() {
+		GameIO gameIO = new GameIO();
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
+		fileChooser.setFileFilter(filter);
+		fileChooser.setCurrentDirectory(new File( "." ));
+		
+		if (fileChooser.showOpenDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
+
+			String fileName = fileChooser.getSelectedFile().getName();
+			gameIO.load(this, fileName);
+		}
+		else {
+			return -1;
+		}
+		
+		return 0;
+	}
+
+	public int saveGame() {
+		GameIO gameIO = new GameIO();
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
+		fileChooser.setFileFilter(filter);
+		fileChooser.setCurrentDirectory(new File( "." ));
+		
+		if (fileChooser.showSaveDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
+			
+			String fileName = fileChooser.getSelectedFile().getName();
+			gameIO.save(this, fileName);
+		}
+		else {
+			return -1;
+		}
+		
+		return 0;
+	}
 
 	/**
 	 * Gets the game instance of [maze].
@@ -643,6 +674,20 @@ public class GameLogic extends Object implements Serializable {
 	 */
 	public void setBoard(char board[][]) {
 		this.board = board;
+	}
+
+	/**
+	 * @return the valid
+	 */
+	public boolean isValid() {
+		return valid;
+	}
+
+	/**
+	 * @param valid the valid to set
+	 */
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 	
 }

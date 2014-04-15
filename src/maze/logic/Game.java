@@ -1,6 +1,7 @@
 package maze.logic;
 
 import java.io.File;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -64,7 +65,7 @@ public class Game {
 				
 				int EXIT = -1;
 				int NEW_GAME = -2;
-				int returnValue;
+				int returnValue = EXIT;
 				
 				/* The player choses an option from the menu */
 				state = menuHandler.getNextCommand();
@@ -76,70 +77,32 @@ public class Game {
 				switch(state) {
 				/*	___________________________________________
 				 * 
-				 * 					NEW GAME
+				 * 					PLAY
 				 *  ___________________________________________
 				 */
 				case 1:
-
-					/* Shows the configurations window */
 					menuWindow.setVisible(false);
+					
+					game = new GameLogic(mode);
 
 					do {
-						game = new GameLogic(mode);
-						
-						if(game.valid) {
+						if(game.isValid()) {
+							game.init();
 							game.initNonSerializable();
 							returnValue = game.loop();
-						}
-						else {
-							returnValue = EXIT;
 						}
 						
 					}while(returnValue == NEW_GAME);
 
 					menuWindow.setVisible(true);
 					break;
-				/*	___________________________________________
-				 * 
-				 * 					LOAD GAME
-				 *  ___________________________________________
-				 */
-				case 2:
-					GameIO gameIO = new GameIO();
-					JFileChooser fileChooser = new JFileChooser();
-					FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
-					fileChooser.setFileFilter(filter);
-					fileChooser.setCurrentDirectory(new File( "." ));
-					
-					if (fileChooser.showOpenDialog(menuWindow) == JFileChooser.APPROVE_OPTION) {
-						
-						String fileName = fileChooser.getSelectedFile().getName();
-						
-						if(gameIO.load(game,fileName) == 0) {
-							do {
-								if(game.valid) {
-									game.initNonSerializable();
-									returnValue = game.loop();
-								}
-								else {
-									returnValue = EXIT;
-								}
-								
-								game = new GameLogic(mode);
-								
-							}while(returnValue == NEW_GAME);
-						}
-						else {
-							break;
-						}
-					}
+				case 2: // EDITOR
 					break;
-				case 3: // OPTIONS
+				case 3: // CREDITS
 					break;
-				case 4: // CREDITS
-					state = 0;
-					break;
-				default:// QUIT
+				case 4: // QUIT
+					return;
+				default:// DO NOTHING
 					break;
 				}
 				

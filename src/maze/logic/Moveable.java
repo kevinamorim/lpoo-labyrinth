@@ -7,7 +7,9 @@ public class Moveable extends Element {
 	protected boolean alive;
 	protected boolean hasSword;
 	
-	public Moveable() {}
+	public Moveable() {
+		super();
+	}
 	
 	/**
 	 * Constructor for Element.

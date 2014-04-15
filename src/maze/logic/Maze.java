@@ -14,7 +14,9 @@ public class Maze implements Serializable {
 
 	private Element exit;
 	
-	public Maze() {}
+	public Maze() {
+		exit = new Element();
+	}
 
 	/**
 	 * Constructor for Maze.

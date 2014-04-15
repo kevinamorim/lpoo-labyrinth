@@ -1,8 +1,16 @@
 package maze.cli;
 
+import java.io.Serializable;
+
 import maze.logic.*;
 
-public class Output {
+public class Output implements Serializable {
+	
+	private static final long serialVersionUID = 1;
+	
+	public Output() {
+		
+	}
 	
 	public void drawBoard(Maze maze) {
 		

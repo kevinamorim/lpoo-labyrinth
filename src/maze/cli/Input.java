@@ -1,10 +1,17 @@
 package maze.cli;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Input {
+public class Input implements Serializable {
 
+	private static final long serialVersionUID = 1;
+	
 	private Scanner scan = new Scanner(System.in);
+	
+	public Input() {
+		
+	}
 
 	/**
 	 * Gets user input and sets map accordingly.
