@@ -22,7 +22,7 @@ public class GameLogic extends Object {
 	
 	private enum MSG {FOUND_SWORD, KILLED_DRAGON, GET_KEY};
 
-	private boolean valid;
+	public transient boolean valid;
 
 	private int TASKNUM = 3;
 	private int mazeDragons;
@@ -30,17 +30,17 @@ public class GameLogic extends Object {
 	private int CONSOLE = 0;
 	private int GRAPHICAL = 1;
 
-	private Input in;
-	private Output out;
+	private transient Input in;
+	private transient Output out;
 	
-	private GameWindow gameWindow;
-	private ConfigurationWindow configWindow;
+	private transient GameWindow gameWindow;
+	private transient ConfigurationWindow configWindow;
 	
-	private InputHandler inputHandler;
-	private InputHandler configHandler;
+	private transient InputHandler inputHandler;
+	private transient InputHandler configHandler;
 	
-	private Thread inputThread;
-	private Thread inputConfigThread;
+	private transient Thread inputThread;
+	private transient Thread inputConfigThread;
 
 	/** 
 	 * Default GameLogic constructor.
@@ -81,7 +81,7 @@ public class GameLogic extends Object {
 			inputConfigThread.start();
 			
 			if(getConfiguration() != 0) {
-				this.setValid(false);
+				this.valid = false;
 				return;
 			}
 			
@@ -633,20 +633,6 @@ public class GameLogic extends Object {
 	 */
 	public void setBoard(char board[][]) {
 		this.board = board;
-	}
-
-	/**
-	 * @return the valid
-	 */
-	public boolean isValid() {
-		return valid;
-	}
-
-	/**
-	 * @param valid the valid to set
-	 */
-	public void setValid(boolean valid) {
-		this.valid = valid;
 	}
 	
 }

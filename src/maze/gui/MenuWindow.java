@@ -43,10 +43,17 @@ public class MenuWindow extends Window {
 			}
 		});
 		
+		JButton btnLoad = new JButton("Load Game");
+		btnLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				keyCode = 2;
+			}
+		});
+		
 		JButton btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = 2;
+				keyCode = 3;
 			}
 		});
 		
@@ -71,6 +78,7 @@ public class MenuWindow extends Window {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnPlay)
+						.addComponent(btnLoad)
 						.addComponent(btnOptions)
 						.addComponent(btnCredits)
 						.addComponent(btnQuit))
@@ -81,6 +89,8 @@ public class MenuWindow extends Window {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnPlay)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnLoad)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnOptions)
 					.addPreferredGap(ComponentPlacement.UNRELATED)

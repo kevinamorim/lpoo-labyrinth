@@ -1,11 +1,16 @@
 package maze.logic;
 //import maze.gui.ConfigurationWindow;
 //import maze.gui.MenuWindow;
-import javax.swing.JOptionPane;
+import java.io.File;
+import java.io.FileFilter;
 
-import maze.gui.ConfigurationWindow;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
+import maze.io.GameIO;
 
 public class Game {
 
@@ -78,19 +83,30 @@ public class Game {
 
 					do {
 						game = new GameLogic(mode);
-						if(game.isValid()) {
+						if(game.valid) {
 							returnValue = game.loop();
 						}
 						else {
 							returnValue = EXIT;
 						}
+						
 					}while(returnValue == NEW_GAME);
 
 					menuWindow.setVisible(true);
 					break;
-				case 2: // OPTIONS
+				case 2: // LOAD GAME
+					GameIO gameIO = new GameIO();
+					JFileChooser fileChooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter(".sav files", new String[] {"sav"});
+					fileChooser.setFileFilter(filter);
+					fileChooser.setCurrentDirectory(new File( "." ));
+					
+					if (fileChooser.showOpenDialog(menuWindow) == JFileChooser.APPROVE_OPTION) {
+						String fileName = fileChooser.getSelectedFile().getName();
+						gameIO.load(game,fileName);
+					}
 					break;
-				case 3: // CREDITS
+				case 3: // OPTIONS
 					break;
 				case 4: // CREDITS
 					state = 0;
