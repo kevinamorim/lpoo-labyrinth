@@ -493,15 +493,9 @@ public class GameLogic extends Object implements Serializable {
 		// +++++++++++++++++++++++++++++++++++++
 		//				END OF LOOP
 		// +++++++++++++++++++++++++++++++++++++
-
-		// Last draw.
-		if(config.getMode() == CONSOLE) {
-			out.draw(this);
-		} else if(config.getMode() == GRAPHICAL) {
-			gameWindow.paint();
-		}
-
+		
 		if(config.getMode() == GRAPHICAL) {
+			gameWindow.paint();
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
 			
@@ -516,11 +510,17 @@ public class GameLogic extends Object implements Serializable {
 			return command;
 		}
 		else if(config.getMode() == CONSOLE) {
-			switch(JOptionPane.showConfirmDialog(null, "Do you wish to play again?")) {
-			case JOptionPane.YES_OPTION: // GRAPHICAL
-				return 0;
-			default:
-				return -1;
+			out.draw(this);
+			
+			if(hero.hasWon()) {
+				out.drawWinningMessage();
+			}
+			else {
+				out.drawGameOver();
+			}
+			
+			if(out.playAgain(in)) {
+				return -2;
 			}
 		}
 		

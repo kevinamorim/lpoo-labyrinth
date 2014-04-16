@@ -62,35 +62,15 @@ public class Output implements Serializable {
 		}
 		System.out.println("+-------------------------+");
 	}
-	
-	public void drawGameOver(GameLogic game) {
-		
-		drawBoard(game.getMaze());
-		drawGoals(game.getTasks());
-		
-		if(game.getHero().hasWon()) {
-			System.out.println("+-------------------------+");
-			System.out.println("+---------- WIN ----------+");	
-			System.out.println("+-------------------------+");	
-		}
-		else {
-			System.out.println("+-------------------------+");
-			System.out.println("+--------- LOSE ----------+");	
-			System.out.println("+-------------------------+");	
-		}
-		
-	}
-	
+
 	public void drawMsg(int msg) {
 		switch(msg) {
 		case 0:
 			System.out.println("Yupii, you've found a sword! Go tell your momma...");
-			break;
-			
+			break;	
 		case 1:
 			System.out.println("You just slained a fucking dragon!! Go tell your father...");
 			break;
-			
 		case 2:
 			System.out.println("Key? ");
 			break;
@@ -105,6 +85,12 @@ public class Output implements Serializable {
 			break;
 		case 6:
 			System.out.println("Choose a dificulty: \n[1] Dumb dragons \n[2] Smart dragons (they sleep) \n[3] Dragons high on caffeine");
+			break;
+		case 7:
+			System.out.println("Choose a percentage of dragons: [2 - 10]%");
+			break;
+		case 8:
+			System.out.println("PlayAgain? (y/n)");
 			break;
 		case 69:
 			System.out.println("8======D~~~~");
@@ -127,5 +113,41 @@ public class Output implements Serializable {
 		// Draws board.
 		drawBoard(game.getBoard());
 		
+	}
+	
+	public void drawGameOver() {
+		System.out.println("+-------------------------+");
+		System.out.println("+--------- LOSE ----------+");	
+		System.out.println("+-------------------------+");
+	}
+
+	public void drawWinningMessage() {
+		System.out.println("+-------------------------+");
+		System.out.println("+--------- WIN -----------+");	
+		System.out.println("+-------------------------+");
+	}
+
+	public boolean playAgain(Input in) {
+		
+		drawMsg(8);
+
+		boolean done = false;
+		do {
+			String s = in.getString();
+			if(s!=null) {
+				switch(s.charAt(0)) {
+				case 'Y':
+					return true;
+				case 'y':
+					return true;
+				case 'N':
+					return false;
+				case 'n':
+					return false;
+				}
+			}
+
+		} while(!done);
+		return false;
 	}
 }

@@ -35,21 +35,22 @@ public class GameConfig implements Serializable {
 	 * 
 	 * @param dragonPerc : percentage of dragons in the maze
 	 */
-	public GameConfig(double dragonPerc) {
+	public GameConfig(int mode) {
 
-		in = new Input();
-		out = new Output();
-		
-		mazeSize = inputMazeSize(in, out);
-		difficulty = inputGameDifficulty(in, out);
-		
-		this.dragonPerc = dragonPerc;
+		if(mode == CONSOLE) {
+			in = new Input();
+			out = new Output();
+
+			this.mazeSize = inputMazeSize();
+			this.difficulty = inputGameDifficulty();	
+			this.dragonPerc = inputDragonperc();
+		}
 		
 		// Console mode is the default mode.
-		mode = CONSOLE;
+		this.mode = mode;
 
 	}
-	
+
 	/**
 	 * Constructor for a game configuration.
 	 * Sets the dragon number percentage.
@@ -65,8 +66,8 @@ public class GameConfig implements Serializable {
 			in = new Input();
 			out = new Output();
 			
-			mazeSize = inputMazeSize(in, out);
-			difficulty = inputGameDifficulty(in, out);
+			mazeSize = inputMazeSize();
+			difficulty = inputGameDifficulty();
 		}
 		
 		this.dragonPerc = dragonPerc;
@@ -130,7 +131,7 @@ public class GameConfig implements Serializable {
 	 * @param out : output stream
 	 * @return the maze size
 	 */
-	public int inputMazeSize(Input in, Output out) {
+	public int inputMazeSize() {
 		
 		String s;
 		
@@ -168,7 +169,7 @@ public class GameConfig implements Serializable {
 	 * @param out : output stream
 	 * @return the difficulty
 	 */
-	public int inputGameDifficulty(Input in, Output out) {
+	public int inputGameDifficulty() {
 		
 		out.drawMsg(6);
 		
@@ -198,6 +199,37 @@ public class GameConfig implements Serializable {
 		
 		return value;
 		
+	}
+	
+	public double inputDragonperc() {
+		
+		out.drawMsg(7);
+		
+		String s;
+		
+		boolean deuMerda = false;
+		
+		int value;
+		
+		do {
+			
+			if(deuMerda) {
+				out.drawMsg(5);
+				out.drawMsg(69);
+			}
+			
+			s = in.getString();
+			
+			deuMerda = true;
+			
+			if(isValid(s)) value = Integer.parseInt(s);
+			else value = 0;
+			
+		} while(!isBetween(2, 10, value));
+		
+		value = Integer.parseInt(s);
+		
+		return (value/100.0);
 	}
 	
 	/**

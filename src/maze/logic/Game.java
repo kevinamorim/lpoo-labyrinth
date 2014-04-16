@@ -1,14 +1,8 @@
 package maze.logic;
 
-import java.io.File;
-
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
-import maze.io.GameIO;
 
 public class Game {
 
@@ -21,7 +15,7 @@ public class Game {
 
 	private static void gameMenu() {
 		
-		int state = -1;
+		int state = 0;
 		int GRAPHICAL = 1;
 		int CONSOLE = 0;
 		int mode = CONSOLE;
@@ -59,22 +53,24 @@ public class Game {
 			return;
 		}
 
-		while(state != 0) {
-
+		while(state != -1) {
+			
+			int EXIT = -1;
+			int NEW_GAME = -2;
+			
 			if(mode == GRAPHICAL) {
 				
-				int EXIT = -1;
-				int NEW_GAME = -2;
 				int returnValue = EXIT;
+				int innerState = 0;
 				
 				/* The player choses an option from the menu */
-				state = menuHandler.getNextCommand();
+				innerState = menuHandler.getNextCommand();
 				
-				if(state > 0) {
+				if(innerState > 0) {
 					menuHandler.removeCommand();
 				}
 				
-				switch(state) {
+				switch(innerState) {
 				/*	___________________________________________
 				 * 
 				 * 					PLAY
@@ -111,8 +107,11 @@ public class Game {
 				
 			}
 			else {
-				game = new GameLogic(new GameConfig(mode));
-				state = game.loop();
+				do {
+					game = new GameLogic(new GameConfig(mode));
+					game.init();
+					state = game.loop();
+				}while(state == NEW_GAME);
 			}
 		}
 
