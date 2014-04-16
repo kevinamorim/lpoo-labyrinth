@@ -7,7 +7,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import maze.cli.*;
+import maze.cli.Input;
+import maze.cli.Output;
 import maze.gui.ConfigurationWindow;
 import maze.gui.GameWindow;
 import maze.gui.InputHandler;
@@ -69,7 +70,7 @@ public class GameLogic extends Object implements Serializable {
 	
 	public GameLogic(int mode) {
 		
-		this.setValid(true);
+		this.valid = true;
 
 		if(mode == CONSOLE) {
 			config = new GameConfig(mode, 0.06);
@@ -78,7 +79,7 @@ public class GameLogic extends Object implements Serializable {
 		}
 		else if(mode == GRAPHICAL) {
 
-			config = new GameConfig(mode, 0.02);
+			config = new GameConfig(mode, 1);
 			configWindow = new ConfigurationWindow("Configurações", config);
 			
 			configHandler = new InputHandler(configWindow);
@@ -86,7 +87,7 @@ public class GameLogic extends Object implements Serializable {
 			inputConfigThread.start();
 			
 			if(getConfiguration() != 0) {
-				this.setValid(false);
+				this.valid = false;
 				return;
 			}
 		}
@@ -97,7 +98,7 @@ public class GameLogic extends Object implements Serializable {
 	 * Initializes all game parameters.
 	 */
 	public void init() {
-		
+	
 		config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
 		
 		maze = new Maze(config.getMazeSize());
@@ -123,6 +124,7 @@ public class GameLogic extends Object implements Serializable {
 
 			gameWindow = new GameWindow(this);
 			gameWindow.setFocusable(true);
+			gameWindow.setVisible(true);
 			inputHandler = new InputHandler(gameWindow);
 			inputThread = new Thread(inputHandler);
 			inputThread.start();
@@ -336,7 +338,7 @@ public class GameLogic extends Object implements Serializable {
 
 		configWindow.setVisible(false);
 
-		if(state == 2) {
+		if(state == 2) { // ERROR
 			return 1;
 		}
 
@@ -421,28 +423,61 @@ public class GameLogic extends Object implements Serializable {
 						inputHandler.removeCommand();
 					}
 					
+					/*
+					 * 			MENU OPTIONS
+					 */
 					switch(command) {
-					case 1: // New Game
+					/*
+					 * ___________________________________
+					 * 
+					 * 				NEW GAME
+					 * ___________________________________
+					 */
+					case 1:
 						done = true;
 						break;
-					case 2: // Save this game
+						/*
+						 * ___________________________________
+						 * 
+						 * 				SAVE GAME
+						 * ___________________________________
+						 */
+					case 2:
 						if(saveGame() != 0) {
 							done = true;
 						}
 						break;
+						/*
+						 * ___________________________________
+						 * 
+						 * 				LOAD GAME
+						 * ___________________________________
+						 */
 					case 3:
 						if(loadGame() != 0) {
 							done = true;
 						}
 						gameWindow.paint();
 						break;
-					case 4: // Configurations Panel
+						/*
+						 * ___________________________________
+						 * 
+						 * 			CONFIGURATIONS
+						 * ___________________________________
+						 */
+					case 4:
 						gameWindow.setVisible(false);
 						getConfiguration();
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
-					case 5: // Quit
+						/*
+						 * ___________________________________
+						 * 
+						 * 				QUIT
+						 * ___________________________________
+						 */
+					case 5:
 						done = true;
 						break;
 					default:
@@ -470,6 +505,13 @@ public class GameLogic extends Object implements Serializable {
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
 			
+			if(hero.hasWon()) {
+				JOptionPane.showMessageDialog(gameWindow, "You won!");
+			}
+			else {
+				JOptionPane.showMessageDialog(gameWindow, "Game Over!");
+			}
+			
 			gameWindow.dispose();
 			return command;
 		}
@@ -481,6 +523,7 @@ public class GameLogic extends Object implements Serializable {
 				return -1;
 			}
 		}
+		
 		
 		return -1;
 	}
@@ -585,7 +628,6 @@ public class GameLogic extends Object implements Serializable {
 		this.sword = sword;
 	}
 
-	
 	/**
 	 * Gets the game instance of [eagle].
 	 *  

@@ -22,7 +22,7 @@ public class GameConfig implements Serializable {
 	private int mode;
 	
 	// KeyCodes
-	// For now: W,D,S,A -> UP,RIGHT,DOWN,LEFT
+	// For now: W,D,S,A,SPACE -> UP,RIGHT,DOWN,LEFT,EAGLE
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 	
 	public GameConfig() {}

@@ -1,7 +1,7 @@
 package maze.gui;
 
+import java.awt.Dialog;
 import java.awt.GridLayout;
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -22,17 +22,19 @@ import java.awt.event.KeyListener;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JDialog;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import java.awt.CardLayout;
 
 import javax.swing.SwingConstants;
 import javax.swing.JMenu;
-import javax.swing.JFormattedTextField;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class ConfigurationWindow extends Window {
@@ -40,8 +42,6 @@ public class ConfigurationWindow extends Window {
 	private JPanel panel;
 	private JPanel layer1, layer2;
 	private GameConfig config;
-
-	private int localKeyCode = 0;
 	
 	/**
 	 * Create the frame.
@@ -172,63 +172,83 @@ public class ConfigurationWindow extends Window {
 		eagleKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		eagleKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
-		final JFormattedTextField upKeyField = new JFormattedTextField();
-		upKeyField.setEditable(false);
-		upKeyField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				receiveNewKey(0);
+		final JButton upKeyField = new JButton();
+		upKeyField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
 				upKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[0]));
 			}
 		});
+		upKeyField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				upKeyField.setText("Press the new key");
+				receiveNewKey(0);
+			}
+		});
+		upKeyField.setFocusable(false);
 		upKeyField.setHorizontalAlignment(SwingConstants.CENTER);
 		upKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[0]));
 
-		final JFormattedTextField downKeyField = new JFormattedTextField();
-		downKeyField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				receiveNewKey(1);
-				downKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[1]));
+		final JButton downKeyField = new JButton();
+		downKeyField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				downKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[2]));
 			}
 		});
-		downKeyField.setEditable(false);
+		downKeyField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				downKeyField.setText("Press the new key");
+				receiveNewKey(2);
+			}
+		});
+		downKeyField.setFocusable(false);
 		downKeyField.setHorizontalAlignment(SwingConstants.CENTER);
 		downKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[1]));
 
-		final JFormattedTextField rightKeyField = new JFormattedTextField();
-		rightKeyField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				receiveNewKey(2);
-				rightKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[2]));
+		final JButton rightKeyField = new JButton();
+		rightKeyField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				rightKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[1]));
 			}
 		});
-		rightKeyField.setEditable(false);
+		rightKeyField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rightKeyField.setText("Press the new key");
+				receiveNewKey(1);
+			}
+		});
+		rightKeyField.setFocusable(false);
 		rightKeyField.setHorizontalAlignment(SwingConstants.CENTER);
 		rightKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[2]));
 
-		final JFormattedTextField leftKeyField = new JFormattedTextField();
-		leftKeyField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				receiveNewKey(3);
+		final JButton leftKeyField = new JButton();
+		leftKeyField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
 				leftKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[3]));
 			}
 		});
-		leftKeyField.setEditable(false);
+		leftKeyField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				leftKeyField.setText("Press the new key");
+				receiveNewKey(3);
+			}
+		});
+		leftKeyField.setFocusable(false);
 		leftKeyField.setHorizontalAlignment(SwingConstants.CENTER);
 		leftKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[3]));
 		
-		final JFormattedTextField eagleKeyField = new JFormattedTextField();
-		eagleKeyField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				receiveNewKey(4);
+		final JButton eagleKeyField = new JButton();
+		eagleKeyField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
 				eagleKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[4]));
 			}
 		});
-		eagleKeyField.setEditable(false);
+		eagleKeyField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eagleKeyField.setText("Press the new key");
+				receiveNewKey(4);
+			}
+		});
+		eagleKeyField.setFocusable(false);
 		eagleKeyField.setHorizontalAlignment(SwingConstants.CENTER);
 		eagleKeyField.setText(KeyEvent.getKeyText(config.getGameKeyCodes()[4]));
 
@@ -261,7 +281,7 @@ public class ConfigurationWindow extends Window {
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				config.setDifficulty(difficulty.getSelectedIndex());
-				config.setDragonPerc(dragonPerc.getValue());
+				config.setDragonPerc(dragonPerc.getValue()/100.0);
 				config.setMazeSize(mazeSize.getValue());
 				
 				keyCode = 1;
@@ -279,31 +299,45 @@ public class ConfigurationWindow extends Window {
 		});
 		mnChanges.add(btnCancel);
 
-
 		btnCancel.setFocusable(false);
 		btnCancel.setFont(new Font("Sakkal Majalla", Font.BOLD, 24));
-
-		JMenu mnPage = new JMenu("Page 1");
-		mnPage.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		
+		/*
+		 * ____________________________________________________________________
+		 */
+		
+		final JRadioButton rdbtnMaze = new JRadioButton("Maze");
+		final JRadioButton rdbtnKeys = new JRadioButton("Keys");
+		
+		rdbtnMaze.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				rdbtnMaze.setSelected(true);
+				rdbtnKeys.setSelected(false);
 				layer1.setVisible(true);
 				layer2.setVisible(false);
 			}
 		});
-		mnPage.setFocusable(false);
-		menuBar.add(mnPage);
-
-		JMenu mnPage_1 = new JMenu("Page 2");
-		mnPage_1.addMouseListener(new MouseAdapter() {
+		
+		rdbtnMaze.setFocusable(false);
+		rdbtnMaze.setSelected(true);
+		menuBar.add(rdbtnMaze);
+		
+		rdbtnKeys.setRequestFocusEnabled(false);
+		rdbtnKeys.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				rdbtnMaze.setSelected(false);
+				rdbtnKeys.setSelected(true);
 				layer1.setVisible(false);
 				layer2.setVisible(true);
 			}
 		});
-		mnPage_1.setFocusable(false);
-		menuBar.add(mnPage_1);
+		rdbtnKeys.setFocusable(false);
+		menuBar.add(rdbtnKeys);
+		
+		/*
+		 * ____________________________________________________________________
+		 */
 
 		this.setFocusable(true);
 		pack();
@@ -312,39 +346,44 @@ public class ConfigurationWindow extends Window {
 
 	}
 	
-	public void receiveNewKey(int index) {
-		String key = JOptionPane.showInputDialog("Enter the the new key");
-		if(key != null) {
-			key.toUpperCase();
-			char keyCode = key.charAt(0);
-			
-			localKeyCode = KeyEvent.getExtendedKeyCodeForChar((int) keyCode);
-		
-//			System.out.println("localKeyCode: " + localKeyCode);
-			
-			if(keyNotExistant()) {
-				config.setGameKey(index, localKeyCode);
+	public void receiveNewKey(final int index) {
+		final JDialog keyDialog = new JDialog(this,"New key",Dialog.ModalityType.APPLICATION_MODAL);
+		keyDialog.setLocationRelativeTo(null);
+		keyDialog.setFocusable(true);
+		keyDialog.setResizable(false);
+		keyDialog.setLayout(new GridLayout(2, 1, 0, 0));
+		keyDialog.add(new JLabel("  Insert the new key"));
+		keyDialog.add(new JLabel("  [Esc] to cancel"));
+//		keyDialog.setSize(200, 50);
+		keyDialog.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyCode() != KeyEvent.VK_ESCAPE) {
+					if(keyNotExistant(e.getKeyCode())) {
+						config.setGameKey(index, e.getKeyCode());
+					}
+				}
+				
+				keyDialog.setVisible(false);
 			}
-		}
-	}
 
-	/**
-	 * @return the localKeyCode
-	 */
-	public int getLocalKeyCode() {
-		return localKeyCode;
-	}
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
 
-	/**
-	 * @param localKeyCode the localKeyCode to set
-	 */
-	public void setLocalKeyCode(int localKeyCode) {
-		this.localKeyCode = localKeyCode;
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			
+		});
+		
+		keyDialog.pack();
+		keyDialog.setVisible(true);
 	}
 	
-	public boolean keyNotExistant() {
+	public boolean keyNotExistant(int keyCode) {
 		for(int i = 0; i < config.getGameKeyCodes().length ; i++) {
-			if(localKeyCode == config.getGameKeyCodes()[i]) {
+			if(keyCode == config.getGameKeyCodes()[i]) {
 				return false;
 			}
 		}

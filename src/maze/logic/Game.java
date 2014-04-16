@@ -87,8 +87,11 @@ public class Game {
 
 					do {
 						if(game.isValid()) {
+							//System.out.println(">> game.init()...");
 							game.init();
+							//System.out.println(">> game.initNonSerializable()...");
 							game.initNonSerializable();
+							//System.out.println(">> game.loop()...");
 							returnValue = game.loop();
 						}
 						
