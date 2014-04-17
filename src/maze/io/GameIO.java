@@ -6,10 +6,20 @@ import java.io.*;
 
 public class GameIO {
 
-	public GameIO() {
+	/**
+	 * Default Constructor.
+	 */
+	public GameIO() {}
 
-	}
-
+	/**
+	 * Saves a given GameLogic to a file with the extension '.sav'.
+	 *   The file name is passed as a parameter.
+	 *   
+	 * @param game : the GameLogic instance
+	 * @param fileName : the filename of the saved file
+	 * 
+	 * @return 0 if OK
+	 */
 	public int save(GameLogic game, String fileName) {
 		ObjectOutputStream os = null;
 		try {
@@ -39,6 +49,14 @@ public class GameIO {
 		return 0;
 	}
 	
+	/**
+	 * Saves to a given GameLogic the game in the file with the filename: "fileName".sav
+	 *   
+	 * @param game : game to be set
+	 * @param fileName : filename to be read the information from
+	 * 
+	 * @return 0 if OK
+	 */
 	public int load(GameLogic game, String fileName) {
 		ObjectInputStream in = null;
 		
