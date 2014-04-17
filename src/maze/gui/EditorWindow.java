@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 
 import maze.io.GameIO;
 import maze.logic.Dragon;
+import maze.logic.Eagle;
 import maze.logic.Element;
 import maze.logic.GameLogic;
 import maze.logic.Hero;
@@ -378,13 +379,19 @@ public class EditorWindow extends Window {
 	}
 
 	protected void saveElements() {
+		numberOfDragons = 0;
+		
 		for(int i = 0; i < game.getMaze().getTiles().length; i++) {
 			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
 				if(game.getMaze().getTiles()[i][j] == 'Y') {
 					game.setHero(new Hero(i,j,'Y'));
+					game.setEagle(new Eagle(i,j,'V'));
+					game.getHero().setHasEagle(true);
+					game.getMaze().getTiles()[i][j] = ' ';
 				}
 				else if(game.getMaze().getTiles()[i][j] == 'E') {
 					game.setSword(new Element(i,j,'Y'));
+					game.getMaze().getTiles()[i][j] = ' ';
 				}
 				else if(game.getMaze().getTiles()[i][j] == 'D') {
 					numberOfDragons++;
@@ -400,6 +407,7 @@ public class EditorWindow extends Window {
 			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
 				if(game.getMaze().getTiles()[i][j] == 'D') {
 					game.getDragons()[index] = new Dragon(i,j,'D');
+					game.getMaze().getTiles()[i][j] = ' ';
 					index++;
 				}
 			}

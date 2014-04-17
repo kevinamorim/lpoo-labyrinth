@@ -102,23 +102,30 @@ public class GameLogic extends Object implements Serializable {
 	 * Initializes all game parameters related to the maze.
 	 */
 	public void init() {
-	
-		config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
 		
-		maze = new Maze(config.getMazeSize());
-		maze.generate();
-		
-		hero = new Hero(this);
-		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
-		sword = new Element(this, 'E');
-		
-		dragons = new Dragon[config.getMazeDragons()];
-		for(int i = 0; i < dragons.length; i++) {
-			dragons[i] = new Dragon(this);
+		if(configWindow.getMazeFile() != null) {
+			loadMaze(this, configWindow.getMazeFile());
+			config.setMazeDragons(dragons.length);
+			config.setMazeSize(maze.getSize());
+		}
+		else {
+			config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
+			
+			maze = new Maze(config.getMazeSize());
+			maze.generate();
+			
+			hero = new Hero(this);
+			eagle = new Eagle(hero.getX(), hero.getY(), 'V');
+			sword = new Element(this, 'E');
+			
+			dragons = new Dragon[config.getMazeDragons()];
+			for(int i = 0; i < dragons.length; i++) {
+				dragons[i] = new Dragon(this);
+			}
 		}
 		
 		board = new char[config.getMazeSize()][config.getMazeSize()];
-		
+	
 		tasks = new Task[3];
 
 		createTasks();
@@ -171,8 +178,10 @@ public class GameLogic extends Object implements Serializable {
 	public boolean noDragonIsUponSword() {
 
 		for(Dragon dragon: dragons) {
-			if(dragon.hasSword()) {
-				return false;
+			if(dragon != null) {
+				if(dragon.hasSword()) {
+					return false;
+				}
 			}
 		}
 
@@ -302,10 +311,14 @@ public class GameLogic extends Object implements Serializable {
 		}
 
 		// Includes exit.
-		board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
+		if(maze != null && maze.getExit() != null) {
+			board[maze.getExit().getX()][maze.getExit().getY()] = maze.getExit().getSymbol();
+		}
 
 		// Includes hero.
-		board[hero.getX()][hero.getY()] = hero.getSymbol();
+		if(hero != null) {
+			board[hero.getX()][hero.getY()] = hero.getSymbol();
+		}
 
 		// Includes eagle.
 		if((eagle != null) && !hero.hasEagle() && eagle.isAlive()) {
@@ -313,13 +326,21 @@ public class GameLogic extends Object implements Serializable {
 		}
 
 		// Includes all dragons.
-		for(int i = 0; i < dragons.length; i++) {
-			if(dragons[i].isAlive()) board[dragons[i].getX()][dragons[i].getY()] = dragons[i].getSymbol();
+		for(Dragon dragon: dragons) {
+			if(dragon != null) {
+				if(dragon.isAlive()) board[dragon.getX()][dragon.getY()] = dragon.getSymbol();
+			}
 		}
 		// Includes sword.
-		if(!hero.hasSword() && noDragonIsUponSword() && !eagle.hasSword()) {
-			board[sword.getX()][sword.getY()] = sword.getSymbol();
+		if(sword != null) {
+			if((hero != null) && (eagle != null)) {
+				if(!hero.hasSword() && noDragonIsUponSword() && !eagle.hasSword()) {
+					board[sword.getX()][sword.getY()] = sword.getSymbol();
+				}
+			}
+
 		}
+
 	}
 
 	/**
@@ -544,7 +565,12 @@ public class GameLogic extends Object implements Serializable {
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
+	public void loadMaze(GameLogic gameLogic, String mazeFile) {
+		GameIO gameIO = new GameIO();
 
+		gameIO.loadMaze(this, mazeFile);
+	}
+	
 	/**
 	 * Creates an instance of GameIO to load the game.
 	 * For more information on GameIO consult the class.
@@ -561,7 +587,7 @@ public class GameLogic extends Object implements Serializable {
 		if (fileChooser.showOpenDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
 
 			String fileName = fileChooser.getSelectedFile().getName();
-			gameIO.load(this, fileName);
+			gameIO.loadGame(this, fileName);
 		}
 		else {
 			return -1;

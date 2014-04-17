@@ -156,8 +156,8 @@ public class ConfigurationWindow extends Window {
 				
 				mazeSizeLabel.setEnabled(true);
 				mazeSize.setEnabled(true);
-				difficultyLabel.setEnabled(true);
-				difficulty.setEnabled(true);
+				//difficultyLabel.setEnabled(true);
+				//difficulty.setEnabled(true);
 				dragonPercLabel.setEnabled(true);
 				dragonPerc.setEnabled(true);	
 			}
@@ -170,8 +170,8 @@ public class ConfigurationWindow extends Window {
 					
 					mazeSizeLabel.setEnabled(false);
 					mazeSize.setEnabled(false);
-					difficultyLabel.setEnabled(false);
-					difficulty.setEnabled(false);
+					//difficultyLabel.setEnabled(false);
+					//difficulty.setEnabled(false);
 					dragonPercLabel.setEnabled(false);
 					dragonPerc.setEnabled(false);	
 				}

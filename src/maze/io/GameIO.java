@@ -1,6 +1,7 @@
 package maze.io;
 
 import maze.logic.GameLogic;
+import maze.logic.Maze;
 
 import java.io.*;
 
@@ -57,14 +58,15 @@ public class GameIO {
 	 * 
 	 * @return 0 if OK
 	 */
-	public int load(GameLogic game, String fileName) {
+	public int loadGame(GameLogic game, String fileName) {
 		ObjectInputStream in = null;
-		
+
 		GameLogic temp = null;
 		
 		try {
-			in = new ObjectInputStream(new FileInputStream(fileName)); 
-			temp = (GameLogic) in.readObject();
+			in = new ObjectInputStream(new FileInputStream(fileName));
+			
+			temp = (GameLogic) in.readObject();	
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -96,6 +98,44 @@ public class GameIO {
 		game.setValid(temp.isValid());
 		
 		game.getConfigWindow().setConfig(game.getConfig());
+		
+		return 0;
+	}
+	
+	public int loadMaze(GameLogic game, String fileName) {
+		ObjectInputStream in = null;
+
+		GameLogic temp = null;
+		
+		try {
+			in = new ObjectInputStream(new FileInputStream(fileName));
+			
+			temp = (GameLogic) in.readObject();	
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		catch(ClassNotFoundException e ) {
+			e.printStackTrace();
+			return -1;
+		}
+		finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return -2;
+				}
+			}
+		}
+
+		game.setDragons(temp.getDragons());
+		game.setEagle(temp.getEagle());
+		game.setHero(temp.getHero());
+		game.setMaze(temp.getMaze());
+		game.setSword(temp.getSword());
 		
 		return 0;
 	}
