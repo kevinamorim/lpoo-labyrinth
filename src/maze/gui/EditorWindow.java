@@ -41,6 +41,7 @@ import javax.swing.JSplitPane;
 public class EditorWindow extends Window {
 	private Maze maze;
 	private int mazeSize = 10;
+	private int[] picInfo;
 	
 	private boolean hasExit = false;
 
@@ -83,7 +84,15 @@ public class EditorWindow extends Window {
 	 */
 	private void initialize() {
 		
-		int numElements = 6;
+		int numElements = 5;
+		
+		picInfo = new int[numElements];
+		
+		picInfo[0] = 0; // Exit
+		picInfo[1] = 0; // Hero
+		picInfo[2] = 0; // Sword
+		picInfo[3] = 1; // Dragons
+		picInfo[4] = 1; // Walls
 		
 		setResizable(false);
 		setBounds(100, 100, 500, 500);
@@ -96,8 +105,16 @@ public class EditorWindow extends Window {
 		splitPane.setDividerLocation(100);
 		getContentPane().add(splitPane, "split");
 		
-		tiles = new JPanel();
-		tiles.setLayout(new GridLayout(10,10,1,1));
+		pics = new JPanel();
+		pics.setLayout(new GridLayout(5,1,10,10));
+		
+		/* ____________________________________________________________
+		 * 
+		 * 						PICS
+		 * ____________________________________________________________
+		 */
+		
+		drawSamples();
 		
 		/* ____________________________________________________________
 		 * 
@@ -105,9 +122,14 @@ public class EditorWindow extends Window {
 		 * ____________________________________________________________
 		 */
 		
-		for(int i = 0; i < 10; i++) {
-			for(int j = 0; j < 10; j++) {
-				if((i == 0) || (j == 0) || (i == 9) || (j == 9)) {
+		int test = 20;
+		
+		tiles = new JPanel();
+		tiles.setLayout(new GridLayout(test,test,1,1));
+		
+		for(int i = 0; i < test; i++) {
+			for(int j = 0; j < test; j++) {
+				if((i == 0) || (j == 0) || (i == (test - 1)) || (j == (test - 1))) {
 					drawToPanel(wall);
 					tiles.add(label);
 				}
@@ -138,6 +160,7 @@ public class EditorWindow extends Window {
 		JMenuItem quitItem = new JMenuItem("Quit");
 		menuBar.add(quitItem);
 		
+		splitPane.setLeftComponent(pics);
 		splitPane.setRightComponent(tiles);
 		
 		this.getContentPane().add(splitPane);
@@ -147,10 +170,61 @@ public class EditorWindow extends Window {
 		setVisible(true);
 	}
 
+	private void drawSamples() {
+		pics.removeAll();
+		
+		drawSampleToPanel(exit, 0);
+		pics.add(label);
+		
+		drawSampleToPanel(hero, 1);
+		pics.add(label);
+		
+		drawSampleToPanel(sword, 2);
+		pics.add(label);
+		
+		drawSampleToPanel(dragonPic, 3);
+		pics.add(label);
+		
+		drawSampleToPanel(wall, 4);
+		pics.add(label);
+		
+		pics.revalidate();
+	}
+
 	/**
 	 * Paint method. Used to paint the frame whenever a change is made.
 	 */
 	public void paint() {
+	}
+	
+	private void drawSampleToPanel(final Image name, int index) {
+		
+		final int border = 4;
+		
+		label = new JLabel("",JLabel.CENTER) {
+			
+			public void paintComponent(Graphics g) {
+
+				g.drawImage(name, border, border, this.getWidth() - border, this.getHeight() - border, null);
+
+				this.setOpaque(false);
+				super.paintComponent(g);
+			}
+
+		};
+		
+		if(picInfo[index] == 1) {
+			label.setBorder(BorderFactory.createLineBorder(new Color(0,128,0), border));
+			picInfo[index] = -1;
+		}
+		else if(picInfo[index] == 0) {
+			label.setBorder(BorderFactory.createLineBorder(new Color(0,0,255), border));
+			picInfo[index] = -1;
+		}
+		else {
+			label.setBorder(BorderFactory.createLineBorder(new Color(255,0,0), border));
+		}
+		
 	}
 
 	/**
