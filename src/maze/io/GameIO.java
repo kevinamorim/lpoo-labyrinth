@@ -78,6 +78,8 @@ public class GameIO {
 		game.setTasks(temp.getTasks());
 		game.setValid(temp.isValid());
 		
+		game.getConfigWindow().setConfig(game.getConfig());
+		
 		return 0;
 	}
 }

@@ -390,4 +390,12 @@ public class ConfigurationWindow extends Window {
 		return true;
 	}
 	
+	public GameConfig getConfig() {
+		return this.config;
+	}
+
+	public void setConfig(GameConfig config) {
+		this.config = config;
+	}
+	
 }

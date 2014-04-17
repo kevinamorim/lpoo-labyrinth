@@ -252,7 +252,9 @@ public class GameLogic extends Object implements Serializable {
 
 		switch(command) {
 		case 4: // SPACE
-			sendEagle();
+			if(eagle.isUseful()) {
+				sendEagle();
+			}
 			break;
 		default: // 0,1,2,3
 			hero.move(this, command);
@@ -730,6 +732,20 @@ public class GameLogic extends Object implements Serializable {
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+
+	/**
+	 * @return the configWindow
+	 */
+	public ConfigurationWindow getConfigWindow() {
+		return configWindow;
+	}
+
+	/**
+	 * @param configWindow the configWindow to set
+	 */
+	public void setConfigWindow(ConfigurationWindow configWindow) {
+		this.configWindow = configWindow;
 	}
 	
 }
