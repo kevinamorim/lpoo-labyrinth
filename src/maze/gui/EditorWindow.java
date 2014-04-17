@@ -13,7 +13,6 @@ import java.awt.Image;
 
 import javax.swing.JLabel;
 
-import maze.io.GameIO;
 import maze.logic.Dragon;
 import maze.logic.Eagle;
 import maze.logic.Element;
@@ -28,14 +27,11 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import maze.logic.Maze;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.Color;
 
@@ -313,7 +309,6 @@ public class EditorWindow extends Window {
 			public void actionPerformed(ActionEvent e) {
 				if(isVerified()) {
 					saveElements();
-					saveMaze();
 					keyCode = 1;
 				}
 			}
@@ -397,44 +392,24 @@ public class EditorWindow extends Window {
 			}
 		}
 		
-		game.setDragons(new Dragon[numberOfDragons]);
-		
-		int index = 0;
-		
-		for(int i = 0; i < game.getMaze().getTiles().length; i++) {
-			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
-				if(game.getMaze().getTiles()[i][j] == 'D') {
-					game.getDragons()[index] = new Dragon(i,j,'D');
-					game.getMaze().getTiles()[i][j] = ' ';
-					index++;
+		if(numberOfDragons == 0) {
+			game.setDragons(new Dragon[numberOfDragons]);
+			
+			int index = 0;
+			
+			for(int i = 0; i < game.getMaze().getTiles().length; i++) {
+				for(int j = 0; j < game.getMaze().getTiles().length; j++) {
+					if(game.getMaze().getTiles()[i][j] == 'D') {
+						game.getDragons()[index] = new Dragon(i,j,'D');
+						game.getMaze().getTiles()[i][j] = ' ';
+						index++;
+					}
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Creates an instance of GameIO to save the game.
-	 * For more information on GameIO consult the class.
-	 * 
-	 * @return 0 if the user has pressed the 'save' button
-	 */
-	public int saveMaze() {
-		GameIO gameIO = new GameIO();
-		JFileChooser fileChooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", new String[] {"maze"});
-		fileChooser.setFileFilter(filter);
-		fileChooser.setCurrentDirectory(new File( "." ));
-		
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-			
-			String fileName = fileChooser.getSelectedFile().getName();
-			gameIO.save(game, fileName, ".maze");
-		}
 		else {
-			return -1;
+			game.setDragons(null);
 		}
-		
-		return 0;
 	}
 
 	/**
@@ -586,5 +561,19 @@ public class EditorWindow extends Window {
 			System.exit(0);
 		}
 
+	}
+
+	/**
+	 * @return the game
+	 */
+	public GameLogic getGame() {
+		return game;
+	}
+
+	/**
+	 * @param game the game to set
+	 */
+	public void setGame(GameLogic game) {
+		this.game = game;
 	}
 }

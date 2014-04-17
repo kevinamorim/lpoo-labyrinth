@@ -137,8 +137,14 @@ public class GameIO {
 				}
 			}
 		}
+		
+		if(temp == null) {
+			System.out.println("null temp");
+		}
 
-		game.setDragons(temp.getDragons());
+		if(temp.getDragons() != null) {
+			game.setDragons(temp.getDragons());
+		}
 		game.setEagle(temp.getEagle());
 		game.setHero(temp.getHero());
 		game.setMaze(temp.getMaze());

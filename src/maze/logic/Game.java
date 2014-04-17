@@ -1,9 +1,15 @@
 package maze.logic;
 
+import java.io.File;
+
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import maze.gui.EditorWindow;
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
+import maze.io.GameIO;
 
 public class Game {
 
@@ -136,6 +142,20 @@ public class Game {
 							switch(value) {
 							case 1:
 								// SAVE
+								GameIO gameIO = new GameIO();
+								JFileChooser fileChooser = new JFileChooser();
+								FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", new String[] {"maze"});
+								fileChooser.setFileFilter(filter);
+								fileChooser.setCurrentDirectory(new File( "." ));
+								
+								if (fileChooser.showSaveDialog(editorWindow) == JFileChooser.APPROVE_OPTION) {
+									
+									String fileName = fileChooser.getSelectedFile().getName();
+									gameIO.save(editorWindow.getGame(), fileName, ".maze");
+								}
+								else {
+									break;
+								}
 								break;
 							case 2:
 								// HELP
