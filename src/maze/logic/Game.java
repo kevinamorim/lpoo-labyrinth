@@ -1,7 +1,6 @@
 package maze.logic;
 
 import javax.swing.JOptionPane;
-
 import maze.gui.EditorWindow;
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
@@ -104,45 +103,56 @@ public class Game {
 					break;
 				case 2: // EDITOR
 					int value = -1;
-					menuWindow.setVisible(false);
-		
-					editorWindow = new EditorWindow(20);
-					editorWindow.setFocusable(true);
-					editorWindow.setVisible(true);
-					editorWindow.paint();
-					
-					editorHandler = new InputHandler(editorWindow);		
-					inputEditorThread = new Thread(editorHandler);
-					inputEditorThread.start();
-					
-					do {
+
+					try {
+						value = Integer.parseInt(JOptionPane.showInputDialog("Size of the maze size for the editor? [5-21]"));
+					}
+					catch(NumberFormatException e) {
+						break;
+					}
+					if(value > 4 && value < 22) {
+						menuWindow.setVisible(false);
+
+						editorWindow = new EditorWindow(value);
+						editorWindow.setFocusable(true);
+						editorWindow.setVisible(true);
+						editorWindow.paint();
+
+						editorHandler = new InputHandler(editorWindow);		
+						inputEditorThread = new Thread(editorHandler);
+						inputEditorThread.start();
+
+						value = -1;
 						
-						value = editorHandler.getNextCommand();
-						
-						if(value > 0) {
-							editorHandler.removeCommand();
-						}
-						
-						switch(value) {
-						case 1:
-							// Save
-							break;
-						case 2:
-							// Help
-							JOptionPane.showMessageDialog(editorWindow, "Help");
-							break;
-						case 3:
-							// Quit
-							break;
-						default:
-							break;
-						}
-						
-					}while(value != 3);
-					
-					editorWindow.dispose();
-					
-					menuWindow.setVisible(true);
+						do {
+
+							value = editorHandler.getNextCommand();
+
+							if(value > 0) {
+								editorHandler.removeCommand();
+							}
+
+							switch(value) {
+							case 1:
+								// SAVE
+								break;
+							case 2:
+								// HELP
+								break;
+							case 3:
+								// QUIT
+								break;
+							default:
+								break;
+							}
+
+						}while(value != 3);
+
+						editorWindow.dispose();
+
+						menuWindow.setVisible(true);
+
+					}
 					break;
 				case 3: // CREDITS
 					break;

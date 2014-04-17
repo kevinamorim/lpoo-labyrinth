@@ -20,12 +20,12 @@ public class GameIO {
 	 * 
 	 * @return 0 if OK
 	 */
-	public int save(GameLogic game, String fileName) {
+	public int save(GameLogic game, String fileName, String extension) {
 		ObjectOutputStream os = null;
 		try {
 			
-			if(!fileName.contains(".sav")) {
-				fileName += ".sav";
+			if(!fileName.contains(extension)) {
+				fileName += extension;
 			}
 			os = new ObjectOutputStream(new FileOutputStream(fileName));
 			

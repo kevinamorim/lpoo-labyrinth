@@ -165,17 +165,17 @@ public class ConfigurationWindow extends Window {
 		JLabel downKey = new JLabel("DOWN");
 		downKey.setHorizontalAlignment(SwingConstants.CENTER);
 		downKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
-		upKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
+		downKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		JLabel rightKey = new JLabel("RIGHT");
 		rightKey.setHorizontalAlignment(SwingConstants.CENTER);
 		rightKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
-		upKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
+		rightKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		JLabel leftKey = new JLabel("LEFT");
 		leftKey.setHorizontalAlignment(SwingConstants.CENTER);
 		leftKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
-		upKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
+		leftKey.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		JLabel eagleKey = new JLabel("EAGLE AWAY!");
 		eagleKey.setHorizontalAlignment(SwingConstants.CENTER);

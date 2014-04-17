@@ -586,7 +586,7 @@ public class GameLogic extends Object implements Serializable {
 		if (fileChooser.showSaveDialog(gameWindow) == JFileChooser.APPROVE_OPTION) {
 			
 			String fileName = fileChooser.getSelectedFile().getName();
-			gameIO.save(this, fileName);
+			gameIO.save(this, fileName, ".sav");
 		}
 		else {
 			return -1;

@@ -5,13 +5,16 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.JLabel;
 
+import maze.io.GameIO;
 import maze.logic.Dragon;
 import maze.logic.Element;
 import maze.logic.GameLogic;
@@ -26,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -35,6 +40,7 @@ import java.awt.Cursor;
 import maze.logic.Maze;
 
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.Color;
 
@@ -47,7 +53,6 @@ import java.awt.event.MouseEvent;
 public class EditorWindow extends Window {
 	private GameLogic game;
 	private int mazeSize = 10;
-	final int test = 20;
 	
 	private final int numElements = 5;
 	private int numberOfDragons = 0;
@@ -57,7 +62,7 @@ public class EditorWindow extends Window {
 	private JPanel pics;
 	private JPanel tiles;
 
-	private BufferedImage wall, floor, dragonPic, hero, eagle, sword, exit;
+	private BufferedImage wall, floor, dragonPic, hero, sword, exit;
 
 	private JLabel label;
 	
@@ -77,8 +82,6 @@ public class EditorWindow extends Window {
 	 */
 	public EditorWindow(int size) {
 		super("Editor");
-
-		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
 		this.game = new GameLogic();
 		this.game.setMaze(new Maze(size));
@@ -122,7 +125,7 @@ public class EditorWindow extends Window {
 				drawSamples();
 			}
 		});
-		pics.setLayout(new GridLayout(5,1,10,10));
+		pics.setLayout(new GridLayout(numElements, 1, 10, 10));
 		
 		/* ____________________________________________________________
 		 * 
@@ -143,23 +146,71 @@ public class EditorWindow extends Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				if(picInfo[selected] > -1) {
-					int i = e.getX() / ((tiles.getWidth() + 5) / test);
-					int j = e.getY() / ((tiles.getHeight() + 5) / test);
-
-					//System.out.println("(" + j + ", " + i + ")");
-
-					if (isBetween(i, 0, test-1) && isBetween(j, 0, test-1)) {
-						if(drawMazeImage(i,j) == true) {
-							tiles.remove(i+j*test);
-							tiles.add(label, i+j*test);
+				int i = e.getX() / ((tiles.getWidth() + 5) / mazeSize);
+				int j = e.getY() / ((tiles.getHeight() + 5) / mazeSize);
+				
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					if(picInfo[selected] > -1) {
+						
+						if (isBetween(i, 0, mazeSize-1) && isBetween(j, 0, mazeSize-1)) {
+							if(drawMazeImage(i,j) == true) {
+								tiles.remove(i+j*mazeSize);
+								tiles.add(label, i+j*mazeSize);
+								tiles.revalidate();
+							}
+						}
+					}
+				}
+				else {
+					if (isBetween(i, 0, mazeSize-1) && isBetween(j, 0, mazeSize-1)) {
+						if(takeMazeImage(i,j) == true) {
+							tiles.remove(i+j*mazeSize);
+							tiles.add(label, i+j*mazeSize);
 							tiles.revalidate();
 						}
 					}
 				}
-				
+
 			}
 			
+			private boolean takeMazeImage(int i, int j) {
+				if(game.getMaze().getExit().isAt(i, j)) {
+					drawToPanel(wall);
+					picInfo[0] = 0;
+					return true;
+				}
+				
+				if(game.getMaze().getTiles()[i][j] == 'Y'){
+					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
+					picInfo[1] = 0;
+					return true;
+				}
+				
+				if(game.getMaze().getTiles()[i][j] == 'E'){
+					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
+					picInfo[2] = 0;
+					return true;
+				}
+				
+				if(game.getMaze().getTiles()[i][j] == 'D'){
+					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
+					picInfo[3] = 1;
+					return true;
+				}
+				
+				if(game.getMaze().getTiles()[i][j] == 'x'){
+					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
+					picInfo[4] = 1;
+					return true;
+				}
+				
+				return false;
+			}
+
 			private boolean drawMazeImage(int i, int j) {
 				switch(selected) {
 				case 0:
@@ -173,7 +224,7 @@ public class EditorWindow extends Window {
 					break;
 				case 1:
 					// HERO
-					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+					if(isBetween(i, 1, mazeSize-2) && isBetween(j, 1, mazeSize-2)) {
 						drawToPanel(hero);
 						game.getMaze().getTiles()[i][j] = 'Y';
 						picInfo[selected] = -1;
@@ -182,7 +233,7 @@ public class EditorWindow extends Window {
 					break;
 				case 2:
 					// SWORD
-					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+					if(isBetween(i, 1, mazeSize-2) && isBetween(j, 1, mazeSize-2)) {
 						drawToPanel(sword);
 						game.getMaze().getTiles()[i][j] = 'E';
 						picInfo[selected] = -1;
@@ -191,7 +242,7 @@ public class EditorWindow extends Window {
 					break;
 				case 3:
 					// DRAGONS
-					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+					if(isBetween(i, 1, mazeSize-2) && isBetween(j, 1, mazeSize-2)) {
 						game.getMaze().getTiles()[i][j] = 'D';
 						drawToPanel(dragonPic);
 						return true;
@@ -199,7 +250,7 @@ public class EditorWindow extends Window {
 					break;
 				case 4:
 					// WALL
-					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+					if(isBetween(i, 1, mazeSize-2) && isBetween(j, 1, mazeSize-2)) {
 						game.getMaze().getTiles()[i][j] = 'x';
 						drawToPanel(wall);
 						return true;
@@ -214,22 +265,22 @@ public class EditorWindow extends Window {
 
 			private boolean isProperExitPlace(int i, int j) {
 				if(i == 0) {
-					if(isBetween(j,1,test-1)) {
+					if(isBetween(j,1,mazeSize-1)) {
 						return true;
 					}
 				}
-				else if(i == (test - 1)) {
-					if(isBetween(j,1,test-1)) {
+				else if(i == (mazeSize - 1)) {
+					if(isBetween(j,1,mazeSize-1)) {
 						return true;
 					}
 				}
 				else if(j == 0) {
-					if(isBetween(i,1,test-1)) {
+					if(isBetween(i,1,mazeSize-1)) {
 						return true;
 					}
 				}
-				else if(j == (test - 1)) {
-					if(isBetween(i,1,test-1)) {
+				else if(j == (mazeSize - 1)) {
+					if(isBetween(i,1,mazeSize-1)) {
 						return true;
 					}
 				}
@@ -237,11 +288,11 @@ public class EditorWindow extends Window {
 				return false;
 			}
 		});
-		tiles.setLayout(new GridLayout(test,test,1,1));
+		tiles.setLayout(new GridLayout(mazeSize,mazeSize,1,1));
 		
-		for(int i = 0; i < test; i++) {
-			for(int j = 0; j < test; j++) {
-				if((i == 0) || (j == 0) || (i == (test - 1)) || (j == (test - 1))) {
+		for(int i = 0; i < mazeSize; i++) {
+			for(int j = 0; j < mazeSize; j++) {
+				if((i == 0) || (j == 0) || (i == (mazeSize - 1)) || (j == (mazeSize - 1))) {
 					drawToPanel(wall);
 					game.getMaze().getTiles()[i][j] = 'x';
 					tiles.add(label);
@@ -267,6 +318,7 @@ public class EditorWindow extends Window {
 			public void actionPerformed(ActionEvent e) {
 				if(isVerified()) {
 					saveElements();
+					saveMaze();
 					keyCode = 1;
 				}
 			}
@@ -276,6 +328,29 @@ public class EditorWindow extends Window {
 		JMenuItem helpItem = new JMenuItem("Help");
 		helpItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JDialog helpDialog = new JDialog(null,"Help",Dialog.ModalityType.APPLICATION_MODAL);
+				
+				helpDialog.setFont(new Font("Sakkal Majalla", Font.BOLD, 22));
+				
+				helpDialog.setLayout(new GridLayout(3,3,10,10));
+				helpDialog.setLocationRelativeTo(null);
+				helpDialog.setFocusable(true);
+				helpDialog.setResizable(false);
+				
+				helpDialog.add(new JLabel("Mouse Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Left Panel", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Right Panel", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				
+				helpDialog.add(new JLabel("Left Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Add", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				
+				helpDialog.add(new JLabel("Right Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.add(new JLabel("Remove", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				
+				helpDialog.pack();
+				helpDialog.setVisible(true);
 				keyCode = 2;
 			}
 		});
@@ -329,6 +404,31 @@ public class EditorWindow extends Window {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Creates an instance of GameIO to save the game.
+	 * For more information on GameIO consult the class.
+	 * 
+	 * @return 0 if the user has pressed the 'save' button
+	 */
+	public int saveMaze() {
+		GameIO gameIO = new GameIO();
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", new String[] {"maze"});
+		fileChooser.setFileFilter(filter);
+		fileChooser.setCurrentDirectory(new File( "." ));
+		
+		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			
+			String fileName = fileChooser.getSelectedFile().getName();
+			gameIO.save(game, fileName, ".maze");
+		}
+		else {
+			return -1;
+		}
+		
+		return 0;
 	}
 
 	private boolean isVerified() {
@@ -449,7 +549,6 @@ public class EditorWindow extends Window {
 			floor = ImageIO.read(new File("bin/textures/floor.png"));
 			dragonPic = ImageIO.read(new File("bin/textures/dragon_on_floor.png"));
 			hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
-			eagle = ImageIO.read(new File("bin/textures/eagle_on_floor.png"));
 			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
 			exit = ImageIO.read(new File("bin/textures/exit.png"));
 
