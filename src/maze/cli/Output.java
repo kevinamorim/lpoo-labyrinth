@@ -8,27 +8,18 @@ public class Output implements Serializable {
 	
 	private static final long serialVersionUID = 1;
 	
+	/**
+	 * Default constructor for Output.
+	 */
 	public Output() {
 		
 	}
-	
-	public void drawBoard(Maze maze) {
-		
-		for(int i = 0; i < maze.getSize(); i++) {
-			
-			for(int j = 0; j < maze.getSize(); j++) {
-				
-				if(i == maze.getExit().getX() && j == maze.getExit().getY()) {
-					System.out.print(" " + 'S' + " ");
-				} else {
-					System.out.print(" " + maze.getTiles()[i][j] + " ");
-				}
-			}
-			
-			System.out.println();
-		}
-	}
-	
+
+	/**
+	 * Prints the maze to the console.
+	 * 
+	 * @param board
+	 */
 	public void drawBoard(char[][] board) {
 		
 		for(int i = 0; i < board.length; i++) {
@@ -41,13 +32,23 @@ public class Output implements Serializable {
 		}
 	}
 	
+	/**
+	 * Draws the game commands to the console.
+	 */
 	public void drawCommands() {
+		System.out.println("+-------- Commands -------+");
+		System.out.println("Move........... [w,a,s,d] |");
+		System.out.println("Confirm........  [enter]  |");
+		System.out.println("Quit...........    [q]    |");
 		System.out.println("+-------------------------+");
-		System.out.println("Move............ [w,a,s,d]");
-		System.out.println("Confirm......... [enter]");
-		System.out.println("+-------------------------+");
+		System.out.println("|                         |");
 	}
 	
+	/**
+	 * Draws the player's goals/tasks to the console.
+	 * 
+	 * @param tasks
+	 */
 	public void drawGoals(Task[] tasks) {
 		System.out.println("+--------- Goals ---------+");
 		for(int i = 0; i < tasks.length; i++) {
@@ -63,6 +64,13 @@ public class Output implements Serializable {
 		System.out.println("+-------------------------+");
 	}
 
+	/**
+	 * Draws a message to the console.
+	 * Each message as its own unique Integer identifier, 
+	 *   passed as argument.
+	 *   
+	 * @param msg : unique ID of the message
+	 */
 	public void drawMsg(int msg) {
 		switch(msg) {
 		case 0:
@@ -100,10 +108,21 @@ public class Output implements Serializable {
 		}
 	}
 	
+	/**
+	 * Prints a given message to the console.
+	 * Only for debugging.
+	 * 
+	 * @param msg : message to print
+	 */
 	public void debugPrint(String msg) {
 		System.out.println(msg);
 	}
 
+	/**
+	 * Draws all of the game state to the console.
+	 * 
+	 * @param game : GameLogic instance of the current game
+	 */
 	public void draw(GameLogic game) {
 		
 		// Draws menu.
@@ -115,18 +134,30 @@ public class Output implements Serializable {
 		
 	}
 	
+	/**
+	 * Draws the game over screen to the console.
+	 */
 	public void drawGameOver() {
 		System.out.println("+-------------------------+");
 		System.out.println("+--------- LOSE ----------+");	
 		System.out.println("+-------------------------+");
 	}
 
+	/**
+	 * Draws the winning screen to the console.
+	 */
 	public void drawWinningMessage() {
 		System.out.println("+-------------------------+");
 		System.out.println("+--------- WIN -----------+");	
 		System.out.println("+-------------------------+");
 	}
 
+	/**
+	 * Draws the message (play again? (y/n)) and waits for input.
+	 * 
+	 * @param in : Input instance
+	 * @return true if the player wishes to play again
+	 */
 	public boolean playAgain(Input in) {
 		
 		drawMsg(8);

@@ -25,7 +25,7 @@ public class MenuWindow extends Window {
 		
 		initialize();
 	}
-
+	
 	private void initialize() {
 		setResizable(false);
 		

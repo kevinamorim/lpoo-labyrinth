@@ -172,8 +172,10 @@ public class Hero extends Moveable {
 		if(game.getSword() != null) {
 			if(!hasSword && checkIfFound(game.getSword(), 0)) {
 				arm();
-				game.getEagle().setHasSword(false);
-				game.getEagle().setUseful(false);
+				if(game.getEagle() != null) {
+					game.getEagle().setHasSword(false);
+					game.getEagle().setUseful(false);
+				}
 			}
 		}
 

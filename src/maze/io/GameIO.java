@@ -1,6 +1,5 @@
 package maze.io;
 
-import maze.logic.Dragon;
 import maze.logic.GameLogic;
 
 import java.io.*;

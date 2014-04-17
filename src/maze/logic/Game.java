@@ -13,6 +13,10 @@ public class Game {
 		System.exit(0);
 	}
 
+	/**
+	 * Main menu. Deals with all of the options in the menu (in the graphical interface).
+	 * Allows the player to choose the console.
+	 */
 	private static void gameMenu() {
 		
 		int state = 0;
@@ -93,6 +97,9 @@ public class Game {
 					menuWindow.setVisible(true);
 					break;
 				case 2: // EDITOR
+					menuWindow.setVisible(false);
+					
+					menuWindow.setVisible(true);
 					break;
 				case 3: // CREDITS
 					break;

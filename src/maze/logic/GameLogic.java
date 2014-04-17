@@ -55,7 +55,6 @@ public class GameLogic extends Object implements Serializable {
 	
 	/**
 	 * GameLogic constructor.
-	 * Calls methot init() for parameters initialization.
 	 * 
 	 * @param config : current game configuration
 	 */
@@ -63,11 +62,17 @@ public class GameLogic extends Object implements Serializable {
 
 		this.config = config;
 		
-		in = new Input();
-		out = new Output();
-		
+		if(config.getMode() == CONSOLE) {
+			in = new Input();
+			out = new Output();
+		}
 	}
 	
+	/**
+	 * GameLogic constructor.
+	 * 
+	 * @param mode : mode in which the game is (CONSOLE or GRAPHICAL only)
+	 */
 	public GameLogic(int mode) {
 		
 		this.valid = true;
@@ -93,9 +98,8 @@ public class GameLogic extends Object implements Serializable {
 		}
 	}
 
-
 	/**
-	 * Initializes all game parameters.
+	 * Initializes all game parameters related to the maze.
 	 */
 	public void init() {
 	
@@ -118,6 +122,10 @@ public class GameLogic extends Object implements Serializable {
 		createTasks();
 	}
 
+	/**
+	 * Initializes all game parameters that are transient (that is, won't be serializable -
+	 *   won't be saved upon game saving).
+	 */
 	public void initNonSerializable() {
 
 		if(config.getMode() == GRAPHICAL) {
@@ -130,7 +138,6 @@ public class GameLogic extends Object implements Serializable {
 			inputThread.start();
 		}
 	}
-
 
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
@@ -155,9 +162,9 @@ public class GameLogic extends Object implements Serializable {
 	}
 
 	/**
-	 * Checks if there is a dragon with a sword. 
+	 * Checks if there is a dragon upon a sword. 
 	 * 
-	 * @return true if any dragon has a sword
+	 * @return true if any dragon is upon a sword
 	 */
 	public boolean noDragonIsUponSword() {
 
@@ -188,7 +195,6 @@ public class GameLogic extends Object implements Serializable {
 		}
 	}
 
-	
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
 	//					TASKS					//
@@ -281,10 +287,8 @@ public class GameLogic extends Object implements Serializable {
 		return -1;
 	}
 
-
 	/**
-	 * Draws the game board.
-	 * Generates a board with the complete maze and all the elements to be sent to the output class. 
+	 * Generates a board with the complete maze and all the elements.
 	 */
 	public void setGameBoard() {
 
@@ -326,6 +330,11 @@ public class GameLogic extends Object implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the configuration from the configuration window (graphical mode only).
+	 * 
+	 * @return 0 if successful
+	 */
 	public int getConfiguration() {
 
 		configWindow.setVisible(true);
@@ -356,9 +365,7 @@ public class GameLogic extends Object implements Serializable {
 	/**
 	 * Main game loop.
 	 * 
-	 * @return Stopping state. 
-	 * 			0 - End of game.
-	 * 			1 - New game.
+	 * @return 1 - new game; 5 - quit
 	 */
 	public int loop() {
 		
@@ -445,9 +452,7 @@ public class GameLogic extends Object implements Serializable {
 						 * ___________________________________
 						 */
 					case 2:
-						if(saveGame() != 0) {
-							done = true;
-						}
+						saveGame();
 						break;
 						/*
 						 * ___________________________________
@@ -456,10 +461,9 @@ public class GameLogic extends Object implements Serializable {
 						 * ___________________________________
 						 */
 					case 3:
-						if(loadGame() != 0) {
-							done = true;
+						if(loadGame() == 0) {
+							gameWindow.paint();
 						}
-						gameWindow.paint();
 						break;
 						/*
 						 * ___________________________________
@@ -487,7 +491,9 @@ public class GameLogic extends Object implements Serializable {
 					}
 				}
 				else {
-					// Console stuff
+					if(command == -1) {
+						done = true;
+					}
 				}
 			}
 
@@ -537,6 +543,12 @@ public class GameLogic extends Object implements Serializable {
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	
 
+	/**
+	 * Creates an instance of GameIO to load the game.
+	 * For more information on GameIO consult the class.
+	 * 
+	 * @return 0 if the user has pressed the 'load' button
+	 */
 	public int loadGame() {
 		GameIO gameIO = new GameIO();
 		JFileChooser fileChooser = new JFileChooser();
@@ -556,6 +568,12 @@ public class GameLogic extends Object implements Serializable {
 		return 0;
 	}
 
+	/**
+	 * Creates an instance of GameIO to save the game.
+	 * For more information on GameIO consult the class.
+	 * 
+	 * @return 0 if the user has pressed the 'save' button
+	 */
 	public int saveGame() {
 		GameIO gameIO = new GameIO();
 		JFileChooser fileChooser = new JFileChooser();
@@ -721,28 +739,37 @@ public class GameLogic extends Object implements Serializable {
 	}
 
 	/**
-	 * @return the valid
+	 * Gets the valid value for this gameLogic instance.
+	 * An instance of this type is valid if it has a configuration assigned to it.
+	 * 
+	 * @return true if valid
 	 */
 	public boolean isValid() {
 		return valid;
 	}
 
 	/**
-	 * @param valid the valid to set
+	 * Sets the valid value for this gameLogic instance.
+	 * 
+	 * @param valid : value to set
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
 
 	/**
-	 * @return the configWindow
+	 * Gets the configuration window instance.
+	 * 
+	 * @return ConfigWindow configuration window
 	 */
 	public ConfigurationWindow getConfigWindow() {
 		return configWindow;
 	}
 
 	/**
-	 * @param configWindow the configWindow to set
+	 * Sets the configuration window instance.
+	 * 
+	 * @param configWindow : configuration window to set
 	 */
 	public void setConfigWindow(ConfigurationWindow configWindow) {
 		this.configWindow = configWindow;

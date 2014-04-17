@@ -137,6 +137,7 @@ public class TestClass3 {
 	/**
 	 * AUXILIARES
 	 */
+	@SuppressWarnings("unused")
 	private void execCommands() {
 
 		for(int i = 0; i < commands.length(); i++) {

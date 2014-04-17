@@ -41,6 +41,8 @@ public class Input implements Serializable {
 				return 65;
 			case ' ':
 				return 32;
+			case 'q':
+				return -1;
 			default:
 				break;
 			}

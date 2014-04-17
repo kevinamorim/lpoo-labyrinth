@@ -25,6 +25,9 @@ public class GameConfig implements Serializable {
 	// For now: W,D,S,A,SPACE -> UP,RIGHT,DOWN,LEFT,EAGLE
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 	
+	/**
+	 * Default gameConfig constructor.
+	 */
 	public GameConfig() {}
 
 	/**
@@ -328,28 +331,38 @@ public class GameConfig implements Serializable {
 	}
 
 	/**
-	 * @return the mode
+	 * Gets the mode of the configuration:
+	 *   0 - CONSOLE
+	 *   1 - GRAPHICAL
+	 *   
+	 * @return mode of this configuration
 	 */
 	public int getMode() {
 		return mode;
 	}
 
 	/**
-	 * @param mode : the mode to set
+	 * Sets the mode of the configuration.
+	 * 
+	 * @param mode : value to set
 	 */
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
 
 	/**
-	 * @return the mazeDragons
+	 * Gets the number of dragons in the maze.
+	 * 
+	 * @return number of dragons
 	 */
 	public int getMazeDragons() {
 		return mazeDragons;
 	}
 
 	/**
-	 * @param mazeDragons the mazeDragons to set
+	 * Sets the number of dragons in the maze.
+	 * 
+	 * @param mazeDragons : value to set
 	 */
 	public void setMazeDragons(int mazeDragons) {
 		this.mazeDragons = mazeDragons;
