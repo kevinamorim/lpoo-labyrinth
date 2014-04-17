@@ -140,7 +140,7 @@ public class Dragon extends Moveable {
 		
 		if(game.getConfig() == null) return;
 		
-		if(game.getConfig().getDifficulty() == 2) {
+		if(game.getConfig().getDifficulty() == 1) {
 			if(alive) {
 				setDragonState();
 			}
