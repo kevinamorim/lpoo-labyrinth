@@ -372,8 +372,6 @@ public class GameWindow extends Window implements KeyListener {
 			
 			e.printStackTrace();
 			
-			System.out.println("Error loading images. Exception: " + e);
-			
 			System.exit(0);
 		}
 		
