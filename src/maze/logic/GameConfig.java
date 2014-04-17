@@ -96,6 +96,15 @@ public class GameConfig implements Serializable {
 		this.dragonPerc = dragonPerc;
 	}
 
+	public GameConfig(GameConfig c) {
+		this.mazeSize = c.mazeSize;
+		this.mazeDragons = c.mazeDragons;
+		this.mode = c.mode;
+		this.difficulty = c.difficulty;
+		this.dragonPerc = c.dragonPerc;
+		this.gameKeyCodes = c.getGameKeyCodes();
+	}
+
 	/**
 	 * Sets the game key code for the array of key codes at the given index.
 	 * 

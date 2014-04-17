@@ -91,10 +91,12 @@ public class GameLogic extends Object implements Serializable {
 			inputConfigThread = new Thread(configHandler);
 			inputConfigThread.start();
 			
-			if(getConfiguration() != 0) {
+			if(getConfiguration(false) != 0) {
 				this.valid = false;
 				return;
 			}
+			
+			configHandler.setTerminate(true);
 		}
 	}
 
@@ -109,6 +111,12 @@ public class GameLogic extends Object implements Serializable {
 			config.setMazeSize(maze.getSize());
 		}
 		else {
+			
+			this.config.setGameKeyCodes(configWindow.getConfig().getGameKeyCodes());
+			this.config.setDifficulty(configWindow.getConfig().getDifficulty());
+			this.config.setDragonPerc(configWindow.getConfig().getDragonPerc());
+			this.config.setMazeSize(configWindow.getConfig().getMazeSize());
+			
 			config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
 			
 			maze = new Maze(config.getMazeSize());
@@ -142,9 +150,14 @@ public class GameLogic extends Object implements Serializable {
 			gameWindow = new GameWindow(this);
 			gameWindow.setFocusable(true);
 			gameWindow.setVisible(true);
+			
 			inputHandler = new InputHandler(gameWindow);
 			inputThread = new Thread(inputHandler);
 			inputThread.start();
+			
+			configHandler = new InputHandler(configWindow);
+			inputConfigThread = new Thread(configHandler);
+			inputConfigThread.start();
 		}
 	}
 
@@ -355,11 +368,13 @@ public class GameLogic extends Object implements Serializable {
 
 	/**
 	 * Gets the configuration from the configuration window (graphical mode only).
+	 * @param disableLoad 
 	 * 
 	 * @return 0 if successful
 	 */
-	public int getConfiguration() {
+	public int getConfiguration(boolean disableLoad) {
 
+		if(disableLoad) configWindow.setLoadDisabled(true);
 		configWindow.setVisible(true);
 
 		int state = -1;
@@ -370,7 +385,9 @@ public class GameLogic extends Object implements Serializable {
 
 		configHandler.removeCommand();
 
+		if(disableLoad) configWindow.setLoadDisabled(false);
 		configWindow.setVisible(false);
+		
 
 		if(state == 2) { // ERROR
 			return 1;
@@ -379,11 +396,13 @@ public class GameLogic extends Object implements Serializable {
 		return 0;
 	}
 
+	// **************************************** //
 	// ++++++++++++++++++++++++++++++++++++++++	//
 	//											//
 	//			   MAIN GAME LOOP				//
 	//											//
 	// ++++++++++++++++++++++++++++++++++++++++	//
+	// **************************************** //
 	
 	/**
 	 * Main game loop.
@@ -496,7 +515,8 @@ public class GameLogic extends Object implements Serializable {
 						 */
 					case 4:
 						gameWindow.setVisible(false);
-						getConfiguration();
+						getConfiguration(true);
+						this.config.setGameKeyCodes(configWindow.getConfig().getGameKeyCodes());
 						gameWindow.setVisible(true);
 						gameWindow.setFocusable(true);
 						break;
@@ -530,11 +550,17 @@ public class GameLogic extends Object implements Serializable {
 			inputHandler.setTerminate(true);
 			configHandler.setTerminate(true);
 			
-			if(hero.hasWon()) {
-				JOptionPane.showMessageDialog(gameWindow, "You won!");
-			}
-			else {
-				JOptionPane.showMessageDialog(gameWindow, "Game Over!");
+			this.config.setDifficulty(configWindow.getConfig().getDifficulty());
+			this.config.setDragonPerc(configWindow.getConfig().getDragonPerc());
+			this.config.setMazeSize(configWindow.getConfig().getMazeSize());
+			
+			if(command > 5) {
+				if(hero.hasWon()) {
+					JOptionPane.showMessageDialog(gameWindow, "You won!");
+				}
+				else {
+					JOptionPane.showMessageDialog(gameWindow, "Game Over!");
+				}
 			}
 			
 			gameWindow.dispose();
@@ -551,7 +577,7 @@ public class GameLogic extends Object implements Serializable {
 			}
 			
 			if(out.playAgain(in)) {
-				return -2;
+				return 1;
 			}
 		}
 		

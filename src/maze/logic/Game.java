@@ -65,7 +65,7 @@ public class Game {
 		while(state != -1) {
 			
 			int EXIT = -1;
-			int NEW_GAME = -2;
+			int NEW_GAME = 1;
 			
 			if(mode == GRAPHICAL) {
 				
@@ -110,6 +110,7 @@ public class Game {
 					catch(NumberFormatException e) {
 						break;
 					}
+					
 					if(value > 4 && value < 22) {
 						menuWindow.setVisible(false);
 

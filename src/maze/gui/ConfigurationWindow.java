@@ -48,7 +48,10 @@ public class ConfigurationWindow extends Window {
 	private JPanel layer1, layer2;
 	private GameConfig config;
 	private String mazeFile = null;
-
+	
+	JButton btnLoadMaze;
+	JButton btnUnloadMaze;
+	
 	/**
 	 * Default constructor.
 	 */
@@ -65,7 +68,7 @@ public class ConfigurationWindow extends Window {
 	 */
 	public ConfigurationWindow(String title, final GameConfig c) {
 		super(title);
-		this.config = c;
+		this.config = new GameConfig(c);
 		
 		initialize();		
 	}
@@ -103,7 +106,6 @@ public class ConfigurationWindow extends Window {
 		mazeSizeLabel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		final JSlider mazeSize = new JSlider();
-		
 		mazeSize.setFocusable(false);
 		mazeSize.setPaintLabels(true);
 		mazeSize.setPaintTicks(true);
@@ -117,8 +119,6 @@ public class ConfigurationWindow extends Window {
 		difficultyLabel.setFocusable(false);
 		difficultyLabel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		final JComboBox difficulty = new JComboBox();
-		
-
 		difficulty.setFocusable(false);
 		difficulty.setModel(new DefaultComboBoxModel(new String[] {"Dumb dragons ", "Smart dragons (they sleep)", "Dragons high on caffeine"}));
 		difficulty.setFont(new Font("Sakkal Majalla", Font.PLAIN, 28));
@@ -127,6 +127,7 @@ public class ConfigurationWindow extends Window {
 		 * Dragons percentage
 		 */
 		final JSlider dragonPerc = new JSlider();
+		dragonPerc.setFocusable(false);
 		dragonPerc.setValue(4);
 		dragonPerc.setToolTipText("");
 		dragonPerc.setSnapToTicks(true);
@@ -134,7 +135,6 @@ public class ConfigurationWindow extends Window {
 		dragonPerc.setMinimum(4);
 		dragonPerc.setMaximum(10);
 		dragonPerc.setMajorTickSpacing(2);
-		dragonPerc.setFocusable(false);
 		
 		final JLabel dragonPercLabel = new JLabel("Dragons   " + dragonPerc.getValue() + "%");
 		
@@ -147,8 +147,9 @@ public class ConfigurationWindow extends Window {
 			}
 		});
 		
-		final JButton btnLoadMaze = new JButton("Load Maze");
-		final JButton btnUnloadMaze = new JButton("Unload Maze");
+		btnLoadMaze = new JButton("Load Maze");
+		btnUnloadMaze = new JButton("Unload Maze");
+		
 		btnUnloadMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -177,9 +178,8 @@ public class ConfigurationWindow extends Window {
 				}
 			}
 		});
+		
 		btnLoadMaze.setFont(new Font("Sakkal Majalla", Font.BOLD, 34));
-		
-		
 		btnUnloadMaze.setFont(new Font("Sakkal Majalla", Font.BOLD, 34));
 		
 		btnLoadMaze.setEnabled(true);
@@ -335,7 +335,13 @@ public class ConfigurationWindow extends Window {
 
 		JMenuItem btnConfirm = new JMenuItem("Save");
 		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
+				
+				mazeSizeLabel.setEnabled(true);
+				mazeSize.setEnabled(true);
+				dragonPercLabel.setEnabled(true);
+				dragonPerc.setEnabled(true);
+				
 				config.setDifficulty(difficulty.getSelectedIndex());
 				config.setDragonPerc(dragonPerc.getValue()/100.0);
 				config.setMazeSize(mazeSize.getValue());
@@ -350,6 +356,12 @@ public class ConfigurationWindow extends Window {
 		JMenuItem btnCancel = new JMenuItem("Discard");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				mazeSizeLabel.setEnabled(true);
+				mazeSize.setEnabled(true);
+				dragonPercLabel.setEnabled(true);
+				dragonPerc.setEnabled(true);
+				
 				keyCode = 2;
 			}
 		});
@@ -504,6 +516,17 @@ public class ConfigurationWindow extends Window {
 	 */
 	public void setMazeFile(String mazeFile) {
 		this.mazeFile = mazeFile;
+	}
+
+	public void setLoadDisabled(boolean disable) {
+		if(disable) {
+			this.btnLoadMaze.setEnabled(false);
+			this.btnUnloadMaze.setEnabled(false);
+		}
+		else {
+			this.btnLoadMaze.setEnabled(true);
+			this.btnUnloadMaze.setEnabled(true);
+		}
 	}
 	
 }

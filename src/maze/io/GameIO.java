@@ -1,8 +1,6 @@
 package maze.io;
 
 import maze.logic.GameLogic;
-import maze.logic.Maze;
-
 import java.io.*;
 
 public class GameIO {
