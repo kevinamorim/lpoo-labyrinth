@@ -372,6 +372,10 @@ public class EditorWindow extends Window {
 		setVisible(true);
 	}
 
+	/**
+	 * Saves all the elements (hero, maze, dragons, etc..) to
+	 *   the local game instance just before saving the maze.
+	 */
 	protected void saveElements() {
 		numberOfDragons = 0;
 		
@@ -433,6 +437,12 @@ public class EditorWindow extends Window {
 		return 0;
 	}
 
+	/**
+	 * Verifies if the maze meets the base rules so that the game would work:
+	 *   A hero, a sword, an exit.
+	 *   
+	 * @return true if it is a valid maze.
+	 */
 	private boolean isVerified() {
 		if(picInfo[0] >= 0) {
 			JOptionPane.showMessageDialog(this, "You must place an exit!");
@@ -452,6 +462,16 @@ public class EditorWindow extends Window {
 		return true;
 	}
 	
+	/**
+	 * Auxiliary function.
+	 *   Verifies if a given number is in the interval [min, max].
+	 *   
+	 * @param num : Integer to verify
+	 * @param min : minimun
+	 * @param max : maximum
+	 * 
+	 * @return true if (min <= num <= max)
+	 */
 	private boolean isBetween(int num, int min, int max) {
 		
 		if(num >= min && num <= max) {
@@ -460,6 +480,9 @@ public class EditorWindow extends Window {
 		return false;
 	}
 
+	/**
+	 * Draws the sample pictures upon the left panel
+	 */
 	private void drawSamples() {
 		pics.removeAll();
 		

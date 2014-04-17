@@ -683,7 +683,6 @@ public class GameLogic extends Object implements Serializable {
 		this.hero = hero;
 	}
 	
-
 	/**
 	 * Gets the game instance of [sword].
 	 * 

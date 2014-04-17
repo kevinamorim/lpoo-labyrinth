@@ -518,6 +518,11 @@ public class ConfigurationWindow extends Window {
 		this.mazeFile = mazeFile;
 	}
 
+	/**
+	 * Enables/disables the "Load Maze"/"Unload maze" buttons.
+	 * 
+	 * @param disable : true if to disable the buttons
+	 */
 	public void setLoadDisabled(boolean disable) {
 		if(disable) {
 			this.btnLoadMaze.setEnabled(false);

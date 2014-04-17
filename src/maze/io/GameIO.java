@@ -49,7 +49,7 @@ public class GameIO {
 	}
 	
 	/**
-	 * Saves to a given GameLogic the game in the file with the filename: "fileName".sav
+	 * Loads to a given GameLogic the game in the file with the filename: "fileName".sav
 	 *   
 	 * @param game : game to be set
 	 * @param fileName : filename to be read the information from
@@ -100,6 +100,15 @@ public class GameIO {
 		return 0;
 	}
 	
+	/**
+	 * Loads to a given GameLogic a game in the file with the filename: "fileName".maze
+	 *   The difference to the method above is that this one reads only the maze and the elements (hero, sword, etc...)
+	 *   
+	 * @param game : game to be set
+	 * @param fileName : filename to be read the information from
+	 * 
+	 * @return 0 if OK
+	 */
 	public int loadMaze(GameLogic game, String fileName) {
 		ObjectInputStream in = null;
 
