@@ -13,7 +13,9 @@ import java.awt.Image;
 import javax.swing.JLabel;
 
 import maze.logic.Dragon;
+import maze.logic.Element;
 import maze.logic.GameLogic;
+import maze.logic.Hero;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,22 +37,23 @@ import maze.logic.Maze;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+
 import javax.swing.JSplitPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class EditorWindow extends Window {
-	private Maze maze;
+	private GameLogic game;
 	private int mazeSize = 10;
+	final int test = 20;
 	
 	private final int numElements = 5;
+	private int numberOfDragons = 0;
 	private int selected = 0;
 	private int picInfo[];
-	
-	private boolean hasExit = false;
 
-	private JPanel editor;
 	private JPanel pics;
 	private JPanel tiles;
 
@@ -77,7 +80,9 @@ public class EditorWindow extends Window {
 
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
-		this.maze = new Maze(size);
+		this.game = new GameLogic();
+		this.game.setMaze(new Maze(size));
+		
 		this.mazeSize = size;
 		
 		picInfo = new int[numElements];
@@ -133,19 +138,117 @@ public class EditorWindow extends Window {
 		 * ____________________________________________________________
 		 */
 		
-		int test = 20;
-		
 		tiles = new JPanel();
+		tiles.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				if(picInfo[selected] > -1) {
+					int i = e.getX() / ((tiles.getWidth() + 5) / test);
+					int j = e.getY() / ((tiles.getHeight() + 5) / test);
+
+					//System.out.println("(" + j + ", " + i + ")");
+
+					if (isBetween(i, 0, test-1) && isBetween(j, 0, test-1)) {
+						if(drawMazeImage(i,j) == true) {
+							tiles.remove(i+j*test);
+							tiles.add(label, i+j*test);
+							tiles.revalidate();
+						}
+					}
+				}
+				
+			}
+			
+			private boolean drawMazeImage(int i, int j) {
+				switch(selected) {
+				case 0:
+					// EXIT
+					if(isProperExitPlace(i,j)) {
+						drawToPanel(exit);
+						game.getMaze().setExit(new Element(i,j,'S'));
+						picInfo[selected] = -1;
+						return true;
+					}
+					break;
+				case 1:
+					// HERO
+					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+						drawToPanel(hero);
+						game.getMaze().getTiles()[i][j] = 'Y';
+						picInfo[selected] = -1;
+						return true;
+					}
+					break;
+				case 2:
+					// SWORD
+					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+						drawToPanel(sword);
+						game.getMaze().getTiles()[i][j] = 'E';
+						picInfo[selected] = -1;
+						return true;
+					}
+					break;
+				case 3:
+					// DRAGONS
+					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+						game.getMaze().getTiles()[i][j] = 'D';
+						drawToPanel(dragonPic);
+						return true;
+					}
+					break;
+				case 4:
+					// WALL
+					if(isBetween(i, 1, test-2) && isBetween(j, 1, test-2)) {
+						game.getMaze().getTiles()[i][j] = 'x';
+						drawToPanel(wall);
+						return true;
+					}
+					break;
+				default:
+					break;
+				}
+				
+				return false;
+			}
+
+			private boolean isProperExitPlace(int i, int j) {
+				if(i == 0) {
+					if(isBetween(j,1,test-1)) {
+						return true;
+					}
+				}
+				else if(i == (test - 1)) {
+					if(isBetween(j,1,test-1)) {
+						return true;
+					}
+				}
+				else if(j == 0) {
+					if(isBetween(i,1,test-1)) {
+						return true;
+					}
+				}
+				else if(j == (test - 1)) {
+					if(isBetween(i,1,test-1)) {
+						return true;
+					}
+				}
+				
+				return false;
+			}
+		});
 		tiles.setLayout(new GridLayout(test,test,1,1));
 		
 		for(int i = 0; i < test; i++) {
 			for(int j = 0; j < test; j++) {
 				if((i == 0) || (j == 0) || (i == (test - 1)) || (j == (test - 1))) {
 					drawToPanel(wall);
+					game.getMaze().getTiles()[i][j] = 'x';
 					tiles.add(label);
 				}
 				else {
 					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
 					tiles.add(label);
 				}
 			}
@@ -162,7 +265,10 @@ public class EditorWindow extends Window {
 		JMenuItem saveItem = new JMenuItem("Save");
 		saveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = 2;
+				if(isVerified()) {
+					saveElements();
+					keyCode = 1;
+				}
 			}
 		});
 		menuBar.add(saveItem);
@@ -170,7 +276,7 @@ public class EditorWindow extends Window {
 		JMenuItem helpItem = new JMenuItem("Help");
 		helpItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				keyCode = 3;
+				keyCode = 2;
 			}
 		});
 		menuBar.add(helpItem);
@@ -178,12 +284,13 @@ public class EditorWindow extends Window {
 		JMenuItem quitItem = new JMenuItem("Quit");
 		quitItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				keyCode = 4;
+				keyCode = 3;
 			}
 		});
 		menuBar.add(quitItem);
 		
 		splitPane.setEnabled(false);
+		
 		splitPane.setBorder(BorderFactory.createLineBorder(new Color(128,128,128),5));
 		splitPane.setLeftComponent(pics);
 		splitPane.setRightComponent(tiles);
@@ -193,6 +300,62 @@ public class EditorWindow extends Window {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	protected void saveElements() {
+		for(int i = 0; i < game.getMaze().getTiles().length; i++) {
+			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
+				if(game.getMaze().getTiles()[i][j] == 'Y') {
+					game.setHero(new Hero(i,j,'Y'));
+				}
+				else if(game.getMaze().getTiles()[i][j] == 'E') {
+					game.setSword(new Element(i,j,'Y'));
+				}
+				else if(game.getMaze().getTiles()[i][j] == 'D') {
+					numberOfDragons++;
+				}
+			}
+		}
+		
+		game.setDragons(new Dragon[numberOfDragons]);
+		
+		int index = 0;
+		
+		for(int i = 0; i < game.getMaze().getTiles().length; i++) {
+			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
+				if(game.getMaze().getTiles()[i][j] == 'D') {
+					game.getDragons()[index] = new Dragon(i,j,'D');
+					index++;
+				}
+			}
+		}
+	}
+
+	private boolean isVerified() {
+		if(picInfo[0] >= 0) {
+			JOptionPane.showMessageDialog(this, "You must place an exit!");
+			return false;
+		}
+		
+		if(picInfo[1] >= 0) {
+			JOptionPane.showMessageDialog(this, "You must place a hero!");
+			return false;
+		}
+		
+		if(picInfo[2] >= 0) {
+			JOptionPane.showMessageDialog(this, "You must place a sword!");
+			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean isBetween(int num, int min, int max) {
+		
+		if(num >= min && num <= max) {
+			return true;
+		}
+		return false;
 	}
 
 	private void drawSamples() {

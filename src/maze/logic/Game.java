@@ -106,7 +106,7 @@ public class Game {
 					int value = -1;
 					menuWindow.setVisible(false);
 		
-					editorWindow = new EditorWindow(10);
+					editorWindow = new EditorWindow(20);
 					editorWindow.setFocusable(true);
 					editorWindow.setVisible(true);
 					editorWindow.paint();
@@ -121,14 +121,24 @@ public class Game {
 						
 						if(value > 0) {
 							editorHandler.removeCommand();
-							value = 0;
 						}
 						
-						if(!editorWindow.isVisible()) {
+						switch(value) {
+						case 1:
+							// Save
+							break;
+						case 2:
+							// Help
+							JOptionPane.showMessageDialog(editorWindow, "Help");
+							break;
+						case 3:
+							// Quit
+							break;
+						default:
 							break;
 						}
 						
-					}while(value < 0);
+					}while(value != 3);
 					
 					editorWindow.dispose();
 					
