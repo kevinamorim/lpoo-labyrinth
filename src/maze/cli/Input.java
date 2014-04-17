@@ -1,20 +1,20 @@
 package maze.cli;
 
-import java.io.Serializable;
 import java.util.Scanner;
 
-public class Input implements Serializable {
-
-	private static final long serialVersionUID = 1;
+public class Input {
 	
 	private Scanner scan = new Scanner(System.in);
 	
+	/**
+	 * Default Constructor
+	 */
 	public Input() {
 		
 	}
 
 	/**
-	 * Gets user input and sets map accordingly.
+	 * Gets user input and returns the keyCode associated with the first char.
 	 */
 	public int get() {
 		
@@ -24,7 +24,9 @@ public class Input implements Serializable {
 	}
 
 	/**
-	 * @return the keyPressed
+	 * Gets the correspondent keyCode associated with the first char of the read String.
+	 * 
+	 * @return the keyCode of the char given.
 	 */
 	public int getKeyPressed(String s) {
 		
@@ -52,7 +54,9 @@ public class Input implements Serializable {
 	}
 	
 	/**
-	 * @return
+	 * Gets the next line of input from the scanner.
+	 * 
+	 * @return the next line of input as a String
 	 */
 	public String getString() {
 		String s = scan.nextLine();

@@ -5,21 +5,32 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class InputHandler implements Runnable {
 	
 	protected Window window;
-	protected int keyCode;
 	protected boolean terminate;
 
 	protected CopyOnWriteArrayList<Integer> commands;
 	
+	/**
+	 * Defaut Constructor.
+	 */
+	public InputHandler() {
+	}
+	
+	/**
+	 * Constructor.
+	 *   Assigns a window to this handler.
+	 * 
+	 * @param w : window to be linked to this handler
+	 */
 	public InputHandler(Window w) {
 		this.window = w;
-		this.keyCode = 0;
 		this.terminate = false;
 		this.commands = new CopyOnWriteArrayList<Integer>();
 	}
 
-	public InputHandler() {
-	}
-
+	/**
+	 * Waits for a keyCode from the window's KeyListener to be different from 0.
+	 *   When it is, its saved to the array [commands].
+	 */
 	@Override
 	public void run() {
 
@@ -27,8 +38,7 @@ public class InputHandler implements Runnable {
 
 			try {
 				if(window.getKeyCode() != 0) {
-					this.keyCode = window.getKeyCode();
-					commands.add(keyCode);
+					commands.add(window.getKeyCode());
 					window.resetKeyCode();
 				}
 				Thread.sleep(6);
@@ -39,36 +49,10 @@ public class InputHandler implements Runnable {
 		}
 
 	}
-
-	/**
-	 * @return the keyCode
-	 */
-	public int getKeyCode() {
-		return keyCode;
-	}
-
-	/**
-	 * @param keyCode the keyCode to set
-	 */
-	public void setKeyCode(int keyCode) {
-		this.keyCode = keyCode;
-	}
-
-	/**
-	 * @return the commands
-	 */
-	public CopyOnWriteArrayList<Integer> getCommands() {
-		return commands;
-	}
-
-	/**
-	 * @param commands the commands to set
-	 */
-	public void setCommands(CopyOnWriteArrayList<Integer> commands) {
-		this.commands = commands;
-	}
 	
 	/** 
+	 * Gets the first element of the array commands.
+	 * 
 	 * @return First element of the queue. If the queue is empty, returns -1.
 	 */
 	public Integer getNextCommand() {
@@ -89,19 +73,19 @@ public class InputHandler implements Runnable {
 		}
 	}
 	
+	/**
+	 * Adds the given value to the array [commands].
+	 * 
+	 * @param keyCode : value to set
+	 */
 	public void addCommand(int keyCode) {
 		commands.add(keyCode);
 	}
-	
-	/**
-	 * @return the terminate
-	 */
-	public boolean isTerminate() {
-		return terminate;
-	}
 
 	/**
-	 * @param terminate the terminate to set
+	 * Sets the value of the parameter [terminate].
+	 * 
+	 * @param terminate : value to set
 	 */
 	public void setTerminate(boolean terminate) {
 		this.terminate = terminate;

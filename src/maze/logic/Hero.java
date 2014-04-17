@@ -9,6 +9,9 @@ public class Hero extends Moveable {
 	private boolean won;
 	private boolean hasEagle;
 	
+	/**
+	 * Deafult Constructor.
+	 */
 	public Hero() {
 		super();
 	}
@@ -217,12 +220,20 @@ public class Hero extends Moveable {
 
 	}
 	
-	
+	/**
+	 * Returns any instance of Dragon if it has been
+	 *   found by the player (distance between them <= 1).
+	 * 
+	 * @param game : GameLogic instance of the game
+	 * @return an instance of Dragon if found, null otherwise
+	 */
 	public Dragon checkIfFoundAnyDragon(GameLogic game) {
+		
+		int maxDistance = 1;
 				
 		for(Dragon dragon : game.getDragons()) {
 
-			if(dragon.isAlive() && checkIfFound(dragon, 1)) {
+			if(dragon.isAlive() && checkIfFound(dragon, maxDistance)) {
 				
 				return dragon;
 				

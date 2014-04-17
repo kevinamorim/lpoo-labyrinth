@@ -16,9 +16,19 @@ public class MenuWindow extends Window {
 
 	private JPanel jpanel;
 
+	/**
+	 * Default Constructor.
+	 */
 	public MenuWindow() {
+		initialize();
 	}
 	
+	/**
+	 * Constructor.
+	 *   Receives tihe title of the window.
+	 *   
+	 * @param title : title of the window
+	 */
 	public MenuWindow(String title) {
 
 		super(title);
@@ -26,6 +36,10 @@ public class MenuWindow extends Window {
 		initialize();
 	}
 	
+	/**
+	 * Initializes the entire game window.
+	 *   Adds the labels, buttons, sliders, etc...
+	 */
 	private void initialize() {
 		setResizable(false);
 		
@@ -95,23 +109,5 @@ public class MenuWindow extends Window {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
-	}
-
-	/**
-	 * @return the keyCode
-	 */
-	public int getKeyCode() {
-		return keyCode;
-	}
-
-	/**
-	 * @param keyCode the keyCode to set
-	 */
-	public void setKeyCode(int keyCode) {
-		this.keyCode = keyCode;
-	}
-
-	public void resetKeyCode() {
-		this.keyCode = 0;
 	}
 }

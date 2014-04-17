@@ -42,11 +42,19 @@ public class GameWindow extends Window implements KeyListener {
 	private BufferedImage dragonAsleep, dragonWithSword, dragonWithSwordAsleep;
 	
 	private JLabel label;
-
-	private int state; 
 	
 	/**
-	 * Create the application.
+	 * Default Constructor.
+	 */
+	public GameWindow() {
+		initialize();
+	}
+	
+	/**
+	 * Constructor.
+	 * Receives the current GameLogic instance.
+	 * 
+	 * @param gameLogic : current game
 	 */
 	public GameWindow(GameLogic gameLogic) {
 		super("Game");
@@ -57,15 +65,13 @@ public class GameWindow extends Window implements KeyListener {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initializes the entire game window.
+	 *   Adds the labels, buttons, sliders, etc...
 	 */
 	private void initialize() {
 		
-		state = 0;
-		
 		game = new JPanel();
 		
-		//frame.setAlwaysOnTop(true);
 		setResizable(false);
 		setBounds(100, 100, 500, 500);
 		getContentPane().setLayout(new CardLayout(0, 0));
@@ -76,9 +82,6 @@ public class GameWindow extends Window implements KeyListener {
 		game.setLayout(new GridLayout(9, 9, 0, 0));
 		
 		getContentPane().add(game, "game");
-
-		initBufferedImages();
-		paint();
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -139,15 +142,24 @@ public class GameWindow extends Window implements KeyListener {
 		});
 		menuBar.add(exitMenuItem);
 		
+		initBufferedImages();
+		
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
+	/**
+	 * Paint method. Used to paint the frame whenever a change is made.
+	 */
 	public void paint() {
 		drawBoard();
 	}
 	
+	/**
+	 * Draws the game state to the frame.
+	 *   (All the pictures)
+	 */
 	private void drawBoard() {
 		
 		int i,j;
@@ -170,6 +182,12 @@ public class GameWindow extends Window implements KeyListener {
 
 	}
 
+	/**
+	 * Given an x and y correspondant to maze coordinates, the application draws the correct image to the corresponding panel.
+	 * 
+	 * @param x : X coordinate 
+	 * @param y : Y coordinate
+	 */
 	private void drawCorrectImageToPanel(int x, int y) {
 
 		for(Dragon dragon: gameLogic.getDragons()) {
@@ -300,6 +318,11 @@ public class GameWindow extends Window implements KeyListener {
 		
 	}
 
+	/**
+	 * Draws to a JLabel the given image.
+	 * 
+	 * @param name : name of the image
+	 */
 	private void drawToPanel(final Image name) {
 		label = new JLabel() {
 			
@@ -315,6 +338,9 @@ public class GameWindow extends Window implements KeyListener {
 		
 	}
 
+	/**
+	 * Loads to memory all the pictures.
+	 */
 	public void initBufferedImages() {
 		
 		try {
@@ -352,27 +378,6 @@ public class GameWindow extends Window implements KeyListener {
 		}
 		
 	}
-	
-	/**
-	 * @return the keyCode
-	 */
-	public int getKeyCode() {
-		return keyCode;
-	}
-
-	/**
-	 * @param keyCode the keyCode to set
-	 */
-	public void setKeyCode(int keyCode) {
-		this.keyCode = keyCode;
-	}
-
-	/**
-	 * @param keyCode the keyCode to set
-	 */
-	public void resetKeyCode() {
-		this.keyCode = 0;
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -381,26 +386,9 @@ public class GameWindow extends Window implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public JPanel getGamePanel() {
-		return this.game;
-	}
-	
-
-	public void setState(int state) {
-		this.state = state;
-	}
-	
-	public int getState() {
-		return state;
 	}
 }

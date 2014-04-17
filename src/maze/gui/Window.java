@@ -4,14 +4,20 @@ import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
-
-	//protected JFrame frame;
 	
 	protected int keyCode;
 	
-	public Window() {	
-	}
-	
+	/**
+	 * Default Constructor.
+	 */
+	public Window() {}
+
+	/**
+	 * Constructor.
+	 *   Receives the title of the window.
+	 *   
+	 * @param title : title of the window
+	 */
 	public Window(String title) {
 		
 		this.keyCode = 0;
@@ -20,19 +26,26 @@ public class Window extends JFrame {
 	}
 
 	/**
-	 * @return the keyCode
+	 * Gets the value of the parameter [keyCode].
+	 * 
+	 * @return the value of keyCode
 	 */
 	public int getKeyCode() {
 		return keyCode;
 	}
 
 	/**
-	 * @param keyCode the keyCode to set
+	 * Sets the value of the parameter [keyCode].
+	 * 
+	 * @param keyCode : value to set
 	 */
 	public void setKeyCode(int keyCode) {
 		this.keyCode = keyCode;
 	}
 
+	/**
+	 * Sets the value of the parameter [keyCode] to 0.
+	 */
 	public void resetKeyCode() {
 		this.keyCode = 0;
 	}

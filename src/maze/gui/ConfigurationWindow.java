@@ -42,15 +42,21 @@ public class ConfigurationWindow extends Window {
 	private JPanel panel;
 	private JPanel layer1, layer2;
 	private GameConfig config;
-	
-	/**
-	 * Create the frame.
-	 */
 
+	/**
+	 * Default constructor.
+	 */
 	public ConfigurationWindow() {
 		initialize();	
 	}
 	
+	/**
+	 * Constructor.
+	 * Receives the title of the window and a game configuration.
+	 * 
+	 * @param title : the title of the window
+	 * @param c : game configuration
+	 */
 	public ConfigurationWindow(String title, final GameConfig c) {
 		super(title);
 		this.config = c;
@@ -58,6 +64,10 @@ public class ConfigurationWindow extends Window {
 		initialize();		
 	}
 
+	/**
+	 * Initializes the entire configurations window.
+	 *   Adds the labels, buttons, sliders, etc...
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 
@@ -346,6 +356,12 @@ public class ConfigurationWindow extends Window {
 
 	}
 	
+	/**
+	 * Receives a new keyCode to assign to a game control key.
+	 *   This is done with a modal JDialog containing KeyListener. 
+	 * 
+	 * @param index : index of the game key to assign (see the game key array)
+	 */
 	public void receiveNewKey(final int index) {
 		final JDialog keyDialog = new JDialog(this,"New key",Dialog.ModalityType.APPLICATION_MODAL);
 		keyDialog.setLocationRelativeTo(null);
@@ -354,7 +370,6 @@ public class ConfigurationWindow extends Window {
 		keyDialog.setLayout(new GridLayout(2, 1, 0, 0));
 		keyDialog.add(new JLabel("  Insert the new key"));
 		keyDialog.add(new JLabel("  [Esc] to cancel"));
-//		keyDialog.setSize(200, 50);
 		keyDialog.addKeyListener(new KeyListener() {
 
 			@Override
@@ -381,6 +396,12 @@ public class ConfigurationWindow extends Window {
 		keyDialog.setVisible(true);
 	}
 	
+	/**
+	 * Checks if a certain keyCode is already assigned or not to a game key.
+	 * 
+	 * @param keyCode : value to compare
+	 * @return true if non-existant
+	 */
 	public boolean keyNotExistant(int keyCode) {
 		for(int i = 0; i < config.getGameKeyCodes().length ; i++) {
 			if(keyCode == config.getGameKeyCodes()[i]) {
@@ -390,10 +411,20 @@ public class ConfigurationWindow extends Window {
 		return true;
 	}
 	
+	/**
+	 * Gets the value of the parameter [config].
+	 * 
+	 * @return the GameConfig instance associated with this window.
+	 */
 	public GameConfig getConfig() {
 		return this.config;
 	}
 
+	/**
+	 * Sets the value of the parameter [config].
+	 * 
+	 * @param config : configuration to set
+	 */
 	public void setConfig(GameConfig config) {
 		this.config = config;
 	}
