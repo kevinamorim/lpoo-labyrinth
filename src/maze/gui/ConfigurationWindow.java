@@ -2,6 +2,7 @@ package maze.gui;
 
 import java.awt.Dialog;
 import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -22,9 +23,12 @@ import java.awt.event.KeyListener;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import java.awt.CardLayout;
 
 import javax.swing.SwingConstants;
@@ -32,6 +36,7 @@ import javax.swing.JMenu;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
@@ -42,6 +47,7 @@ public class ConfigurationWindow extends Window {
 	private JPanel panel;
 	private JPanel layer1, layer2;
 	private GameConfig config;
+	private String mazeFile;
 
 	/**
 	 * Default constructor.
@@ -89,17 +95,15 @@ public class ConfigurationWindow extends Window {
 		
 		layer1 = new JPanel();
 		panel.add(layer1, "maze_config");
-		layer1.setLayout(new GridLayout(3, 3, 0, 0));
+		layer1.setLayout(new GridLayout(4, 4, 0, 0));
 		
-		JLabel mazeSizeLabel = new JLabel("Maze size");
-		layer1.add(mazeSizeLabel);
+		final JLabel mazeSizeLabel = new JLabel("Maze size");
 		
 		mazeSizeLabel.setFocusable(false);
 		mazeSizeLabel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		
 		final JSlider mazeSize = new JSlider();
-		layer1.add(mazeSize);
-
+		
 		mazeSize.setFocusable(false);
 		mazeSize.setPaintLabels(true);
 		mazeSize.setPaintTicks(true);
@@ -109,7 +113,7 @@ public class ConfigurationWindow extends Window {
 		mazeSize.setMinimum(5);
 		mazeSize.setMinorTickSpacing(2);
 		
-		JLabel difficultyLabel = new JLabel("Difficulty");
+		final JLabel difficultyLabel = new JLabel("Difficulty");
 		difficultyLabel.setFocusable(false);
 		difficultyLabel.setFont(new Font("Sakkal Majalla", Font.BOLD, 40));
 		final JComboBox difficulty = new JComboBox();
@@ -143,10 +147,52 @@ public class ConfigurationWindow extends Window {
 			}
 		});
 		
+		final JButton btnLoadMaze = new JButton("Load Maze");
+		final JButton btnUnloadMaze = new JButton("Unload Maze");
+		btnUnloadMaze.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				mazeFile = null;
+				
+				mazeSizeLabel.setEnabled(true);
+				mazeSize.setEnabled(true);
+				difficultyLabel.setEnabled(true);
+				difficulty.setEnabled(true);
+				dragonPercLabel.setEnabled(true);
+				dragonPerc.setEnabled(true);	
+			}
+		});
+		
+		btnLoadMaze.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chooseMaze()) {
+					btnUnloadMaze.setEnabled(true);
+					
+					mazeSizeLabel.setEnabled(false);
+					mazeSize.setEnabled(false);
+					difficultyLabel.setEnabled(false);
+					difficulty.setEnabled(false);
+					dragonPercLabel.setEnabled(false);
+					dragonPerc.setEnabled(false);	
+				}
+			}
+		});
+		btnLoadMaze.setFont(new Font("Sakkal Majalla", Font.BOLD, 34));
+		
+		
+		btnUnloadMaze.setFont(new Font("Sakkal Majalla", Font.BOLD, 34));
+		
+		btnLoadMaze.setEnabled(true);
+		btnUnloadMaze.setEnabled(false);
+		
+		layer1.add(mazeSizeLabel);
+		layer1.add(mazeSize);
 		layer1.add(difficultyLabel);
 		layer1.add(difficulty);
 		layer1.add(dragonPercLabel);
 		layer1.add(dragonPerc);
+		layer1.add(btnLoadMaze);
+		layer1.add(btnUnloadMaze);
 		
 		/* _______________________________________________________________________________________
 		 * 
@@ -323,6 +369,7 @@ public class ConfigurationWindow extends Window {
 			public void actionPerformed(ActionEvent arg0) {
 				rdbtnMaze.setSelected(true);
 				rdbtnKeys.setSelected(false);
+				
 				layer1.setVisible(true);
 				layer2.setVisible(false);
 			}
@@ -338,6 +385,7 @@ public class ConfigurationWindow extends Window {
 			public void mouseClicked(MouseEvent arg0) {
 				rdbtnMaze.setSelected(false);
 				rdbtnKeys.setSelected(true);
+				
 				layer1.setVisible(false);
 				layer2.setVisible(true);
 			}
@@ -356,6 +404,21 @@ public class ConfigurationWindow extends Window {
 
 	}
 	
+	protected boolean chooseMaze() {
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", new String[] {"maze"});
+		fileChooser.setFileFilter(filter);
+		fileChooser.setCurrentDirectory(new File( "." ));
+		
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			
+			mazeFile = fileChooser.getSelectedFile().getName();
+			return true;
+		}
+		
+		return false;
+	}
+
 	/**
 	 * Receives a new keyCode to assign to a game control key.
 	 *   This is done with a modal JDialog containing KeyListener. 
@@ -367,9 +430,9 @@ public class ConfigurationWindow extends Window {
 		keyDialog.setLocationRelativeTo(null);
 		keyDialog.setFocusable(true);
 		keyDialog.setResizable(false);
-		keyDialog.setLayout(new GridLayout(2, 1, 0, 0));
-		keyDialog.add(new JLabel("  Insert the new key"));
-		keyDialog.add(new JLabel("  [Esc] to cancel"));
+		keyDialog.getContentPane().setLayout(new GridLayout(2, 1, 0, 0));
+		keyDialog.getContentPane().add(new JLabel("  Insert the new key"));
+		keyDialog.getContentPane().add(new JLabel("  [Esc] to cancel"));
 		keyDialog.addKeyListener(new KeyListener() {
 
 			@Override
