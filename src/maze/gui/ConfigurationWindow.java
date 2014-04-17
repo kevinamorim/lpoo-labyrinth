@@ -47,7 +47,7 @@ public class ConfigurationWindow extends Window {
 	private JPanel panel;
 	private JPanel layer1, layer2;
 	private GameConfig config;
-	private String mazeFile;
+	private String mazeFile = null;
 
 	/**
 	 * Default constructor.
@@ -152,7 +152,7 @@ public class ConfigurationWindow extends Window {
 		btnUnloadMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				mazeFile = null;
+				setMazeFile(null);
 				
 				mazeSizeLabel.setEnabled(true);
 				mazeSize.setEnabled(true);
@@ -412,7 +412,7 @@ public class ConfigurationWindow extends Window {
 		
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			
-			mazeFile = fileChooser.getSelectedFile().getName();
+			setMazeFile(fileChooser.getSelectedFile().getName());
 			return true;
 		}
 		
@@ -490,6 +490,20 @@ public class ConfigurationWindow extends Window {
 	 */
 	public void setConfig(GameConfig config) {
 		this.config = config;
+	}
+
+	/**
+	 * @return the mazeFile
+	 */
+	public String getMazeFile() {
+		return mazeFile;
+	}
+
+	/**
+	 * @param mazeFile the mazeFile to set
+	 */
+	public void setMazeFile(String mazeFile) {
+		this.mazeFile = mazeFile;
 	}
 	
 }
