@@ -28,14 +28,14 @@ public class Maze implements Serializable {
 		
 		tiles = new char[size][size];
 		
+		exit = new Element('S');
+	}
+	
+	public void generate() {
 		SetChamber();
 		DrawGrid();
-		
-		exit = new Element('S');
-		
 		GenerateExit();
 		GenerateWalls();
-
 	}
 
 	/**

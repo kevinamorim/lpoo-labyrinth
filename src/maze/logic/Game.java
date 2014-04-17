@@ -1,6 +1,8 @@
 package maze.logic;
 
 import javax.swing.JOptionPane;
+
+import maze.gui.EditorWindow;
 import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
 
@@ -26,12 +28,16 @@ public class Game {
 		
 		GameLogic game;
 		MenuWindow menuWindow;
+		EditorWindow editorWindow;
 		InputHandler menuHandler;
+		InputHandler editorHandler;
 		Thread inputMenuThread;
+		Thread inputEditorThread;
 		
 		game = null;
 		menuHandler = null;
 		menuWindow = null;
+		editorWindow = null;
 		
 		/*
 		 * 
@@ -97,14 +103,42 @@ public class Game {
 					menuWindow.setVisible(true);
 					break;
 				case 2: // EDITOR
+					int value = -1;
 					menuWindow.setVisible(false);
+		
+					editorWindow = new EditorWindow(10);
+					editorWindow.setFocusable(true);
+					editorWindow.setVisible(true);
+					editorWindow.paint();
+					
+					editorHandler = new InputHandler(editorWindow);		
+					inputEditorThread = new Thread(editorHandler);
+					inputEditorThread.start();
+					
+					do {
+						
+						value = editorHandler.getNextCommand();
+						
+						if(value > 0) {
+							editorHandler.removeCommand();
+							value = 0;
+						}
+						
+						if(!editorWindow.isVisible()) {
+							break;
+						}
+						
+					}while(value < 0);
+					
+					editorWindow.dispose();
 					
 					menuWindow.setVisible(true);
 					break;
 				case 3: // CREDITS
 					break;
 				case 4: // QUIT
-					return;
+					state = EXIT;
+					break;
 				default:// DO NOTHING
 					break;
 				}

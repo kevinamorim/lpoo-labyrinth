@@ -106,6 +106,8 @@ public class GameLogic extends Object implements Serializable {
 		config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
 		
 		maze = new Maze(config.getMazeSize());
+		maze.generate();
+		
 		hero = new Hero(this);
 		eagle = new Eagle(hero.getX(), hero.getY(), 'V');
 		sword = new Element(this, 'E');

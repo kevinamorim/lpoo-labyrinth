@@ -165,7 +165,7 @@ public class GameWindow extends Window implements KeyListener {
 		int i,j;
 		
 		game.removeAll();
-		game.setLayout(new GridLayout(gameLogic.getMaze().getSize(), gameLogic.getMaze().getSize()));
+		game.setLayout(new GridLayout(gameLogic.getMaze().getSize(), gameLogic.getMaze().getSize(),0,0));
 		//game.setLayout(new GridLayout(9, 9, 0, 0));
 
 		for(i = 0; i < gameLogic.getMaze().getSize(); i++) {
