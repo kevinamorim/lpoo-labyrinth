@@ -13,6 +13,9 @@ public class Dragon extends Moveable {
 	
 	private int RANDOM_SLEEP = 6;
 	
+	/**
+	 * Default Constructor.
+	 */
 	public Dragon() {
 		super();
 	}
@@ -21,7 +24,7 @@ public class Dragon extends Moveable {
 	 * Constructor for Dragon.
 	 * Receives the current GameLogic in order to call super(game, symbol).
 	 * 
-	 * @param game current GameLogic
+	 * @param game : current GameLogic
 	 */
 	public Dragon(GameLogic game) {
 		
@@ -36,9 +39,9 @@ public class Dragon extends Moveable {
 	 * Constructor for Dragon.
 	 * Receives the x and y coordinates in order to call super(x, y, symbol).
 	 * 
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param symbol
+	 * @param x : X coordinate
+	 * @param y : Y coordinate
+	 * @param symbol : symbol that represents the Dragon
 	 */
 	public Dragon(int x, int y, char symbol) {
 
@@ -142,7 +145,6 @@ public class Dragon extends Moveable {
 				setDragonState();
 			}
 		}
-		
 		
 		// Moves dragon. 
 		if(game.getConfig().getDifficulty() > 1) {

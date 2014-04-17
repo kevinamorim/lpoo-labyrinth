@@ -26,17 +26,16 @@ public class GameConfig implements Serializable {
 	private int gameKeyCodes[] = {87, 68, 83, 65, 32};
 	
 	/**
-	 * Default gameConfig constructor.
+	 * Default Constructor.
 	 */
 	public GameConfig() {}
 
 	/**
 	 * Constructor for a game configuration.
-	 * Sets the dragon number percentage.
-	 * Reads the difficulty and the maze size from the user.
-	 * Sets the game to NON-graphical mode.
+	 * Reads the difficulty, dragon percentage and the maze size from the user.
+	 * Sets the game to graphical or NON-graphical mode according to the parameter [mode].
 	 * 
-	 * @param dragonPerc : percentage of dragons in the maze
+	 * @param mode : value of the mode
 	 */
 	public GameConfig(int mode) {
 
@@ -58,9 +57,9 @@ public class GameConfig implements Serializable {
 	 * Constructor for a game configuration.
 	 * Sets the dragon number percentage.
 	 * Reads the difficulty and the maze size from the user.
-	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
+	 * Sets the game to graphical or NON-graphical mode according to the parameter [mode].
 	 * 
-	 * @param isConsole : true if the game is in NON-graphical mode
+	 * @param mode : value of the mode 
 	 * @param dragonPerc : percentage of dragons in the maze
 	 */
 	public GameConfig(int mode, double dragonPerc) {
@@ -84,14 +83,12 @@ public class GameConfig implements Serializable {
 	 * Constructor for a game configuration.
 	 * Sets the dragon number percentage.
 	 * Sets the maze size and difficulty.
-	 * Sets the game to graphical or NON-graphical mode according to the parameter [isConsole].
 	 * 
 	 * @param mazeSize : the size of the maze
 	 * @param difficulty : the difficulty of the game [3 available]
-	 * @param isConsole : true if the game is in NON-graphical mode
 	 * @param dragonPerc : percentage of dragons in the maze
 	 */
-	public GameConfig(int mazeSize, int difficulty, boolean isConsole, double dragonPerc) {
+	public GameConfig(int mazeSize, int difficulty, double dragonPerc) {
 		
 		this.mazeSize = mazeSize;
 		this.difficulty = difficulty;
@@ -204,6 +201,11 @@ public class GameConfig implements Serializable {
 		
 	}
 	
+	/**
+	 * Gets the dragon percentage from the user.
+	 * 
+	 * @return
+	 */
 	public double inputDragonperc() {
 		
 		out.drawMsg(7);
@@ -228,7 +230,7 @@ public class GameConfig implements Serializable {
 			if(isValid(s)) value = Integer.parseInt(s);
 			else value = 0;
 			
-		} while(!isBetween(2, 10, value));
+		} while(!isBetween(4, 10, value));
 		
 		value = Integer.parseInt(s);
 		
@@ -293,6 +295,7 @@ public class GameConfig implements Serializable {
 	 * @param min : minimal value of the interval
 	 * @param max : maximal value of the interval
 	 * @param i : number to evaluate
+	 * 
 	 * @return true if in interval
 	 */
 	public boolean isBetween(int min, int max, int i) {

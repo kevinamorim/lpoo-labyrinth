@@ -7,16 +7,14 @@ import java.util.Stack;
 public class Maze implements Serializable {
 	
 	private static final long serialVersionUID = 1;
-
-	private char tiles[][];
-	  		
+	private char tiles[][];	
 	private int size;
-
 	private Element exit;
 	
-	public Maze() {
-		exit = new Element();
-	}
+	/**
+	 * Default Constructor.
+	 */
+	public Maze() {}
 
 	/**
 	 * Constructor for Maze.
@@ -53,37 +51,43 @@ public class Maze implements Serializable {
 	}
 	
 	/**
-	 * @return the size
+	 * Gets the value of the parameter [size].
+	 * 
+	 * @return the size of the maze
 	 */
 	public int getSize() {
 		return size;
 	}
 
 	/**
-	 * @return the tiles
+	 * Gets the value of the parameter [tiles].
+	 * 
+	 * @return the tiles of the game board
 	 */
 	public char[][] getTiles() {
 		return tiles;
 	}
 
-
 	/**
-	 * @return the exit
+	 * Gets the exit of the maze.
+	 * 
+	 * @return the Element [Exit]
 	 */
 	public Element getExit() {
 		return exit;
 	}
 
 	/**
-	 * @param exit the exit to set
+	 * Sets the exit of the maze.
+	 * 
+	 * @param exit : Element to set
 	 */
 	public void setExit(Element exit) {
 		this.exit = exit;
 	}
 	
-	
 	/*
-	 *  BUILDER
+	 *  MAZE BUILDER
 	 */
 	
 	// -- BEGIN Maze generation

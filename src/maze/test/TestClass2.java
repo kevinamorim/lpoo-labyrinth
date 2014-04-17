@@ -80,7 +80,7 @@ public class TestClass2 {
 		
 		gameTest = new GameLogic();
 		
-		GameConfig gameConfig = new GameConfig(10, 3, true, 0.2);
+		GameConfig gameConfig = new GameConfig(10, 3, 0.2);
 		
 		gameTest.setConfig(gameConfig);
 		
@@ -134,7 +134,7 @@ public class TestClass2 {
 		
 		gameTest = new GameLogic();
 		
-		GameConfig gameConfig = new GameConfig(10, 1, true, 0.2);
+		GameConfig gameConfig = new GameConfig(10, 1, 0.2);
 		
 		gameTest.setConfig(gameConfig);
 		

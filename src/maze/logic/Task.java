@@ -9,6 +9,9 @@ public class Task implements Serializable {
 	private String description;
 	private boolean done;
 
+	/**
+	 * Default Constructor.
+	 */
 	public Task() {}
 	
 	/**

@@ -9,6 +9,9 @@ public class Eagle extends Moveable {
 	private boolean flying;
 	private boolean useful;
 	
+	/**
+	 * Default Constructor.
+	 */
 	public Eagle() {
 		super();		
 	}
@@ -17,9 +20,9 @@ public class Eagle extends Moveable {
 	 * Constructor for Eagle.
 	 * Receives the x and y coordinates in order to call super(x, y, symbol).
 	 * 
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param symbol
+	 * @param x : X coordinate
+	 * @param y : Y coordinate
+	 * @param symbol : symbol that represents the Eagle
 	 */
 	public Eagle(int x, int y, char symbol) {
 		
@@ -202,12 +205,14 @@ public class Eagle extends Moveable {
 		
 		if(useful) {
 			
+			// If the hero has the eagle
 			if (game.getHero() != null) {
 				if(game.getHero().hasEagle()) {
 					updatePosition(game.getHero().getX(), game.getHero().getY());
 				}
 			}
 
+			// If the eagle is on the move
 			if(alive && moving) {
 				if(game.getSword() != null) {
 					if(!hasSword) {
@@ -224,6 +229,7 @@ public class Eagle extends Moveable {
 				}
 			}
 			
+			// If the eagle finds a dragon (dies)
 			if (game.getHero() != null) {
 				if(!flying && !game.getHero().hasEagle()) {
 

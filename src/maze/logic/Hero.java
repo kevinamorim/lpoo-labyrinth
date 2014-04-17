@@ -35,9 +35,9 @@ public class Hero extends Moveable {
 	 * Constructor for Hero.
 	 * Receives the x and y coordinates in order to call super(x, y, symbol).
 	 * 
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param symbol
+	 * @param x : X coordinate
+	 * @param y : Y coordinate
+	 * @param symbol : symbol that represents the Hero
 	 */
 	public Hero(int x, int y, char symbol) {
 		
@@ -85,7 +85,6 @@ public class Hero extends Moveable {
 		this.won = win;
 	}
 
-	
 	/**
 	 * Arms the player by changing its representing symbol and by setting the parameter [hasSword] to true.
 	 */

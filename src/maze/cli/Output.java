@@ -91,7 +91,7 @@ public class Output {
 			System.out.println("Choose a dificulty: \n[1] Dumb dragons \n[2] Smart dragons (they sleep) \n[3] Dragons high on caffeine");
 			break;
 		case 7:
-			System.out.println("Choose a percentage of dragons: [2 - 10]%");
+			System.out.println("Choose a percentage of dragons: [4 - 10]%");
 			break;
 		case 8:
 			System.out.println("PlayAgain? (y/n)");

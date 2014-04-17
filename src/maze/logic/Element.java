@@ -13,15 +13,18 @@ public class Element implements Serializable {
 	protected int oldY;
 	protected char symbol;
 
+	/**
+	 * Default Constructor.
+	 */
 	public Element() {}
 
 	/**
 	 * Constructor for Element.
-	 * Receives its initial position (x, y) along with its symbol.
+	 *   Receives its initial position (x, y) along with its symbol.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param symbol
+	 * @param x : X coordinate
+	 * @param y : Y coordinate
+	 * @param symbol : symbol that represents the Element
 	 */
 	public Element(int x, int y, char symbol) {
 		
@@ -34,10 +37,9 @@ public class Element implements Serializable {
 	
 	/**
 	 * Constructor for Element.
-	 * Receives its symbol and sets the initial position to te origin (0, 0).
+	 *   Receives its symbol and sets the initial position to te origin (0, 0).
 	 * 
-	 * @param maze
-	 * @param symbol
+	 * @param symbol : symbol that represents the Element
 	 */
 	public Element(char symbol) {
 		
@@ -51,11 +53,11 @@ public class Element implements Serializable {
 	
 	/**
 	 * Constructor for Element.
-	 * Receives the gameLogic instance of the game it is in and its symbol.
-	 * Generates the element's position randomly.
+	 *   Receives the gameLogic instance of the game it is in and its symbol.
+	 *   Generates the element's position randomly.
 	 * 
-	 * @param maze
-	 * @param symbol
+	 * @param game : GameLogic instance
+	 * @param symbol : symbol that represents the Element
 	 */
 	public Element(GameLogic game, char symbol) {
 		

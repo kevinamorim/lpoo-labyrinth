@@ -7,6 +7,9 @@ public class Moveable extends Element {
 	protected boolean alive;
 	protected boolean hasSword;
 	
+	/**
+	 * Default Constructor.
+	 */
 	public Moveable() {
 		super();
 	}
@@ -17,6 +20,7 @@ public class Moveable extends Element {
 	 * Sets the parameter [alive] to true.
 	 * 
 	 * @param game current GameLogic
+	 * @param symbol : symbol that represents the Moveable
 	 */
 	public Moveable(GameLogic game, char symbol) {
 		
@@ -30,9 +34,9 @@ public class Moveable extends Element {
 	 * Receives the x and y coordinates in order to call super(x, y, symbol).
 	 * Sets the parameter [alive] to true.
 	 * 
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param symbol
+	 * @param x : X coordinate
+	 * @param y : Y coordinate
+	 * @param symbol : symbol that represents the Moveable
 	 */
 	public Moveable(int x, int y, char symbol) {
 		
@@ -229,11 +233,11 @@ public class Moveable extends Element {
 	}
 	
 	/**
-	 * Checks if the Element has found a Dragon.
-	 * This is done so by calculating the distance between the Element and the Dragon using Pitagoras' theorem: x^2 + y^2 = d^2
+	 * Checks if the Element has found another.
+	 * This is done so by calculating the distance between the Elements using Pitagoras' theorem: x^2 + y^2 = d^2
 	 * 
-	 * @param dragon : dragon to check
-	 * @return true if found a dragon, false otherwise
+	 * @param element : element to check
+	 * @return true if found the element, false otherwise
 	 */
 	public boolean checkIfFound(Element element, int minDistance) {
 		// Calculating the real distance between the dragon and the player (contiguous cells will necessarily be 1 unit apart)

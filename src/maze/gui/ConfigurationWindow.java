@@ -123,11 +123,11 @@ public class ConfigurationWindow extends Window {
 		 * Dragons percentage
 		 */
 		final JSlider dragonPerc = new JSlider();
-		dragonPerc.setValue(2);
+		dragonPerc.setValue(4);
 		dragonPerc.setToolTipText("");
 		dragonPerc.setSnapToTicks(true);
 		dragonPerc.setMinorTickSpacing(2);
-		dragonPerc.setMinimum(2);
+		dragonPerc.setMinimum(4);
 		dragonPerc.setMaximum(10);
 		dragonPerc.setMajorTickSpacing(2);
 		dragonPerc.setFocusable(false);
