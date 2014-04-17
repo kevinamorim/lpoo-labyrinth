@@ -36,12 +36,17 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 import javax.swing.JSplitPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class EditorWindow extends Window {
 	private Maze maze;
 	private int mazeSize = 10;
-	private int[] picInfo;
+	
+	private final int numElements = 5;
+	private int selected = 0;
+	private int picInfo[];
 	
 	private boolean hasExit = false;
 
@@ -75,6 +80,9 @@ public class EditorWindow extends Window {
 		this.maze = new Maze(size);
 		this.mazeSize = size;
 		
+		picInfo = new int[numElements];
+		
+		
 		initialize();
 	}
 
@@ -83,10 +91,6 @@ public class EditorWindow extends Window {
 	 *   Adds the labels, buttons, sliders, etc...
 	 */
 	private void initialize() {
-		
-		int numElements = 5;
-		
-		picInfo = new int[numElements];
 		
 		picInfo[0] = 0; // Exit
 		picInfo[1] = 0; // Hero
@@ -106,6 +110,13 @@ public class EditorWindow extends Window {
 		getContentPane().add(splitPane, "split");
 		
 		pics = new JPanel();
+		pics.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				selected = (e.getY() / (pics.getHeight() / numElements));
+				drawSamples();
+			}
+		});
 		pics.setLayout(new GridLayout(5,1,10,10));
 		
 		/* ____________________________________________________________
@@ -148,18 +159,32 @@ public class EditorWindow extends Window {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenuItem newItem = new JMenuItem("New");
-		menuBar.add(newItem);
-		
 		JMenuItem saveItem = new JMenuItem("Save");
+		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				keyCode = 2;
+			}
+		});
 		menuBar.add(saveItem);
 		
 		JMenuItem helpItem = new JMenuItem("Help");
+		helpItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				keyCode = 3;
+			}
+		});
 		menuBar.add(helpItem);
 		
 		JMenuItem quitItem = new JMenuItem("Quit");
+		quitItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				keyCode = 4;
+			}
+		});
 		menuBar.add(quitItem);
 		
+		splitPane.setEnabled(false);
+		splitPane.setBorder(BorderFactory.createLineBorder(new Color(128,128,128),5));
 		splitPane.setLeftComponent(pics);
 		splitPane.setRightComponent(tiles);
 		
@@ -213,13 +238,14 @@ public class EditorWindow extends Window {
 
 		};
 		
-		if(picInfo[index] == 1) {
+		if(index == selected) {
+			label.setBorder(BorderFactory.createLineBorder(new Color(0,0,0), border));
+		}
+		else if(picInfo[index] == 1) {
 			label.setBorder(BorderFactory.createLineBorder(new Color(0,128,0), border));
-			picInfo[index] = -1;
 		}
 		else if(picInfo[index] == 0) {
 			label.setBorder(BorderFactory.createLineBorder(new Color(0,0,255), border));
-			picInfo[index] = -1;
 		}
 		else {
 			label.setBorder(BorderFactory.createLineBorder(new Color(255,0,0), border));
