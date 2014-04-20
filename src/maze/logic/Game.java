@@ -1,8 +1,15 @@
 package maze.logic;
 
+import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.io.File;
 
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -176,6 +183,24 @@ public class Game {
 					}
 					break;
 				case 3: // CREDITS
+					JDialog helpDialog = new JDialog(menuWindow,"Credits",Dialog.ModalityType.APPLICATION_MODAL);
+
+					helpDialog.setFont(new Font("Sakkal Majalla", Font.BOLD, 22));
+					
+					helpDialog.setLayout(new GridLayout(5,1,10,10));
+					helpDialog.setFocusable(true);
+					helpDialog.setResizable(false);
+					
+					helpDialog.add(new JLabel("", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+					helpDialog.add(new JLabel("Kevin Amorim - ei12057", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+					helpDialog.add(new JLabel("Luis Magalhaes - ei12054", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+					helpDialog.add(new JLabel("", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+					helpDialog.add(new JLabel("Os nossos agradecimentos em particular aos professores de LPOO pela ajuda"
+							+ " fornecida durante todo o desenvolvimento do projeto. ", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+
+					helpDialog.pack();
+					helpDialog.setLocationRelativeTo(null);
+					helpDialog.setVisible(true);
 					break;
 				case 4: // QUIT
 					state = EXIT;

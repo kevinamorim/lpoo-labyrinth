@@ -439,7 +439,7 @@ public class ConfigurationWindow extends Window {
 	 */
 	public void receiveNewKey(final int index) {
 		final JDialog keyDialog = new JDialog(this,"New key",Dialog.ModalityType.APPLICATION_MODAL);
-		keyDialog.setLocationRelativeTo(null);
+		
 		keyDialog.setFocusable(true);
 		keyDialog.setResizable(false);
 		keyDialog.getContentPane().setLayout(new GridLayout(2, 1, 0, 0));
@@ -468,6 +468,7 @@ public class ConfigurationWindow extends Window {
 		});
 		
 		keyDialog.pack();
+		keyDialog.setLocationRelativeTo(null);
 		keyDialog.setVisible(true);
 	}
 	

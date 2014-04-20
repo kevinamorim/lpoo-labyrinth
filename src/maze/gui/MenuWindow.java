@@ -67,6 +67,7 @@ public class MenuWindow extends Window {
 		JButton btnCredits = new JButton("Credits");
 		btnCredits.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				keyCode = 3;
 				
 			}
 		});

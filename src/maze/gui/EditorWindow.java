@@ -39,6 +39,7 @@ import javax.swing.JSplitPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class EditorWindow extends Window {
@@ -133,6 +134,7 @@ public class EditorWindow extends Window {
 		 */
 		
 		tiles = new JPanel();
+		tiles.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		tiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -312,24 +314,29 @@ public class EditorWindow extends Window {
 				
 				helpDialog.setFont(new Font("Sakkal Majalla", Font.BOLD, 22));
 				
-				helpDialog.setLayout(new GridLayout(3,3,10,10));
-				helpDialog.setLocationRelativeTo(null);
+				helpDialog.getContentPane().setLayout(new GridLayout(4,3,0,0));
+				
 				helpDialog.setFocusable(true);
 				helpDialog.setResizable(false);
 				
-				helpDialog.add(new JLabel("Mouse Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Left Panel", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Right Panel", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("[Mouse Button]", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("[Left Panel]", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("[Right Panel]", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
 				
-				helpDialog.add(new JLabel("Left Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Add", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
 				
-				helpDialog.add(new JLabel("Right Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
-				helpDialog.add(new JLabel("Remove", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("Left Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("Add", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				
+				helpDialog.getContentPane().add(new JLabel("Right Button", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("Select", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
+				helpDialog.getContentPane().add(new JLabel("Remove", JLabel.CENTER), BorderFactory.createLineBorder(new Color(0,0,0),2));
 				
 				helpDialog.pack();
+				helpDialog.setLocationRelativeTo(null);
 				helpDialog.setVisible(true);
 				keyCode = 2;
 			}
