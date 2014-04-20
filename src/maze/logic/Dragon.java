@@ -45,7 +45,7 @@ public class Dragon extends Moveable {
 	 */
 	public Dragon(int x, int y, char symbol) {
 
-		super(x,y,symbol);
+		super(x, y, symbol);
 		
 		this.hasSword = false;
 		this.awake = true;

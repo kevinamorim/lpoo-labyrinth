@@ -137,16 +137,18 @@ public class EditorWindow extends Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				int i = e.getX() / ((tiles.getWidth() + 5) / mazeSize);
-				int j = e.getY() / ((tiles.getHeight() + 5) / mazeSize);
+				int j = e.getX() / ((tiles.getWidth() + 5) / mazeSize);
+				int i = e.getY() / ((tiles.getHeight() + 5) / mazeSize);
+				
+				int position = j+i*mazeSize;
 				
 				if(e.getButton() == MouseEvent.BUTTON1) {
 					if(picInfo[selected] > -1) {
 						
 						if (isBetween(i, 0, mazeSize-1) && isBetween(j, 0, mazeSize-1)) {
 							if(drawMazeImage(i,j) == true) {
-								tiles.remove(i+j*mazeSize);
-								tiles.add(label, i+j*mazeSize);
+								tiles.remove(position);
+								tiles.add(label, position);
 								tiles.revalidate();
 							}
 						}
@@ -155,8 +157,8 @@ public class EditorWindow extends Window {
 				else {
 					if (isBetween(i, 0, mazeSize-1) && isBetween(j, 0, mazeSize-1)) {
 						if(takeMazeImage(i,j) == true) {
-							tiles.remove(i+j*mazeSize);
-							tiles.add(label, i+j*mazeSize);
+							tiles.remove(position);
+							tiles.add(label,position);
 							tiles.revalidate();
 						}
 					}
@@ -208,6 +210,7 @@ public class EditorWindow extends Window {
 					// EXIT
 					if(isProperExitPlace(i,j)) {
 						drawToPanel(exit);
+						// Orientation is different
 						game.getMaze().setExit(new Element(i,j,'S'));
 						picInfo[selected] = -1;
 						return true;
@@ -281,20 +284,7 @@ public class EditorWindow extends Window {
 		});
 		tiles.setLayout(new GridLayout(mazeSize,mazeSize,1,1));
 		
-		for(int i = 0; i < mazeSize; i++) {
-			for(int j = 0; j < mazeSize; j++) {
-				if((i == 0) || (j == 0) || (i == (mazeSize - 1)) || (j == (mazeSize - 1))) {
-					drawToPanel(wall);
-					game.getMaze().getTiles()[i][j] = 'x';
-					tiles.add(label);
-				}
-				else {
-					drawToPanel(floor);
-					game.getMaze().getTiles()[i][j] = ' ';
-					tiles.add(label);
-				}
-			}
-		}
+		drawInitialMaze();
 		
 		/* ____________________________________________________________
 		 * 
@@ -368,31 +358,58 @@ public class EditorWindow extends Window {
 	}
 
 	/**
+	 * Draws the initial bordered maze.
+	 */
+	private void drawInitialMaze() {
+		for(int i = 0; i < mazeSize; i++) {
+			for(int j = 0; j < mazeSize; j++) {
+				if((i == 0) || (j == 0) || (i == (mazeSize - 1)) || (j == (mazeSize - 1))) {
+					drawToPanel(wall);
+					game.getMaze().getTiles()[i][j] = 'x';
+					tiles.add(label);
+				}
+				else {
+					drawToPanel(floor);
+					game.getMaze().getTiles()[i][j] = ' ';
+					tiles.add(label);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Saves all the elements (hero, maze, dragons, etc..) to
 	 *   the local game instance just before saving the maze.
 	 */
 	protected void saveElements() {
 		numberOfDragons = 0;
 		
-		for(int i = 0; i < game.getMaze().getTiles().length; i++) {
-			for(int j = 0; j < game.getMaze().getTiles().length; j++) {
+		// Creates hero, eagle, sword
+		// Counts dragons
+		for(int i = 1; i < game.getMaze().getTiles().length - 1; i++) {
+			for(int j = 1; j < game.getMaze().getTiles().length - 1; j++) {
+				
 				if(game.getMaze().getTiles()[i][j] == 'Y') {
+					
 					game.setHero(new Hero(i,j,'Y'));
 					game.setEagle(new Eagle(i,j,'V'));
 					game.getHero().setHasEagle(true);
 					game.getMaze().getTiles()[i][j] = ' ';
 				}
 				else if(game.getMaze().getTiles()[i][j] == 'E') {
+					
 					game.setSword(new Element(i,j,'Y'));
 					game.getMaze().getTiles()[i][j] = ' ';
 				}
 				else if(game.getMaze().getTiles()[i][j] == 'D') {
+					
 					numberOfDragons++;
 				}
 			}
 		}
 		
-		if(numberOfDragons == 0) {
+		// Creates dragons
+		if(numberOfDragons > 0) {
 			game.setDragons(new Dragon[numberOfDragons]);
 			
 			int index = 0;
@@ -400,6 +417,7 @@ public class EditorWindow extends Window {
 			for(int i = 0; i < game.getMaze().getTiles().length; i++) {
 				for(int j = 0; j < game.getMaze().getTiles().length; j++) {
 					if(game.getMaze().getTiles()[i][j] == 'D') {
+						
 						game.getDragons()[index] = new Dragon(i,j,'D');
 						game.getMaze().getTiles()[i][j] = ' ';
 						index++;
@@ -408,7 +426,7 @@ public class EditorWindow extends Window {
 			}
 		}
 		else {
-			game.setDragons(null);
+			game.setDragons(new Dragon[0]);
 		}
 	}
 

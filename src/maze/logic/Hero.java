@@ -41,7 +41,7 @@ public class Hero extends Moveable {
 	 */
 	public Hero(int x, int y, char symbol) {
 		
-		super(x,y, symbol);
+		super(x, y, symbol);
 		
 		this.hasSword = false;
 		this.hasEagle = false;
