@@ -2,6 +2,14 @@ package maze.logic;
 
 import java.util.Random;
 
+/**
+ * Class that represents all "dragon" type objects.
+ * 
+ * A dragon is either awake or asleep. Any other behaviours and/or
+ *   parameters are inherited from Moveable.
+ *   
+ * @see Moveable
+ */
 public class Dragon extends Moveable {
 	
 	private static final long serialVersionUID = 1;
@@ -141,7 +149,9 @@ public class Dragon extends Moveable {
 		
 		// Sets dragon state.
 		
-		if(game.getConfig() == null) return;
+		if(game.getConfig() == null) {
+			return;
+		}
 		
 		if(game.getConfig().getDifficulty() == SLEEP) {
 			if(alive) {

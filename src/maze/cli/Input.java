@@ -2,6 +2,9 @@ package maze.cli;
 
 import java.util.Scanner;
 
+/**
+ * Class that deals with the input received from the console.
+ */
 public class Input {
 	
 	private Scanner scan = new Scanner(System.in);

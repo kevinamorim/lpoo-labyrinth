@@ -29,6 +29,20 @@ import javax.swing.JOptionPane;
 
 import java.awt.Cursor;
 
+/**
+ * Class that represents all "game window" type objects.
+ * 
+ * A game window represents the state of a game whilst it's
+ *   being played. Besides playing the game, a user has acess
+ *   to the following options:
+ *    - Start a new game;
+ *    - Save the current game progress;
+ *    - Load a previously saved game;
+ *    - Configure the current game keys and define the configuration for the next "new" games;
+ *    - Quit to main menu.
+ *    
+ *  @see Window
+ */
 @SuppressWarnings("serial")
 public class GameWindow extends Window implements KeyListener {
 

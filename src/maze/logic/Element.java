@@ -3,6 +3,21 @@ package maze.logic;
 import java.io.Serializable;
 import java.util.Random;
 
+/**
+ * Class that represents all "element" type objects.
+ * 
+ * An element is basically every kind of object that may be found in the maze:
+ *   - hero;
+ *   - eagle;
+ *   - dragon;
+ *   - sword
+ *   - exit.
+ *   
+ *   As such, every Element has a position (x, y), its position
+ *     before any movement (oldX, oldY) - if appliable - and a representing
+ *     symbol.
+ *   This class implements serializable, has it is used upon game saving.
+ */
 public class Element implements Serializable {
 	
 	private static final long serialVersionUID = 1;

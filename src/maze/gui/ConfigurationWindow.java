@@ -41,6 +41,16 @@ import java.io.File;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 
+/**
+ * Class that represents all "configuration window" type objects.
+ * 
+ * A configuration window is where the user has a series of options:
+ *   - Load a custom maze (created in the editor);
+ *   - Define the parameters for the creation of a new maze;
+ *   - Define custom keys to control the game character.
+ *   
+ * @see Window
+ */
 @SuppressWarnings("serial")
 public class ConfigurationWindow extends Window {
 

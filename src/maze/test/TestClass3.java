@@ -12,6 +12,9 @@ import maze.logic.Maze;
 
 import org.junit.Test;
 
+/**
+ * Test class that handles all eagle-related testing.
+ */
 public class TestClass3 {
 	
 	// Char matrix representing the labyrinth 

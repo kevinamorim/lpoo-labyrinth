@@ -2,6 +2,14 @@ package maze.gui;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Class that represents all "input handler" type objects.
+ * 
+ * An input handler reads the keyCode variable from a "window" type object (and/or child objects)
+ *   and saves that keyCode into an Array, reseting the "window" keyCode afterwards.
+ *   Any kind of instance of this type is running in a separated thread, therefore it
+ *   doens't "freeze" the main program while it waits for keyCode values.
+ */
 public class InputHandler implements Runnable {
 	
 	protected Window window;

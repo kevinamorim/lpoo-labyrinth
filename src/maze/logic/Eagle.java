@@ -1,5 +1,16 @@
 package maze.logic;
 
+/**
+ * Class that represents all "eagle" type objects.
+ * 
+ * An eagle has the following atributes:
+ *   - moving/movingHorizontally: both refer to flying movement;
+ *   - flying: whether it is or not flying;
+ *   - useful: whether it has or not some use (if the sword belong to the player already,
+ *       then the eagle is of no use to the player).
+ *   
+ * @see Moveable
+ */
 public class Eagle extends Moveable {
 	
 	private static final long serialVersionUID = 1;

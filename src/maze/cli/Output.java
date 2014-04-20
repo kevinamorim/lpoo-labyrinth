@@ -2,6 +2,9 @@ package maze.cli;
 
 import maze.logic.*;
 
+/**
+ * Class that sends output to the console.
+ */
 public class Output {
 	
 	/**

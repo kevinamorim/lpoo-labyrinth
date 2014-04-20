@@ -5,6 +5,10 @@ import java.io.Serializable;
 import maze.cli.Input;
 import maze.cli.Output;
 
+/**
+ * Class that contains all the information related to the configuration
+ *   of the game maze and game keys.
+ */
 public class GameConfig implements Serializable {
 	
 	private static final long serialVersionUID = 1;

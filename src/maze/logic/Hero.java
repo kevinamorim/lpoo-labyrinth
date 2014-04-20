@@ -2,6 +2,16 @@ package maze.logic;
 
 import java.util.Random;
 
+/**
+ * Class that represents all "hero" type objects.
+ * 
+ * An hero has the following atributes:
+ *   - won: if the hero has the sword and killed all dragons,
+ *       it is in a "won" position and is able to exit the maze and wind the game.
+ *   - hasEagle: determines whether the eagle follows the hero or not.
+ *   
+ * @see Moveable
+ */
 public class Hero extends Moveable {
 	
 	private static final long serialVersionUID = 1;

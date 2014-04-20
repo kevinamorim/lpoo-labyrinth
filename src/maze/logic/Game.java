@@ -18,6 +18,9 @@ import maze.gui.InputHandler;
 import maze.gui.MenuWindow;
 import maze.io.GameIO;
 
+/**
+ * Class that contains the main() function and the game's "main menu".
+ */
 public class Game {
 
 	public static void main(String[] args) {

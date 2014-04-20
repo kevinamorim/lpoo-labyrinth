@@ -10,6 +10,9 @@ import maze.logic.GameConfig;
 import maze.logic.GameLogic;
 import maze.logic.Maze;
 
+/**
+ * Test class that handles all dragon(s)-related testing.
+ */
 public class TestClass2 {
 	
 	// Char matrix representing the labyrinth 
@@ -24,8 +27,7 @@ public class TestClass2 {
 			{ 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x' },
 			{ 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x' },
 			{ 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x' },
-			
-//			nds = "ssssssswwdddaawwwwdddddds"
+
 	};
 	
 	private GameLogic gameTest;

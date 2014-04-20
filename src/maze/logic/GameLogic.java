@@ -14,6 +14,9 @@ import maze.gui.GameWindow;
 import maze.gui.InputHandler;
 import maze.io.GameIO;
 
+/**
+ * Core class. Contains all the game logic and objects that the main game uses.
+ */
 public class GameLogic extends Object implements Serializable {
 	
 	private static final long serialVersionUID = 1;

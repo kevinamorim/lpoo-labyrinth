@@ -2,6 +2,16 @@ package maze.logic;
 
 import java.io.Serializable;
 
+/**
+ * Class that represents all "task" type objects.
+ * 
+ * A task is basically an objective to be fulfilled by the player.
+ *   Therefore it contains two atributes:
+ *     - description: what is to be done;
+ *     - done: whether it has been satisfied or not.
+ *   
+ * This class implements serializable, has it is used upon game saving.
+ */
 public class Task implements Serializable {
 	
 	private static final long serialVersionUID = 1;

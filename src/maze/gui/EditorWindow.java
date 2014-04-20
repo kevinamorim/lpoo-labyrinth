@@ -39,8 +39,22 @@ import javax.swing.JSplitPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.border.LineBorder;
 
+/**
+ * Class that represents all "edtior window" type objects.
+ * 
+ * An editor window provides a user-friendly environment for the
+ *   creation of custom mazes. The user is able to insert:
+ *    - walls;
+ *    - hero;
+ *    - sword;
+ *    - dragons.
+ *   And save the created maze for latter use.
+ * 
+ * @see Window
+ */
 @SuppressWarnings("serial")
 public class EditorWindow extends Window {
 	private GameLogic game;

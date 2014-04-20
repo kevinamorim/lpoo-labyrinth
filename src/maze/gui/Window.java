@@ -2,6 +2,13 @@ package maze.gui;
 
 import javax.swing.JFrame;
 
+/**
+ * Class that represents all "window" type objects.
+ * 
+ * A generic window class, that extends JFrame.
+ *  Every child object as a keyCode variable, that it inherits from
+ *  this class. Important for the input handlers.
+ */
 @SuppressWarnings("serial")
 public class Window extends JFrame {
 	

@@ -11,6 +11,17 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.border.EtchedBorder;
 
+/**
+ * Class that represents all "menu window" type objects.
+ * 
+ * A menu window provides a main menu with the following options:
+ *   - play (a new game);
+ *   - editor (for the creation of custom mazes);
+ *   - credits;
+ *   - quit (exit the application).
+ *   
+ * @see Window
+ */
 @SuppressWarnings("serial")
 public class MenuWindow extends Window {
 

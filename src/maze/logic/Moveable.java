@@ -1,5 +1,15 @@
 package maze.logic;
 
+/**
+ * Class that represents all "moveable" type objects.
+ * 
+ * A moveable has the following atributes:
+ *   - alive: whether it is alive or not (since only animated
+ *       elements may die);
+ *   - hasSword: whether it has hold of the sword or not.
+ *   
+ * @see Element
+ */
 public class Moveable extends Element {
 	
 	private static final long serialVersionUID = 1;

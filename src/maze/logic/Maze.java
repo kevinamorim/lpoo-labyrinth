@@ -4,6 +4,15 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Class that represents all "maze" type objects.
+ * 
+ * A maze consists, very shortly, in a series of tiles (chars) placed in a matrix.
+ *   It has a size (actually, the matrix is SIZExSIZE) an it has an
+ *   exit (instance of an Element with the symbol 'S')
+ *   
+ * This class implements serializable, has it is used upon game saving.
+ */
 public class Maze implements Serializable {
 	
 	private static final long serialVersionUID = 1;

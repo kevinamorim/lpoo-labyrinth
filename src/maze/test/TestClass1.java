@@ -9,6 +9,9 @@ import maze.logic.Maze;
 
 import org.junit.Test;
 
+/**
+ * Test class that handles all hero-related testing.
+ */
 public class TestClass1 {
 
 	// Char matrix representing the labyrinth 

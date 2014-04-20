@@ -3,6 +3,12 @@ package maze.io;
 import maze.logic.GameLogic;
 import java.io.*;
 
+/**
+ * Class that handles all "save/load from file" options.
+ * 
+ * It is used to save a game or a maze to ".sav" or ".maze" files (accordingly).
+ * It is also used to load a custom maze or a saved game. 
+ */
 public class GameIO {
 
 	/**
