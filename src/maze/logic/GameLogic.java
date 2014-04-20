@@ -112,6 +112,7 @@ public class GameLogic extends Object implements Serializable {
 			}
 			else {
 				config.setMazeDragons(0);
+				dragons = new Dragon[0];
 			}
 			config.setMazeSize(maze.getSize());
 		}
@@ -344,9 +345,11 @@ public class GameLogic extends Object implements Serializable {
 		}
 
 		// Includes all dragons.
-		for(Dragon dragon: dragons) {
-			if(dragon != null) {
-				if(dragon.isAlive()) board[dragon.getX()][dragon.getY()] = dragon.getSymbol();
+		if(dragons != null) {
+			for(Dragon dragon: dragons) {
+				if(dragon != null) {
+					if(dragon.isAlive()) board[dragon.getX()][dragon.getY()] = dragon.getSymbol();
+				}
 			}
 		}
 		// Includes sword.
@@ -366,8 +369,10 @@ public class GameLogic extends Object implements Serializable {
 	 * For more info consult the methods.
 	 */
 	public void updateAllDragons() {
-		for(Dragon dragon: dragons) {
-			dragon.update(this);
+		if(dragons != null) {
+			for(Dragon dragon: dragons) {
+				dragon.update(this);
+			}
 		}
 	}
 

@@ -136,18 +136,21 @@ public class Dragon extends Moveable {
 	 */
 	public void update(GameLogic game) {
 		
+		int DUMB = 0;
+		int SLEEP = 1;
+		
 		// Sets dragon state.
 		
 		if(game.getConfig() == null) return;
 		
-		if(game.getConfig().getDifficulty() == 1) {
+		if(game.getConfig().getDifficulty() == SLEEP) {
 			if(alive) {
 				setDragonState();
 			}
 		}
 		
 		// Moves dragon. 
-		if(game.getConfig().getDifficulty() > 1) {
+		if(game.getConfig().getDifficulty() > DUMB) {
 			if(awake && alive) {
 				Random r = new Random();
 				move(game, r.nextInt(4));
