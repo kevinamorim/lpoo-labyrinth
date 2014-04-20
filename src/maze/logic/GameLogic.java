@@ -107,7 +107,12 @@ public class GameLogic extends Object implements Serializable {
 		
 		if(configWindow.getMazeFile() != null) {
 			loadMaze(this, configWindow.getMazeFile());
-			config.setMazeDragons(dragons.length);
+			if(dragons != null) {
+				config.setMazeDragons(dragons.length);
+			}
+			else {
+				config.setMazeDragons(0);
+			}
 			config.setMazeSize(maze.getSize());
 		}
 		else {

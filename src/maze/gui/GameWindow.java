@@ -345,28 +345,28 @@ public class GameWindow extends Window implements KeyListener {
 		
 		try {
 			
-			wall = ImageIO.read(new File("bin/textures/wall.png"));
-			floor = ImageIO.read(new File("bin/textures/floor.png"));
-			dragonPic = ImageIO.read(new File("bin/textures/dragon_on_floor.png"));
-			hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
-			eagle = ImageIO.read(new File("bin/textures/eagle_on_floor.png"));
-			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
-			exit = ImageIO.read(new File("bin/textures/exit.png"));
+			wall = ImageIO.read(new File("textures/wall.png"));
+			floor = ImageIO.read(new File("textures/floor.png"));
+			dragonPic = ImageIO.read(new File("textures/dragon_on_floor.png"));
+			hero = ImageIO.read(new File("textures/hero_on_floor.png"));
+			eagle = ImageIO.read(new File("textures/eagle_on_floor.png"));
+			sword = ImageIO.read(new File("textures/sword_on_floor.png"));
+			exit = ImageIO.read(new File("textures/exit.png"));
 			
-			heroWithEagle = ImageIO.read(new File("bin/textures/hero_with_eagle.png"));
-			heroWithSword = ImageIO.read(new File("bin/textures/hero_with_sword.png"));
-			heroWithSwordAndEagle = ImageIO.read(new File("bin/textures/hero_with_sword_and_eagle.png"));
+			heroWithEagle = ImageIO.read(new File("textures/hero_with_eagle.png"));
+			heroWithSword = ImageIO.read(new File("textures/hero_with_sword.png"));
+			heroWithSwordAndEagle = ImageIO.read(new File("textures/hero_with_sword_and_eagle.png"));
 			
-			eagleWithSword = ImageIO.read(new File("bin/textures/eagle_on_floor_with_sword.png"));
-			eagleUponDragon = ImageIO.read(new File("bin/textures/eagle_upon_dragon.png"));
-			eagleUponWall = ImageIO.read(new File("bin/textures/eagle_upon_wall.png"));
-			eagleUponWallWithSword = ImageIO.read(new File("bin/textures/eagle_upon_wall_with_sword.png"));
-			eagleUponDragonWithSword = ImageIO.read(new File("bin/textures/eagle_upon_dragon_with_sword.png"));
-			eagleUponDragonWithSwordAsleep = ImageIO.read(new File("bin/textures/eagle_upon_dragon_with_sword_asleep.png"));
+			eagleWithSword = ImageIO.read(new File("textures/eagle_on_floor_with_sword.png"));
+			eagleUponDragon = ImageIO.read(new File("textures/eagle_upon_dragon.png"));
+			eagleUponWall = ImageIO.read(new File("textures/eagle_upon_wall.png"));
+			eagleUponWallWithSword = ImageIO.read(new File("textures/eagle_upon_wall_with_sword.png"));
+			eagleUponDragonWithSword = ImageIO.read(new File("textures/eagle_upon_dragon_with_sword.png"));
+			eagleUponDragonWithSwordAsleep = ImageIO.read(new File("textures/eagle_upon_dragon_with_sword_asleep.png"));
 			
-			dragonAsleep = ImageIO.read(new File("bin/textures/dragon_asleep.png"));
-			dragonWithSword = ImageIO.read(new File("bin/textures/dragon_with_sword.png"));
-			dragonWithSwordAsleep = ImageIO.read(new File("bin/textures/dragon_with_sword_asleep.png"));
+			dragonAsleep = ImageIO.read(new File("textures/dragon_asleep.png"));
+			dragonWithSword = ImageIO.read(new File("textures/dragon_with_sword.png"));
+			dragonWithSwordAsleep = ImageIO.read(new File("textures/dragon_with_sword_asleep.png"));
 			
 		} catch (IOException e) {
 			

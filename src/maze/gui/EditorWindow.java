@@ -545,12 +545,12 @@ public class EditorWindow extends Window {
 
 		try {
 
-			wall = ImageIO.read(new File("bin/textures/wall.png"));
-			floor = ImageIO.read(new File("bin/textures/floor.png"));
-			dragonPic = ImageIO.read(new File("bin/textures/dragon_on_floor.png"));
-			hero = ImageIO.read(new File("bin/textures/hero_on_floor.png"));
-			sword = ImageIO.read(new File("bin/textures/sword_on_floor.png"));
-			exit = ImageIO.read(new File("bin/textures/exit.png"));
+			wall = ImageIO.read(new File("textures/wall.png"));
+			floor = ImageIO.read(new File("textures/floor.png"));
+			dragonPic = ImageIO.read(new File("textures/dragon_on_floor.png"));
+			hero = ImageIO.read(new File("textures/hero_on_floor.png"));
+			sword = ImageIO.read(new File("textures/sword_on_floor.png"));
+			exit = ImageIO.read(new File("textures/exit.png"));
 
 		} catch (IOException e) {
 
