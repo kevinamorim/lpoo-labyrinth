@@ -108,26 +108,44 @@ public class GameLogic extends Object implements Serializable {
 	 */
 	public void init() {
 		
-		if(configWindow.getMazeFile() != null) {
-			loadMaze(this, configWindow.getMazeFile());
-			if(dragons != null) {
-				config.setMazeDragons(dragons.length);
+		if(configWindow != null) {
+			if(configWindow.getMazeFile() != null) {
+				loadMaze(this, configWindow.getMazeFile());
+				if(dragons != null) {
+					config.setMazeDragons(dragons.length);
+				}
+				else {
+					config.setMazeDragons(0);
+					dragons = new Dragon[0];
+				}
+				config.setMazeSize(maze.getSize());
 			}
 			else {
-				config.setMazeDragons(0);
-				dragons = new Dragon[0];
+				
+				this.config.setGameKeyCodes(configWindow.getConfig().getGameKeyCodes());
+				this.config.setDifficulty(configWindow.getConfig().getDifficulty());
+				this.config.setDragonPerc(configWindow.getConfig().getDragonPerc());
+				this.config.setMazeSize(configWindow.getConfig().getMazeSize());
+				
+				config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
+				
+				maze = new Maze(config.getMazeSize());
+				maze.generate();
+				
+				hero = new Hero(this);
+				eagle = new Eagle(hero.getX(), hero.getY(), 'V');
+				sword = new Element(this, 'E');
+				
+				dragons = new Dragon[config.getMazeDragons()];
+				for(int i = 0; i < dragons.length; i++) {
+					dragons[i] = new Dragon(this);
+				}
 			}
-			config.setMazeSize(maze.getSize());
 		}
 		else {
 			
-			this.config.setGameKeyCodes(configWindow.getConfig().getGameKeyCodes());
-			this.config.setDifficulty(configWindow.getConfig().getDifficulty());
-			this.config.setDragonPerc(configWindow.getConfig().getDragonPerc());
-			this.config.setMazeSize(configWindow.getConfig().getMazeSize());
-			
 			config.setMazeDragons((int) (config.getMazeSize() * config.getMazeSize() * config.getDragonPerc()));
-			
+					
 			maze = new Maze(config.getMazeSize());
 			maze.generate();
 			
@@ -140,6 +158,7 @@ public class GameLogic extends Object implements Serializable {
 				dragons[i] = new Dragon(this);
 			}
 		}
+		
 		
 		board = new char[config.getMazeSize()][config.getMazeSize()];
 	

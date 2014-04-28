@@ -100,7 +100,7 @@ public class Output {
 			System.out.println("PlayAgain? (y/n)");
 			break;
 		case 69:
-			System.out.println("8======D~~~~");
+			System.out.println("|================|");
 			break;
 		default:
 			break;
