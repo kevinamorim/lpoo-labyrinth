@@ -373,8 +373,7 @@ public class Maze implements Serializable {
 		switch(direction) {
 		// UP
 		case 0:
-			if((x - 2) < 0) return false;
-			else return true;
+			return (x - 2) >= 0;
 		// RIGHT
 		case 1:
 			if((y + 2) >= size) return false;
